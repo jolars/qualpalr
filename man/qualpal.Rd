@@ -7,14 +7,14 @@
 qualpal(n, colorspace = "colorblind", ...)
 }
 \arguments{
-\item{n}{The number of colors to generate.}
+\item{n}{The number of colors to generate. Has to lie between 2 and 50.}
 
-\item{colorspace}{Either 1) a \emph{list} of three named numeric vectors:
-\code{h} (hue), \code{s} (saturation), and \code{l} (lightness), all of
-length 2 specifying a min and max value for the range. The values has to be
-in the range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l}
-2), or 2) a \emph{character vector} specifying one of the predefined color
-spaces (see below).}
+\item{colorspace}{Either 1) a list of three named numeric vectors: \code{h}
+(hue), \code{s} (saturation), and \code{l} (lightness), all of length 2
+specifying a min and max value for the range. The values has to be in the
+range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
+2) a \emph{character vector} specifying one of the predefined color spaces
+(see below).}
 
 \item{...}{Control parameters to pass on to the Nelder-Mead optimizer (see
 \code{\link[dfoptim]{nmkb}}).}
@@ -35,10 +35,10 @@ palette by optimizing color difference via the CIEDE 2000 Delta-E formula.
 }
 \details{
 \code{qualpal} takes a color subspace in the hsl color space, where lightness
-and saturation take values from 0 to 1. Hue takes values from -360 to 360,
+and saturation take values from 0 to 1. Hue take values from -360 to 360,
 although negative values are brought to lie in the range \{0, 360\} under the
-hood. This behavior exists to enable color subspaces that span any hue range,
-since the hue range is circular.
+hood. This behavior exists to enable color subspaces that span any hue range
+(since the hue range is circular).
 
 The hsl color subspace is passed to a \emph{Nelder-Mead optimizer}:
 (\code{dfoptim::nmkb}), which attempts to maximize the smallest pairwise
@@ -47,24 +47,35 @@ difference algorithm. However, the optimizer gets easily stuck in local
 minimi (since the optimization function is far from smooth) so multiple
 restarts can be useful, particularly for high values of \code{n}.
 }
-\section{Predfined color spaces}{
+\section{Predefined color spaces}{
  Instead of specifying a color space
   manually, the following predefined color spaces can by accessed by
   specifying their name as a character vector to \code{colorspace}.
   \describe{ \item{"colorblind"}{Caters to red-green color blindness by
-  simply avoiding most of the green hues. Hue ranges from -160 to 60,
-  saturation from 0.4 to 0.7, and lightness from 0.2 to 0.85}
+  simply avoiding most of the green hues. Hue ranges from -180 to 5,
+  saturation from 0.2 to 0.7, and lightness from 0.2 to 0.9}
   \item{"rainbow"}{Uses the entire spectrum of colors. Provides distinct, but
   not always aesthetically pleasing colors.} \item{"pastels"}{Pastel colors
   from the complete range of hues (0-360), with saturation between 0.2 and
   0.4, and lightness between 0.8 and 0.9.}}
 }
 \examples{
-  qualpal(3) # generates 3 distinct colors from the default color subspace
-  qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
+# generates 3 distinct colors from the default color subspace
+qualpal(3)
+qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
+
+# Trace the optimizer
+qualpal(5, "colorblind", trace = TRUE)
+
+# Rigorous (and slower) evaluation using control parameters of nmkb
+qualpal(5, "colorblind", maxfeval = 10000, tol = 1e-10)
+\dontrun{
+# The range of hue cannot exceed 360
+qualpal(n = 4, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
+}
 }
 \seealso{
-\code{\link{plot.qualpal}}, \code{\link[dfoptim]{nmkb}},
-  \code{\link{pairs.qualpal}}
+\code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}},
+  \code{\link[dfoptim]{nmkb}}
 }
 
