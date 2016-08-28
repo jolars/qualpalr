@@ -1,0 +1,17 @@
+Package: qualpalr
+Title: Automatic Generation of Qualitative Color Palettes
+Version: 0.0.0.9000
+Authors@R: person("Johan", "Larsson", email = "johanlarsson@outlook.com",
+    role = c("aut", "cre"))
+Description: Automatic generation of distinct qualitative color palettes using
+    optimization routines on the delta-E CIEDE2000 color difference algorithm.
+Imports:
+    dfoptim (>= 2016.7-1)
+Suggests:
+    testthat
+Depends:
+    R (>= 3.3.1)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
