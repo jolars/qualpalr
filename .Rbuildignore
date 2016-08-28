@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^packrat/
+^\.Rprofile$
+^\.travis\.yml$
+^revdep$
+^README\.Rmd$
+^README-.*\.png$
+^NEWS\.md$
+^cran-comments\.md$
