@@ -4,11 +4,13 @@
 \alias{plot.qualpal}
 \title{Demos and diagnostic plots of qualitative color palettes}
 \usage{
-\method{plot}{qualpal}(qualpal)
+\method{plot}{qualpal}(x, ...)
 }
 \arguments{
-\item{qualpal}{A list object of class \code{"qualpal"} generated from
+\item{x}{A list object of class \code{"qualpal"} generated from
 \code{\link{qualpal}}.}
+
+\item{...}{Does nothing.}
 }
 \description{
 Uses the colors from a \code{qualpal} object to plot \enumerate{\item a
