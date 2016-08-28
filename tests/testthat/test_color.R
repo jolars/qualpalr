@@ -1,34 +1,28 @@
-library(stringr)
+library(qualpalr)
 context("Color formulas")
 
 test_that("the CIEDE2000 formula works correctly", {
   # CIEDE2000 test data from http://www.ece.rochester.edu/~gsharma/ciede2000/
-  dat <- read.delim("ciede2000testdata.txt")
-  res <- CIEDE2000(dat[, 1], dat[, 2], dat[, 3],
+  dat <- readRDS("ciede2000testdata.RData")
+  res <- qualpalr::CIEDE2000(dat[, 1], dat[, 2], dat[, 3],
                              dat[, 4], dat[, 5], dat[, 6])
-  testthat::expect_true(all(abs(res - dat[, 7]) < 1e-4))
+  expect_true(all(abs(res - dat[, 7]) < 1e-4))
 })
 
 test_that("hsl to rgb color conversion works correctly", {
-  # Test data taken from http://www.rapidtables.com/convert/color/rgb-to-hsl.htm
-  rgb_dat <- matrix(c(0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 255, 0, 0, 0, 255,
-                      255, 255, 0, 0, 255, 255, 255, 0, 255, 192, 192, 192,
-                      128, 128, 128, 128, 0, 0, 128, 128, 0, 0, 128, 0, 128, 0,
-                      128, 0, 128, 128, 0, 0, 128),
-                    byrow = TRUE, ncol = 3) / 255
+  # Data taken from http://www.on-the-matrix.com/webtools/HtmlColorCodes.aspx
+  dat <- readRDS("hsl_rgb_hex.RData")
 
-  hsl_dat <- matrix(c(0, 0, 0, 0, 0, 100, 0, 100, 50, 120, 100, 50, 240, 100,
-                      50, 60, 100, 50, 180, 100, 50, 300, 100, 50, 0, 0, 75, 0,
-                      0, 50, 0, 100, 25, 60, 100, 25, 120, 100, 25, 300, 100,
-                      25, 180, 100, 25, 240, 100, 25),
-                    byrow = TRUE,  ncol = 3)
-  hsl_dat[, 2:3] <- hsl_dat[, 2:3] / 100
+  expect_true(all(abs(t(apply(dat[, 5:7], 1, hsl_rgb)) - dat[, 1:3]) < 1e-2))
 
-  testthat::expect_true(all(abs(rgb_dat - t(apply(hsl_dat, 1, hsl_rgb))) <
-                          1e-2))
 })
 
-
-
-
+test_that("colors are within their respective color spaces", {
+  fit <- qualpal(n = 3)
+  expect_true(all(fit$RGB >= 0 & fit$RGB <= 1))
+  expect_true(all(fit$hsl[, 1] >= 0 & fit$hsl[, 1] <= 360))
+  expect_true(all(fit$hsl[, 2] >= 0 & fit$hsl[, 2] <= 1))
+  expect_true(all(fit$hsl[, 2] >= 0 & fit$hsl[, 2] <= 1))
+  expect_true(all(fit$Lab[, 1] >= 0 & fit$Lab[, 1] <= 100))
+})
 
