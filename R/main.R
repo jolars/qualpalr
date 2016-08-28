@@ -27,13 +27,13 @@
 #'   from the complete range of hues (0-360), with saturation between 0.2 and
 #'   0.4, and lightness between 0.8 and 0.9.}}
 #'
-#' @param n The number of colors to generate.
-#' @param colorspace Either 1) a \emph{list} of three named numeric vectors:
-#'   \code{h} (hue), \code{s} (saturation), and \code{l} (lightness), all of
-#'   length 2 specifying a min and max value for the range. The values has to be
-#'   in the range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l}
-#'   2), or 2) a \emph{character vector} specifying one of the predefined color
-#'   spaces (see below).
+#' @param n The number of colors to generate. Has to lie between 2 and 50.
+#' @param colorspace Either 1) a list of three named numeric vectors: \code{h}
+#'   (hue), \code{s} (saturation), and \code{l} (lightness), all of length 2
+#'   specifying a min and max value for the range. The values has to be in the
+#'   range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
+#'   2) a \emph{character vector} specifying one of the predefined color spaces
+#'   (see below).
 #' @param ... Control parameters to pass on to the Nelder-Mead optimizer (see
 #'   \code{\link[dfoptim]{nmkb}}).
 #' @return qualpal returns a list of class "qualpal" with the following
@@ -47,12 +47,26 @@
 #' @seealso \code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}},
 #'   \code{\link[dfoptim]{nmkb}}
 #' @examples
-#'   qualpal(3) # generates 3 distinct colors from the default color subspace
-#'   qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
+#' # generates 3 distinct colors from the default color subspace
+#' qualpal(3)
+#' qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
+#'
+#' # Trace the optimizer
+#' qualpal(5, "colorblind", trace = TRUE)
+#'
+#' # Rigorous (and slower) evaluation using control parameters of nmkb
+#' qualpal(5, "colorblind", maxfeval = 10000, tol = 1e-10)
+#' \dontrun{
+#' # The range of hue cannot exceed 360
+#' qualpal(n = 4, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
+#' }
 #' @export
 
 qualpal <- function(n, colorspace = "colorblind", ...) {
-  if (is.list(colorspace) & all(c("h", "s", "l") %in% names(colorspace))) {
+  if (is.list(colorspace)) {
+    if (!(all(c("h", "s", "l") %in% names(colorspace)))) {
+      stop("You forgot to specify h, s, or l.")
+    }
   } else if (is.character(colorspace)) {
     colorspace <- predefined_colorspaces(colorspace)
     if (is.null(colorspace)) {
@@ -67,6 +81,8 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
   s <- colorspace[["s"]]
   l <- colorspace[["l"]]
 
+  if((!n %% 1 == 0)) stop("n must be an integer.")
+
   stopifnot(
     diff(range(h)) <= 360,
     min(h) >= - 360 & max(h) <= 360,
@@ -75,10 +91,12 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
     length(h) == 2,
     length(s) == 2,
     length(l) == 2,
+    length(n) == 1,
     is.numeric(h),
     is.numeric(s),
     is.numeric(l),
-    n <= 50 & n > 0
+    is.numeric(n),
+    n > 1 & n < 51
   )
 
   suppressWarnings(
