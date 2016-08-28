@@ -18,7 +18,7 @@ multidimensional scaling (MDS) map using \code{\link[stats]{cmdscale}} on the
 Delta-E distance matrix.
 }
 \examples{
-col_pal <- qualpal(n = 5)
+col_pal <- qualpal(n = 3)
 plot(col_pal)
 }
 \seealso{

@@ -20,7 +20,7 @@ Plots the colors in a \code{qualpal} object as a scatter matrix plot on
 either the Lab (the default) or hsl color space.
 }
 \examples{
-col_pal <- qualpal(n = 5)
+col_pal <- qualpal(n = 3)
 pairs(col_pal)
 pairs(col_pal, colorspace = "hsl")
 }
