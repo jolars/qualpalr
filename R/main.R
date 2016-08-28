@@ -4,10 +4,10 @@
 #' palette by optimizing color difference via the CIEDE 2000 Delta-E formula.
 #'
 #' \code{qualpal} takes a color subspace in the hsl color space, where lightness
-#' and saturation take values from 0 to 1. Hue takes values from -360 to 360,
+#' and saturation take values from 0 to 1. Hue take values from -360 to 360,
 #' although negative values are brought to lie in the range \{0, 360\} under the
-#' hood. This behavior exists to enable color subspaces that span any hue range,
-#' since the hue range is circular.
+#' hood. This behavior exists to enable color subspaces that span any hue range
+#' (since the hue range is circular).
 #'
 #' The hsl color subspace is passed to a \emph{Nelder-Mead optimizer}:
 #' (\code{dfoptim::nmkb}), which attempts to maximize the smallest pairwise
@@ -16,12 +16,12 @@
 #' minimi (since the optimization function is far from smooth) so multiple
 #' restarts can be useful, particularly for high values of \code{n}.
 #'
-#' @section Predfined color spaces: Instead of specifying a color space
+#' @section Predefined color spaces: Instead of specifying a color space
 #'   manually, the following predefined color spaces can by accessed by
 #'   specifying their name as a character vector to \code{colorspace}.
 #'   \describe{ \item{"colorblind"}{Caters to red-green color blindness by
-#'   simply avoiding most of the green hues. Hue ranges from -160 to 60,
-#'   saturation from 0.4 to 0.7, and lightness from 0.2 to 0.85}
+#'   simply avoiding most of the green hues. Hue ranges from -180 to 5,
+#'   saturation from 0.2 to 0.7, and lightness from 0.2 to 0.9}
 #'   \item{"rainbow"}{Uses the entire spectrum of colors. Provides distinct, but
 #'   not always aesthetically pleasing colors.} \item{"pastels"}{Pastel colors
 #'   from the complete range of hues (0-360), with saturation between 0.2 and
@@ -44,10 +44,11 @@
 #'   matrix of color differences according to the Delta-E CIEDE2000 formula.}
 #'   \item{min_dE_CIEDE2000}{The smallest pairwise Delta-E CIEDE2000 (the
 #'   maximization objective of the optimizer.}
-#' @seealso \code{\link{plot.qualpal}}, \code{\link[dfoptim]{nmkb}}
+#' @seealso \code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}},
+#'   \code{\link[dfoptim]{nmkb}}
 #' @examples
-#' qualpal(3) # generates 3 distinct colors from the default color subspace
-#' qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
+#'   qualpal(3) # generates 3 distinct colors from the default color subspace
+#'   qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
 #' @export
 
 qualpal <- function(n, colorspace = "colorblind", ...) {
@@ -76,7 +77,8 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
     length(l) == 2,
     is.numeric(h),
     is.numeric(s),
-    is.numeric(l)
+    is.numeric(l),
+    n <= 50 & n > 0
   )
 
   suppressWarnings(
@@ -94,6 +96,7 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
   )
 
   hsl_cols <- matrix(fit$par, ncol = 3)
+  hsl_cols[, 1] <- ifelse(hsl_cols[, 1] < 0, hsl_cols[, 1] + 360, hsl_cols[, 1])
   rgb_cols <- t(apply(hsl_cols, 1, hsl_rgb))
   lab_cols <- grDevices::convertColor(rgb_cols, from = "sRGB", to = "Lab")
   hex_cols <- grDevices::rgb(rgb_cols[, 1], rgb_cols[, 2], rgb_cols[, 3])
@@ -117,53 +120,69 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
   )
 }
 
-#' Demos and diagnostic plots of qualitative color palettes
+#' Multidimensional scaling map of qualitative color palette
 #'
-#' Uses the colors from a \code{qualpal} object to plot \enumerate{\item a
-#' grouped scatter plot (\code{kmeans} on \code{mtcars}), \item a heatmap of the
-#' correlation matrix given by the the Delta-E CIEDE2000 difference computations
-#' (darker greys mean more correlated), \item a multidimensional scaling (MDS)
-#' map computed by \code{cmdscale} from the Delta-E distance matrix, and \item a
-#' \code{pairs} plot of the hsl color space dimensions. }
+#' Uses the colors in a \code{qualpal} object to compute and plot a
+#' multidimensional scaling (MDS) map using \code{\link[stats]{cmdscale}} on the
+#' Delta-E distance matrix.
+#'
 #' @param x A list object of class \code{"qualpal"} generated from
 #'   \code{\link{qualpal}}.
-#' @param ... Does nothing.
+#' @param ... Arguments to pass on to \code{plot()}.
+#' @seealso \code{\link{qualpal}}, \code{\link{pairs.qualpal}},
+#'   \code{\link[graphics]{plot}}
 #'
 #' @examples
-#' col_pal <- qualpal(n = 8)
+#' col_pal <- qualpal(n = 5)
 #' plot(col_pal)
 #' @export
 
 plot.qualpal <- function(x, ...) {
-  # kmeans plot
-  clus <- stats::kmeans(datasets::mtcars[, c("mpg", "disp")],
-                        length(x$hex))
-  with(datasets::mtcars, plot(x = mpg, y = disp,
-                              col = x$hex[clus$cluster],
-                              pch = 19, main = "K-means clustering"))
-  graphics::legend("topright", legend = rownames(clus$centers),
-                   col = x$hex[seq_along(clus$centers)], pch = 19)
-
-  # Correlation map of colors
-  stats::heatmap(as.matrix(x$dE_CIEDE2000),
-                 col = grDevices::gray(0:8 / 8))
-
-  # Multidimensional scaling
   K <- ifelse(length(x$hex) < 3, 1, 2)
   graphics::plot(stats::cmdscale(x$dE_CIEDE2000, k = K),
                  main = "Multidimensional Scaling",
-                 col = x$hex, pch = 19, cex = 2, ylab = "Delta-E CIEDE2000",
-                 xlab = "Delta-E CIEDE2000")
+                 col = x$hex,
+                 pch = 19,
+                 cex = 2,
+                 ylab = "Delta-E CIEDE2000",
+                 xlab = "Delta-E CIEDE2000",
+                 ...)
+}
 
-  # hsl pairs plot
-  graphics::pairs(x$hsl, pch = 19, cex = 2, col = x$hex)
+#' Scatter matrix plot of qualitative color palette
+#'
+#' Plots the colors in a \code{qualpal} object as a scatter matrix plot on
+#' either the Lab (the default) or hsl color space.
+#'
+#' @param x A list object of class \code{"qualpal"} generated from
+#'   \code{\link{qualpal}}.
+#' @param colorspace The color space in which to plot the colors ("Lab" or
+#'   "hsl").
+#' @param ... Arguments to pass on to \code{\link[graphics]{pairs}}.
+#' @seealso \code{\link{qualpal}}, \code{\link{plot.qualpal}},
+#'   \code{\link[graphics]{pairs}}
+#'
+#' @examples
+#' col_pal <- qualpal(n = 5)
+#' pairs(col_pal)
+#' pairs(col_pal, colorspace = "hsl")
+#' @export
+
+pairs.qualpal <- function(x, colorspace = c("Lab", "hsl"), ...) {
+  graphics::pairs(switch(match.arg(colorspace),
+                         Lab = x$Lab,
+                         hsl = x$hsl),
+                  col = x$hex,
+                  pch = 19,
+                  cex = 2,
+                  ...)
 }
 
 # Predefined colorspaces ----------------------------------------------------
 
 predefined_colorspaces <- function(colorspace) {
   list(
-    colorblind = list(h = c(-150, 60), s = c(0.4, 0.7), l = c(0.2, 0.9)),
+    colorblind = list(h = c(-180, 55), s = c(0.2, 0.7), l = c(0.2, 0.9)),
     rainbow    = list(h = c(0, 360), s = c(0, 1), l = c(0, 1)),
     pastels    = list(h = c(0, 360), s = c(0.2, 0.4), l = c(0.8, 0.9))
   )[[colorspace]]

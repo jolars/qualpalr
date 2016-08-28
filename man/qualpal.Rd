@@ -60,10 +60,11 @@ restarts can be useful, particularly for high values of \code{n}.
   0.4, and lightness between 0.8 and 0.9.}}
 }
 \examples{
-qualpal(3) # generates 3 distinct colors from the default color subspace
-qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
+  qualpal(3) # generates 3 distinct colors from the default color subspace
+  qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
 }
 \seealso{
-\code{\link{plot.qualpal}}, \code{\link[dfoptim]{nmkb}}
+\code{\link{plot.qualpal}}, \code{\link[dfoptim]{nmkb}},
+  \code{\link{pairs.qualpal}}
 }
 

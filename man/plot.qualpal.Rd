@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{plot.qualpal}
 \alias{plot.qualpal}
-\title{Demos and diagnostic plots of qualitative color palettes}
+\title{Multidimensional scaling map of qualitative color palette}
 \usage{
 \method{plot}{qualpal}(x, ...)
 }
@@ -10,18 +10,19 @@
 \item{x}{A list object of class \code{"qualpal"} generated from
 \code{\link{qualpal}}.}
 
-\item{...}{Does nothing.}
+\item{...}{Arguments to pass on to \code{plot()}.}
 }
 \description{
-Uses the colors from a \code{qualpal} object to plot \enumerate{\item a
-grouped scatter plot (\code{kmeans} on \code{mtcars}), \item a heatmap of the
-correlation matrix given by the the Delta-E CIEDE2000 difference computations
-(darker greys mean more correlated), \item a multidimensional scaling (MDS)
-map computed by \code{cmdscale} from the Delta-E distance matrix, and \item a
-\code{pairs} plot of the hsl color space dimensions. }
+Uses the colors in a \code{qualpal} object to compute and plot a
+multidimensional scaling (MDS) map using \code{\link[stats]{cmdscale}} on the
+Delta-E distance matrix.
 }
 \examples{
-col_pal <- qualpal(n = 8)
+col_pal <- qualpal(n = 5)
 plot(col_pal)
+}
+\seealso{
+\code{\link{qualpal}}, \code{\link{pairs.qualpal}},
+  \code{\link[graphics]{plot}}
 }
 
