@@ -61,7 +61,7 @@ restarts can be useful, particularly for high values of \code{n}.
 }
 \examples{
 qualpal(3) # generates 3 distinct colors from the default color subspace
-qualpal(list(h = (35, 360), s = (.5, .7), l = c(0, .45)))
+qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
 }
 \seealso{
 \code{\link{plot.qualpal}}, \code{\link[dfoptim]{nmkb}}
