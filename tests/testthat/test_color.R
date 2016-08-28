@@ -12,7 +12,6 @@ test_that("the CIEDE2000 formula works correctly", {
 test_that("hsl to rgb color conversion works correctly", {
   # Data taken from http://www.on-the-matrix.com/webtools/HtmlColorCodes.aspx
   dat <- readRDS("hsl_rgb_hex.RData")
-
   expect_true(all(abs(t(apply(dat[, 5:7], 1, hsl_rgb)) - dat[, 1:3]) < 1e-2))
 
 })

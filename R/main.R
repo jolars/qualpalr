@@ -49,16 +49,18 @@
 #' @examples
 #' # generates 3 distinct colors from the default color subspace
 #' qualpal(3)
-#' qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
+#' qualpal(n = 3, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
 #'
 #' # Trace the optimizer
-#' qualpal(5, "colorblind", trace = TRUE)
+#' qualpal(3, "colorblind", trace = TRUE)
 #'
 #' # Rigorous (and slower) evaluation using control parameters of nmkb
-#' qualpal(5, "colorblind", maxfeval = 10000, tol = 1e-10)
+#' \dontrun{
+#' qualpal(3, "colorblind", maxfeval = 10000, tol = 1e-10)
+#' }
 #' \dontrun{
 #' # The range of hue cannot exceed 360
-#' qualpal(n = 4, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
+#' qualpal(n = 3, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
 #' }
 #' @export
 
@@ -151,7 +153,7 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
 #'   \code{\link[graphics]{plot}}
 #'
 #' @examples
-#' col_pal <- qualpal(n = 5)
+#' col_pal <- qualpal(n = 3)
 #' plot(col_pal)
 #' @export
 
@@ -181,7 +183,7 @@ plot.qualpal <- function(x, ...) {
 #'   \code{\link[graphics]{pairs}}
 #'
 #' @examples
-#' col_pal <- qualpal(n = 5)
+#' col_pal <- qualpal(n = 3)
 #' pairs(col_pal)
 #' pairs(col_pal, colorspace = "hsl")
 #' @export
