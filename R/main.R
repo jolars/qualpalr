@@ -47,7 +47,7 @@
 #' @seealso \code{\link{plot.qualpal}}, \code{\link[dfoptim]{nmkb}}
 #' @examples
 #' qualpal(3) # generates 3 distinct colors from the default color subspace
-#' qualpal(list(h = (35, 360), s = (.5, .7), l = c(0, .45)))
+#' qualpal(n = 4, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
 #' @export
 
 qualpal <- function(n, colorspace = "colorblind", ...) {
@@ -62,9 +62,9 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
          the color space templates.")
   }
 
-  h <- colorspace$h
-  s <- colorspace$s
-  l <- colorspace$l
+  h <- colorspace[["h"]]
+  s <- colorspace[["s"]]
+  l <- colorspace[["l"]]
 
   stopifnot(
     diff(range(h)) <= 360,
@@ -82,9 +82,9 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
   suppressWarnings(
     fit <-
       dfoptim::nmkb(
-        par = c(runif(n, min(h), max(h)),
-                runif(n, min(s), max(s)),
-                runif(n, min(l), max(l))),
+        par = c(stats::runif(n, min(h), max(h)),
+                stats::runif(n, min(s), max(s)),
+                stats::runif(n, min(l), max(l))),
         fn = opt_dE,
         n = n,
         lower = c(rep(min(h), n), rep(min(s), n), rep(min(l), n)),
@@ -95,8 +95,8 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
 
   hsl_cols <- matrix(fit$par, ncol = 3)
   rgb_cols <- t(apply(hsl_cols, 1, hsl_rgb))
-  lab_cols <- convertColor(rgb_cols, from = "sRGB", to = "Lab")
-  hex_cols <- rgb(rgb_cols[, 1], rgb_cols[, 2], rgb_cols[, 3])
+  lab_cols <- grDevices::convertColor(rgb_cols, from = "sRGB", to = "Lab")
+  hex_cols <- grDevices::rgb(rgb_cols[, 1], rgb_cols[, 2], rgb_cols[, 3])
 
   dimnames(hsl_cols) <- list(hex_cols, c("h", "s", "l"))
   dimnames(lab_cols) <- list(hex_cols, c("L", "a", "b"))
@@ -125,33 +125,38 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
 #' (darker greys mean more correlated), \item a multidimensional scaling (MDS)
 #' map computed by \code{cmdscale} from the Delta-E distance matrix, and \item a
 #' \code{pairs} plot of the hsl color space dimensions. }
-#' @param qualpal A list object of class \code{"qualpal"} generated from
+#' @param x A list object of class \code{"qualpal"} generated from
 #'   \code{\link{qualpal}}.
+#' @param ... Does nothing.
 #'
 #' @examples
 #' col_pal <- qualpal(n = 8)
 #' plot(col_pal)
 #' @export
 
-plot.qualpal <- function(qualpal) {
+plot.qualpal <- function(x, ...) {
   # kmeans plot
-  clus <- kmeans(mtcars[, c("mpg", "disp")], length(qualpal$hex))
-  with(mtcars, plot(x = mpg, y = disp, col = qualpal$hex[clus$cluster],
-                    pch = 19, main = "K-means clustering"))
-  legend("topright", legend = rownames(clus$centers),
-         col = qualpal$hex[seq_along(clus$centers)], pch = 19)
+  clus <- stats::kmeans(datasets::mtcars[, c("mpg", "disp")],
+                        length(x$hex))
+  with(datasets::mtcars, plot(x = mpg, y = disp,
+                              col = x$hex[clus$cluster],
+                              pch = 19, main = "K-means clustering"))
+  graphics::legend("topright", legend = rownames(clus$centers),
+                   col = x$hex[seq_along(clus$centers)], pch = 19)
 
   # Correlation map of colors
-  heatmap(as.matrix(qualpal$dE_CIEDE2000), col = gray(0:8 / 8))
+  stats::heatmap(as.matrix(x$dE_CIEDE2000),
+                 col = grDevices::gray(0:8 / 8))
 
   # Multidimensional scaling
-  K <- ifelse(length(qualpal$hex) < 3, 1, 2)
-  plot(cmdscale(qualpal$dE_CIEDE2000, k = K), main = "Multidimensional Scaling",
-       col = qualpal$hex, pch = 19, cex = 2, ylab = "Delta-E CIEDE2000",
-       xlab = "Delta-E CIEDE2000")
+  K <- ifelse(length(x$hex) < 3, 1, 2)
+  graphics::plot(stats::cmdscale(x$dE_CIEDE2000, k = K),
+                 main = "Multidimensional Scaling",
+                 col = x$hex, pch = 19, cex = 2, ylab = "Delta-E CIEDE2000",
+                 xlab = "Delta-E CIEDE2000")
 
   # hsl pairs plot
-  pairs(qualpal$hsl, pch = 19, cex = 2, col = qualpal$hex)
+  graphics::pairs(x$hsl, pch = 19, cex = 2, col = x$hex)
 }
 
 # Predefined colorspaces ----------------------------------------------------
