@@ -6,6 +6,7 @@
 ^revdep$
 ^README\.Rmd$
 ^README-.*\.png$
+^README-figs/
 ^NEWS\.md$
 ^cran-comments\.md$
 ^appveyor\.yml$
