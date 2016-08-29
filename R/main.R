@@ -158,8 +158,8 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
 #' @export
 
 plot.qualpal <- function(x, ...) {
-  K <- ifelse(length(x$hex) < 3, 1, 2)
-  graphics::plot(stats::cmdscale(x$dE_CIEDE2000, k = K),
+  stopifnot(is(x, "qualpal"))
+  graphics::plot(stats::cmdscale(x$dE_CIEDE2000, k = ifelse(n == 2, 1, 2)),
                  main = "Multidimensional Scaling",
                  col = x$hex,
                  pch = 19,
@@ -189,6 +189,7 @@ plot.qualpal <- function(x, ...) {
 #' @export
 
 pairs.qualpal <- function(x, colorspace = c("Lab", "hsl"), ...) {
+  stopifnot(is(x, "qualpal"))
   graphics::pairs(switch(match.arg(colorspace),
                          Lab = x$Lab,
                          hsl = x$hsl),
