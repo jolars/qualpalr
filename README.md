@@ -17,15 +17,14 @@ cols <- qualpal(n = 4, list(h = c(10, 350), s = c(0.4, 0.6), l = c(0.6, 0.7)))
 mosaicplot(~ Survived + Class, data = Titanic, color = cols$hex)
 ```
 
-![](README-unnamed-chunk-2-1.png)
+![](README-figs/README-titanic-1.png)
 
 ``` r
-
 # Diagnostic plotting
 pairs(cols, colorspace = "hsl")
 ```
 
-![](README-unnamed-chunk-2-2.png)
+![](README-figs/README-pairs-1.png)
 
 Installation
 ------------
