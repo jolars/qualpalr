@@ -4,7 +4,7 @@
 \alias{qualpal}
 \title{Generate qualitative color palettes}
 \usage{
-qualpal(n, colorspace = "colorblind", ...)
+qualpal(n, colorspace = "pretty", ...)
 }
 \arguments{
 \item{n}{The number of colors to generate. Has to lie between 2 and 50.}
@@ -24,14 +24,14 @@ qualpal returns a list of class "qualpal" with the following
   components. \item{hsl}{A matrix of the colors in the hsl color space.}
   \item{Lab}{A matrix of the colors in the CIE Lab color space.} \item{RGB}{A
   matrix of the colors in the sRGB color space.} \item{hex}{A character
-  vector of the colors in hex notation.} \item{dE_CIEDE2000}{A distance
-  matrix of color differences according to the Delta-E CIEDE2000 formula.}
-  \item{min_dE_CIEDE2000}{The smallest pairwise Delta-E CIEDE2000 (the
+  vector of the colors in hex notation.} \item{ciede2000}{A distance
+  matrix of color differences according to the CIEDE 2000 formula.}
+  \item{min_ciede2000}{The smallest pairwise CIEDE 2000 (the
   maximization objective of the optimizer.}
 }
 \description{
 Takes a subset of the hsl color space and generates a qualitative color
-palette by optimizing color difference via the CIEDE 2000 Delta-E formula.
+palette by optimizing color difference via the CIEDE 2000 formula.
 }
 \details{
 \code{qualpal} takes a color subspace in the hsl color space, where lightness
@@ -42,7 +42,7 @@ hood. This behavior exists to enable color subspaces that span any hue range
 
 The hsl color subspace is passed to a \emph{Nelder-Mead optimizer}:
 (\code{dfoptim::nmkb}), which attempts to maximize the smallest pairwise
-color difference among all \code{n} colors using the Delta-E CIEDE2000 color
+color difference among all \code{n} colors using the CIEDE 2000 color
 difference algorithm. However, the optimizer gets easily stuck in local
 minimi (since the optimization function is far from smooth) so multiple
 restarts can be useful, particularly for high values of \code{n}.
@@ -51,13 +51,22 @@ restarts can be useful, particularly for high values of \code{n}.
  Instead of specifying a color space
   manually, the following predefined color spaces can by accessed by
   specifying their name as a character vector to \code{colorspace}.
-  \describe{ \item{"colorblind"}{Caters to red-green color blindness by
-  simply avoiding most of the green hues. Hue ranges from -180 to 5,
-  saturation from 0.2 to 0.7, and lightness from 0.2 to 0.9}
-  \item{"rainbow"}{Uses the entire spectrum of colors. Provides distinct, but
-  not always aesthetically pleasing colors.} \item{"pastels"}{Pastel colors
-  from the complete range of hues (0-360), with saturation between 0.2 and
-  0.4, and lightness between 0.8 and 0.9.}}
+  \describe{
+  \item{\code{pretty}}{Tries to provide aesthetically pleasing, but still
+  distinct color palettes. Hue ranges from 0 to 360, saturation from 0.1 to
+  0.5, and lightness from 0.5 to 0.85. Does not handle large numbers of
+  colors well.}
+  \item{\code{pretty_dark}}{Like \code{pretty} but darker. Hue ranges from 0
+  to 360, saturation from 0.1 to 0.5, and lightness from 0.2 to 0.4.}
+  \item{\code{colorblind}}{Caters to red-green color blindness by
+  simply avoiding most of the green hues. Hue ranges from -180 to 55,
+  saturation from 0.1 to 0.6, and lightness from 0.2 to 0.85.}
+  \item{\code{rainbow}}{Uses all hues, chromas, and most of the lightness
+  range. Provides distinct, but not asethetically pleasing colors.}
+  \item{\code{pastels}}{Pastel colors from the complete range of hues
+  (0-360), with saturation between 0.2 and 0.4, and lightness between 0.8 and
+  0.9.}
+  }
 }
 \examples{
 # generates 3 distinct colors from the default color subspace
@@ -67,9 +76,9 @@ qualpal(n = 3, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
 # Trace the optimizer
 qualpal(3, "colorblind", trace = TRUE)
 
-# Rigorous (and slower) evaluation using control parameters of nmkb
+# Rigorous (and slow) evaluation using control parameters of nmkb
 \dontrun{
-qualpal(3, "colorblind", maxfeval = 10000, tol = 1e-10)
+qualpal(6, "rainbow", maxfeval = 10000, tol = 1e-10)
 }
 \dontrun{
 # The range of hue cannot exceed 360
