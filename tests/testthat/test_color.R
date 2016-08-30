@@ -4,7 +4,7 @@ context("Color formulas")
 test_that("the CIEDE2000 formula works correctly", {
   # CIEDE2000 test data from http://www.ece.rochester.edu/~gsharma/ciede2000/
   dat <- readRDS("ciede2000testdata.RData")
-  res <- CIEDE2000(dat[, 1], dat[, 2], dat[, 3],
+  res <- ciede2000(dat[, 1], dat[, 2], dat[, 3],
                    dat[, 4], dat[, 5], dat[, 6])
   expect_true(all(abs(res - dat[, 7]) < 1e-3))
 })
