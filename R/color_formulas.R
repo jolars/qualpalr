@@ -1,6 +1,6 @@
 # A vectorized version of the CIEDE2000 color difference formula ----------
 
-CIEDE2000 <- function(L1, a1, b1, L2, a2, b2, kL = 1, kH = 1, kC = 1) {
+ciede2000 <- function(L1, a1, b1, L2, a2, b2, kL = 1, kH = 1, kC = 1) {
   kL <- 1
   kH <- 1
   kC <- 1
