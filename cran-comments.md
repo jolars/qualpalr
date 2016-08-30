@@ -7,7 +7,7 @@
 ## R CMD check results
 There were no ERRORs, WARNINGs or NOTEs. 
 
-This is the first submission.
+This is the first submission of this package.
 
 ## Downstream dependencies
 I ran R CMD check on downstream dependencies of qualpalr and all
