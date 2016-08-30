@@ -13,7 +13,7 @@ vignette: >
 
 `R` contains several tools that produce high-quality sequential and diverging color palettes, but few that are dedicated to qualitative color palettes. ´qualpalr´ is an attempt to fill that gap by providing an easy-to-use interface to generate qualitative color palettes of any size and from whatever range of colors the user prefers. 
 
-Provided `n` (the desired number of colors to generate), and a subset of the [hsl](https://en.wikipedia.org/wiki/HSL_and_HSV) color space, `qualpalr` uses a [Nelder-Mead optimizer](https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method) (`nmkb` from [dfoptim](https://cran.r-project.org/web/packages/dfoptim/index.html) to find the configuration of `n` colors that maximize the smallest pairwise [CIEDE2000](https://en.wikipedia.org/wiki/Color_difference#CIEDE2000) color difference.
+Provided `n` (the desired number of colors to generate), and a subset of the [hsl](https://en.wikipedia.org/wiki/HSL_and_HSV) color space, `qualpalr` uses a [Nelder-Mead optimizer](https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method) (`nmkb` from [dfoptim](https://cran.r-project.org/package=dfoptim) to find the configuration of `n` colors that maximize the smallest pairwise [CIEDE2000](https://en.wikipedia.org/wiki/Color_difference#CIEDE2000) color difference.
 
 ## Examples
 
@@ -55,6 +55,6 @@ map("france", fill = TRUE, col = pal$hex, mar = c(0, 0, 0, 0))
 
 ## Details
 
-Control parameters can be passed to `nmkb` via `...` in `qualpal`, of which `maxfeval` (default: 5000) and `tol` (default: 1e-6) are probably of primary interest. See the documentation to [dfoptim](https://cran.r-project.org/web/packages/dfoptim/index.html) for details.
+Control parameters can be passed to `nmkb` via `...` in `qualpal`, of which `maxfeval` (default: 5000) and `tol` (default: 1e-6) are probably of primary interest. See the documentation to [dfoptim](https://cran.r-project.org/package=dfoptim) for details.
 
 `qualpalr` was not designed for speed. It is slow, particularly for large `n`, and I *strongly* recommend aginst using it in other functions. 
