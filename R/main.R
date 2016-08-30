@@ -1,7 +1,7 @@
 #' Generate qualitative color palettes
 #'
 #' Takes a subset of the hsl color space and generates a qualitative color
-#' palette by optimizing color difference via the CIEDE 2000 Delta-E formula.
+#' palette by optimizing color difference via the CIEDE 2000 formula.
 #'
 #' \code{qualpal} takes a color subspace in the hsl color space, where lightness
 #' and saturation take values from 0 to 1. Hue take values from -360 to 360,
@@ -11,7 +11,7 @@
 #'
 #' The hsl color subspace is passed to a \emph{Nelder-Mead optimizer}:
 #' (\code{dfoptim::nmkb}), which attempts to maximize the smallest pairwise
-#' color difference among all \code{n} colors using the Delta-E CIEDE2000 color
+#' color difference among all \code{n} colors using the CIEDE 2000 color
 #' difference algorithm. However, the optimizer gets easily stuck in local
 #' minimi (since the optimization function is far from smooth) so multiple
 #' restarts can be useful, particularly for high values of \code{n}.
@@ -19,13 +19,22 @@
 #' @section Predefined color spaces: Instead of specifying a color space
 #'   manually, the following predefined color spaces can by accessed by
 #'   specifying their name as a character vector to \code{colorspace}.
-#'   \describe{ \item{"colorblind"}{Caters to red-green color blindness by
-#'   simply avoiding most of the green hues. Hue ranges from -180 to 5,
-#'   saturation from 0.2 to 0.7, and lightness from 0.2 to 0.9}
-#'   \item{"rainbow"}{Uses the entire spectrum of colors. Provides distinct, but
-#'   not always aesthetically pleasing colors.} \item{"pastels"}{Pastel colors
-#'   from the complete range of hues (0-360), with saturation between 0.2 and
-#'   0.4, and lightness between 0.8 and 0.9.}}
+#'   \describe{
+#'   \item{\code{pretty}}{Tries to provide aesthetically pleasing, but still
+#'   distinct color palettes. Hue ranges from 0 to 360, saturation from 0.1 to
+#'   0.5, and lightness from 0.5 to 0.85. Does not handle large numbers of
+#'   colors well.}
+#'   \item{\code{pretty_dark}}{Like \code{pretty} but darker. Hue ranges from 0
+#'   to 360, saturation from 0.1 to 0.5, and lightness from 0.2 to 0.4.}
+#'   \item{\code{colorblind}}{Caters to red-green color blindness by
+#'   simply avoiding most of the green hues. Hue ranges from -180 to 55,
+#'   saturation from 0.1 to 0.6, and lightness from 0.2 to 0.85.}
+#'   \item{\code{rainbow}}{Uses all hues, chromas, and most of the lightness
+#'   range. Provides distinct, but not asethetically pleasing colors.}
+#'   \item{\code{pastels}}{Pastel colors from the complete range of hues
+#'   (0-360), with saturation between 0.2 and 0.4, and lightness between 0.8 and
+#'   0.9.}
+#'   }
 #'
 #' @param n The number of colors to generate. Has to lie between 2 and 50.
 #' @param colorspace Either 1) a list of three named numeric vectors: \code{h}
@@ -40,9 +49,9 @@
 #'   components. \item{hsl}{A matrix of the colors in the hsl color space.}
 #'   \item{Lab}{A matrix of the colors in the CIE Lab color space.} \item{RGB}{A
 #'   matrix of the colors in the sRGB color space.} \item{hex}{A character
-#'   vector of the colors in hex notation.} \item{dE_CIEDE2000}{A distance
-#'   matrix of color differences according to the Delta-E CIEDE2000 formula.}
-#'   \item{min_dE_CIEDE2000}{The smallest pairwise Delta-E CIEDE2000 (the
+#'   vector of the colors in hex notation.} \item{ciede2000}{A distance
+#'   matrix of color differences according to the CIEDE 2000 formula.}
+#'   \item{min_ciede2000}{The smallest pairwise CIEDE 2000 (the
 #'   maximization objective of the optimizer.}
 #' @seealso \code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}},
 #'   \code{\link[dfoptim]{nmkb}}
@@ -54,9 +63,9 @@
 #' # Trace the optimizer
 #' qualpal(3, "colorblind", trace = TRUE)
 #'
-#' # Rigorous (and slower) evaluation using control parameters of nmkb
+#' # Rigorous (and slow) evaluation using control parameters of nmkb
 #' \dontrun{
-#' qualpal(3, "colorblind", maxfeval = 10000, tol = 1e-10)
+#' qualpal(6, "rainbow", maxfeval = 10000, tol = 1e-10)
 #' }
 #' \dontrun{
 #' # The range of hue cannot exceed 360
@@ -64,7 +73,7 @@
 #' }
 #' @export
 
-qualpal <- function(n, colorspace = "colorblind", ...) {
+qualpal <- function(n, colorspace = "pretty", ...) {
   if (is.list(colorspace)) {
     if (!(all(c("h", "s", "l") %in% names(colorspace)))) {
       stop("You forgot to specify h, s, or l.")
@@ -125,7 +134,7 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
   dimnames(lab_cols) <- list(hex_cols, c("L", "a", "b"))
   dimnames(rgb_cols) <- list(hex_cols, c("Red", "Green", "Blue"))
 
-  col_diff <- measure_CIEDE2000(lab_cols)
+  col_diff <- measure_ciede2000(lab_cols)
 
   structure(
     list(
@@ -133,8 +142,8 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
       RGB = rgb_cols,
       Lab = lab_cols,
       hex = hex_cols,
-      dE_CIEDE2000 = col_diff,
-      min_dE_CIEDE2000 = min(col_diff)
+      ciede2000 = col_diff,
+      min_ciede2000 = min(col_diff)
     ),
     class = c("qualpal", "list")
   )
@@ -144,7 +153,7 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
 #'
 #' Uses the colors in a \code{qualpal} object to compute and plot a
 #' multidimensional scaling (MDS) map using \code{\link[stats]{cmdscale}} on the
-#' Delta-E distance matrix.
+#' CIEDE2000 distance matrix.
 #'
 #' @param x A list object of class \code{"qualpal"} generated from
 #'   \code{\link{qualpal}}.
@@ -159,15 +168,17 @@ qualpal <- function(n, colorspace = "colorblind", ...) {
 
 plot.qualpal <- function(x, ...) {
   stopifnot(inherits(x, "qualpal"))
-  graphics::plot(stats::cmdscale(x$dE_CIEDE2000,
-                                 k = ifelse(length(x$hex) == 2, 1, 2)),
-                 main = "Multidimensional Scaling",
-                 col = x$hex,
-                 pch = 19,
-                 cex = 2,
-                 ylab = "Delta-E CIEDE2000",
-                 xlab = "Delta-E CIEDE2000",
-                 ...)
+  args <- list(
+    x = stats::cmdscale(x$ciede2000, k = ifelse(length(x$hex) == 2, 1, 2)),
+    col = x$hex,
+    ylab = "CIEDE2000",
+    xlab = "CIEDE2000",
+    ...
+    )
+  if (is.null(args[["cex"]])) args[["cex"]] <- 2
+  if (is.null(args[["pch"]])) args[["pch"]] <- 19
+
+  do.call(graphics::plot, args)
 }
 
 #' Scatter matrix plot of qualitative color palette
@@ -191,21 +202,25 @@ plot.qualpal <- function(x, ...) {
 
 pairs.qualpal <- function(x, colorspace = c("Lab", "hsl"), ...) {
   stopifnot(inherits(x, "qualpal"))
-  graphics::pairs(switch(match.arg(colorspace),
-                         Lab = x$Lab,
-                         hsl = x$hsl),
-                  col = x$hex,
-                  pch = 19,
-                  cex = 2,
-                  ...)
+  args <- list(
+    x = switch(match.arg(colorspace), Lab = x$Lab, hsl = x$hsl),
+    col = x$hex,
+    ...
+  )
+  if (is.null(args[["cex"]])) args[["cex"]] <- 2
+  if (is.null(args[["pch"]])) args[["pch"]] <- 19
+
+  do.call(graphics::pairs, args)
 }
 
 # Predefined colorspaces ----------------------------------------------------
 
 predefined_colorspaces <- function(colorspace) {
   list(
-    colorblind = list(h = c(-180, 55), s = c(0.2, 0.7), l = c(0.2, 0.9)),
-    rainbow    = list(h = c(0, 360), s = c(0, 1), l = c(0, 1)),
-    pastels    = list(h = c(0, 360), s = c(0.2, 0.4), l = c(0.8, 0.9))
+    pretty      = list(h = c(0, 360), s = c(0.1, 0.5), l = c(0.6, 0.85)),
+    pretty_dark = list(h = c(0, 360), s = c(0.1, 0.5), l = c(0.2, 0.4)),
+    colorblind  = list(h = c(-180, 55), s = c(0.1, 0.6), l = c(0.2, 0.85)),
+    rainbow     = list(h = c(0, 360), s = c(0, 1), l = c(0, .7)),
+    pastels     = list(h = c(0, 360), s = c(0.2, 0.4), l = c(0.8, 0.9))
   )[[colorspace]]
 }

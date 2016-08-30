@@ -8,18 +8,18 @@ opt_dE <- function(par, n) {
   a <- utils::combn(Lab[, 2], 2)
   b <- utils::combn(Lab[, 3], 2)
 
-  min(CIEDE2000(L1 = L[1, ], a1 = a[1, ], b1 = b[1, ],
+  min(ciede2000(L1 = L[1, ], a1 = a[1, ], b1 = b[1, ],
                 L2 = L[2, ], a2 = a[2, ], b2 = b[2, ]))
 }
 
 # Compute distance matrix of delta E CIEDE 2000 ---------------------------
 
-measure_CIEDE2000 <- function(lab_data, n) {
+measure_ciede2000 <- function(lab_data, n) {
   L <- utils::combn(lab_data[, 1], 2)
   a <- utils::combn(lab_data[, 2], 2)
   b <- utils::combn(lab_data[, 3], 2)
 
-  col_diff <- CIEDE2000(L1 = L[1, ], a1 = a[1, ], b1 = b[1,],
+  col_diff <- ciede2000(L1 = L[1, ], a1 = a[1, ], b1 = b[1,],
                         L2 = L[2, ], a2 = a[2, ], b2 = b[2, ])
   diff_mat <- matrix(
     0,
