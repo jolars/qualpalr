@@ -1,90 +1,135 @@
-# A vectorized version of the CIEDE2000 color difference formula ----------
+RGB_HSL <- function(RGB) {
+  R <- RGB[, 1]
+  G <- RGB[, 2]
+  B <- RGB[, 3]
 
-ciede2000_v2 <- function(L1, a1, b1, L2, a2, b2, kL = 1, kH = 1, kC = 1) {
-  C1 <- sqrt(a1 ^ 2 + b1 ^ 2)
-  C2 <- sqrt(a2 ^ 2 + b2 ^ 2)
-  C <- (C1 + C2) / 2
-  G <- 0.5 * (1 - sqrt(C ^ 7  / (C ^ 7 + 25 ^ 7)))
+  M <- pmax(R, G, B)
+  m <- pmin(R, G, B)
+  C <- M - m
 
-  a1prime <- (1 + G) * a1
-  a2prime <- (1 + G) * a2
+  Hprime <- double(length(R))
+  Hprime[C == 0]         <- 0
+  Hprime[M == R & C > 0] <-
+    ((G[M == R & C > 0] - B[M == R & C > 0]) / C[M == R & C > 0]) %% 6
+  Hprime[M == G & C > 0] <-
+    (B[M == G & C > 0] - R[M == G & C > 0]) / C[M == G & C > 0] + 2
+  Hprime[M == B & C > 0] <-
+    (R[M == B & C > 0] - G[M == B & C > 0]) / C[M == B & C > 0] + 4
 
-  C1prime <- sqrt(a1prime ^ 2 + b1 ^ 2)
-  C2prime <- sqrt(a2prime ^ 2 + b2 ^ 2)
+  H <- Hprime * 60
+  L <- (M + m) / 2
 
-  h1prime <- (atan2(b1, a1prime) * 180) / pi
-  h2prime <- (atan2(b2, a2prime) * 180) / pi
-  h1prime[b1 == 0 & a1prime == 0] <- 0
-  h2prime[b2 == 0 & a2prime == 0] <- 0
-  h1prime[h1prime < 0] <- h1prime[h1prime < 0] + 360
-  h2prime[h2prime < 0] <- h2prime[h2prime < 0] + 360
+  S <- double(length(R))
+  S[C > 0] <- C[C > 0] / (1 - abs(2 * L[C > 0] - 1))
+  S[C == 0] <- 0
 
-  dL <- L2 - L1
-  dC <- C2prime - C1prime
-
-  i1 <- abs(h2prime - h1prime) <= 180
-  i2 <- h2prime - h1prime > 180
-  i3 <- C1prime * C2prime == 0
-
-  dh     <- h2prime - h1prime + 360
-  dh[i2] <- h2prime[i2] - h1prime[i2] - 360
-  dh[i1] <- h2prime[i1] - h1prime[i1]
-  dh[i3] <- 0
-
-  dH <- 2 * sqrt(C1prime * C2prime) * sinpi((dh / 2) / 180)
-
-  LBar <- (L1 + L2) / 2
-  CBar <- (C1prime + C2prime) / 2
-
-  i4 <- h1prime + h2prime < 360
-
-  hBar     <- (h1prime + h2prime - 360) / 2
-  hBar[i4] <- (h1prime[i4] + h2prime[i4] + 360) / 2
-  hBar[i1] <- (h1prime[i1] + h2prime[i1]) / 2
-  hBar[i3] <- h1prime[i3] + h2prime[i3]
-
-  t <- 1 -
-       0.17 * cospi((hBar - 30) / 180) +
-       0.24 * cospi((2 * hBar) / 180) +
-       0.32 * cospi((3 * hBar + 6) / 180) -
-       0.20 * cospi((4 * hBar - 63) / 180)
-
-  dtheta <- 30 * exp(- ((hBar - 275) / 25) ^ 2)
-  RC <- 2 * sqrt((CBar ^ 7) / ((CBar ^ 7) + 25 ^ 7))
-  SL <- 1 + (0.015 * ((LBar - 50) ^ 2)) / sqrt(20 + (LBar - 50) ^ 2)
-  SC <- 1 + 0.045 * CBar
-  SH <- 1 + 0.015 * CBar * t
-  RT <- - sinpi((2 * dtheta) / 180) * RC
-
-  sqrt((dL / (kL * SL)) ^ 2 +
-       (dC / (kC * SC)) ^ 2 +
-       (dH / (kH * SH)) ^ 2 +
-       (RT * (dC / (kC * SC)) * (dH / (kH * SH))))
+  cbind(H, S, L)
 }
 
-hsl_rgb <- function(HSL) {
-  H <- ifelse(HSL[1] < 0, HSL[1] + 360, HSL[1])
-  S <- HSL[2]
-  L <- HSL[3]
+HSL_RGB <- function(HSL) {
+  H <- HSL[, 1]
+  S <- HSL[, 2]
+  L <- HSL[, 3]
+
+  H[H < 0] <- H[H < 0] + 360
 
   C <- (1 - abs(2 * L - 1)) * S
   Hprime <- H / 60
   X <- C * (1 - abs(Hprime %% 2 - 1))
   m <- L - C / 2
 
-  if (Hprime < 1) {
-    c(C, X, 0) + m
-  } else if (Hprime < 2) {
-    c(X, C, 0) + m
-  } else if (Hprime < 3) {
-    c(0, C, X) + m
-  } else if (Hprime < 4) {
-    c(0, X, C) + m
-  } else if (Hprime < 5) {
-    c(X, 0, C) + m
-  } else if (Hprime < 6) {
-    c(C, 0, X) + m
-  } else {
-    c(0, 0, 0) + m
-  }
+  R <- G <- B <- double(length(H))
+
+  i1 <- Hprime >= 0 & Hprime < 1
+  i2 <- Hprime >= 1 & Hprime < 2
+  i3 <- Hprime >= 2 & Hprime < 3
+  i4 <- Hprime >= 3 & Hprime < 4
+  i5 <- Hprime >= 4 & Hprime < 5
+  i6 <- Hprime >= 5 & Hprime < 6
+
+  R[i1] <- C[i1]
+  R[i2] <- X[i2]
+  R[i3] <- 0
+  R[i4] <- 0
+  R[i5] <- X[i5]
+  R[i6] <- C[i6]
+
+  G[i1] <- X[i1]
+  G[i2] <- C[i2]
+  G[i3] <- C[i3]
+  G[i4] <- X[i4]
+  G[i5] <- 0
+  G[i6] <- 0
+
+  B[i1] <- 0
+  B[i2] <- 0
+  B[i3] <- X[i3]
+  B[i4] <- C[i4]
+  B[i5] <- C[i5]
+  B[i6] <- X[i6]
+
+  cbind(R, G, B) + m
+}
+
+Lab_DIN99d <- function(Lab) {
+  L <- Lab[, 1]
+  a <- Lab[, 2]
+  b <- Lab[, 3]
+
+  L99d <- 325.22 * log(1 + 0.0036 * L)
+  e <- a * cos(50 * pi / 180) + b * sin(50 * pi / 180)
+  f <- 1.14 * (- a * sin(50 * pi / 180) + b * cos(50 * pi / 180))
+  C99d <- 22.5 * log(1 + 0.06 * sqrt(e ^ 2 + f ^ 2))
+  h99d <- (atan2(f, e) * 180 / pi) + 50
+  a99d <- C99d * cos(h99d * pi / 180)
+  b99d <- C99d * sin(h99d * pi / 180)
+  cbind(L99d, a99d, b99d)
+}
+
+XYZ_LMS <- function(XYZ) {
+  t(rbind(c(  0.15514, 0.54312, - 0.03286),
+          c(- 0.15514, 0.45684,   0.03286),
+          c(        0,       0,   0.01608)) %*% t(XYZ))
+}
+
+LMS_XYZ <- function(LMS) {
+  t(solve(rbind(c(  0.15514, 0.54312, - 0.03286),
+                c(- 0.15514, 0.45684,   0.03286),
+                c(        0,       0,   0.01608))) %*% t(LMS))
+}
+
+LMS_protan <- function(LMS) {
+  t(rbind(c(0, 2.02344, - 2.52581),
+          c(0,       1,         0),
+          c(0,       0,         1)) %*% t(LMS))
+}
+
+LMS_deutan <- function(LMS) {
+  t(rbind(c(1,        0,       0),
+          c(0.494207, 0, 1.24827),
+          c(0,        0,       1)) %*% t(LMS))
+}
+
+LMS_tritan <- function(LMS) {
+  t(rbind(c(         1,        0, 0),
+          c(         0,        1, 0),
+          c(- 0.395913, 0.801109, 0)) %*% t(LMS))
+}
+
+RGB_LMS <- function(RGB) {
+  t(rbind(c(  17.8824, 43.5161,  4.11935),
+          c(  3.45565, 27.1554,  3.86714),
+          c(0.0299566, 0.184309, 1.46709)) %*% t(RGB))
+}
+
+LMS_RGB <- function(LMS) {
+  t(solve(rbind(c(  17.8824, 43.5161,  4.11935),
+                c(  3.45565, 27.1554,  3.86714),
+                c(0.0299566, 0.184309, 1.46709))) %*% t(LMS))
+}
+
+daltonize <- function(err) {
+  t(rbind(c(  0, 0, 0),
+          c(0.7, 1, 0),
+          c(0.7, 0, 1)) %*% t(err))
 }

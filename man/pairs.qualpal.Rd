@@ -4,25 +4,25 @@
 \alias{pairs.qualpal}
 \title{Scatter matrix plot of qualitative color palette}
 \usage{
-\method{pairs}{qualpal}(x, colorspace = c("Lab", "hsl"), ...)
+\method{pairs}{qualpal}(x, colorspace = c("DIN99d", "HSL"), ...)
 }
 \arguments{
 \item{x}{A list object of class \code{"qualpal"} generated from
 \code{\link{qualpal}}.}
 
 \item{colorspace}{The color space in which to plot the colors ("Lab" or
-"hsl").}
+"HSL").}
 
 \item{...}{Arguments to pass on to \code{\link[graphics]{pairs}}.}
 }
 \description{
 Plots the colors in a \code{qualpal} object as a scatter matrix plot on
-either the Lab (the default) or hsl color space.
+either the Lab (the default) or HSL color space.
 }
 \examples{
 col_pal <- qualpal(n = 3)
 pairs(col_pal)
-pairs(col_pal, colorspace = "hsl")
+pairs(col_pal, colorspace = "HSL")
 }
 \seealso{
 \code{\link{qualpal}}, \code{\link{plot.qualpal}},

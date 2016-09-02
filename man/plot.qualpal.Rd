@@ -15,7 +15,7 @@
 \description{
 Uses the colors in a \code{qualpal} object to compute and plot a
 multidimensional scaling (MDS) map using \code{\link[stats]{cmdscale}} on the
-CIEDE2000 distance matrix.
+Delta E DIN99d distance matrix.
 }
 \examples{
 col_pal <- qualpal(n = 3)

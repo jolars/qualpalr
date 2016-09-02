@@ -4,10 +4,11 @@
 \alias{qualpal}
 \title{Generate qualitative color palettes}
 \usage{
-qualpal(n, colorspace = "pretty", ...)
+qualpal(n, colorspace = "pretty", colorblind = c("normal", "deutan",
+  "protan", "tritan"), ...)
 }
 \arguments{
-\item{n}{The number of colors to generate. Has to lie between 2 and 50.}
+\item{n}{The number of colors to generate.}
 
 \item{colorspace}{Either 1) a list of three named numeric vectors: \code{h}
 (hue), \code{s} (saturation), and \code{l} (lightness), all of length 2
@@ -15,13 +16,10 @@ specifying a min and max value for the range. The values has to be in the
 range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 2) a \emph{character vector} specifying one of the predefined color spaces
 (see below).}
-
-\item{...}{Control parameters to pass on to the Nelder-Mead optimizer (see
-\code{\link[dfoptim]{nmkb}}).}
 }
 \value{
 qualpal returns a list of class "qualpal" with the following
-  components. \item{hsl}{A matrix of the colors in the hsl color space.}
+  components. \item{HSL}{A matrix of the colors in the HSL color space.}
   \item{Lab}{A matrix of the colors in the CIE Lab color space.} \item{RGB}{A
   matrix of the colors in the sRGB color space.} \item{hex}{A character
   vector of the colors in hex notation.} \item{ciede2000}{A distance
@@ -30,22 +28,27 @@ qualpal returns a list of class "qualpal" with the following
   maximization objective of the optimizer.}
 }
 \description{
-Takes a subset of the hsl color space and generates a qualitative color
-palette by optimizing color difference via the CIEDE 2000 formula.
+Takes a subset of the HSL color space, projects it to the DIN99d color space,
+and generates a color palette from the most distinct colors.
 }
 \details{
-\code{qualpal} takes a color subspace in the hsl color space, where lightness
+\code{qualpal} takes a color subspace in the HSL color space, where lightness
 and saturation take values from 0 to 1. Hue take values from -360 to 360,
 although negative values are brought to lie in the range \{0, 360\} under the
 hood. This behavior exists to enable color subspaces that span any hue range
 (since the hue range is circular).
 
-The hsl color subspace is passed to a \emph{Nelder-Mead optimizer}:
-(\code{dfoptim::nmkb}), which attempts to maximize the smallest pairwise
-color difference among all \code{n} colors using the CIEDE 2000 color
-difference algorithm. However, the optimizer gets easily stuck in local
-minimi (since the optimization function is far from smooth) so multiple
-restarts can be useful, particularly for high values of \code{n}.
+The HSL color subspace that the user provides is projected into the DIN99d
+color space, which is approximately perceptually uniform, i.e. color
+difference is proportional to the euclidean distance between colors. A
+distance matrix is computed and transformed using power transformations
+discovered by Huang 2015 in order to fine tune differences.
+
+`qualpal` then greedily searches this distance matrix for the most distinct
+colors; it does this iteratively by first selecting the two most distinct
+colors, then finding the third that has the smallest pairwise distance to the
+previously selected points, repeating this until `n` colors have been
+collected.
 }
 \section{Predefined color spaces}{
  Instead of specifying a color space
@@ -58,9 +61,6 @@ restarts can be useful, particularly for high values of \code{n}.
   colors well.}
   \item{\code{pretty_dark}}{Like \code{pretty} but darker. Hue ranges from 0
   to 360, saturation from 0.1 to 0.5, and lightness from 0.2 to 0.4.}
-  \item{\code{colorblind}}{Caters to red-green color blindness by
-  simply avoiding most of the green hues. Hue ranges from -180 to 55,
-  saturation from 0.1 to 0.6, and lightness from 0.2 to 0.85.}
   \item{\code{rainbow}}{Uses all hues, chromas, and most of the lightness
   range. Provides distinct, but not asethetically pleasing colors.}
   \item{\code{pastels}}{Pastel colors from the complete range of hues
