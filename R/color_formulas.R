@@ -7,21 +7,23 @@ RGB_HSL <- function(RGB) {
   m <- pmin(R, G, B)
   C <- M - m
 
+  i1 <- C == 0
+  i2 <- M == R & C > 0
+  i3 <- M == G & C > 0
+  i4 <- M == B & C > 0
+
   Hprime <- double(length(R))
-  Hprime[C == 0]         <- 0
-  Hprime[M == R & C > 0] <-
-    ((G[M == R & C > 0] - B[M == R & C > 0]) / C[M == R & C > 0]) %% 6
-  Hprime[M == G & C > 0] <-
-    (B[M == G & C > 0] - R[M == G & C > 0]) / C[M == G & C > 0] + 2
-  Hprime[M == B & C > 0] <-
-    (R[M == B & C > 0] - G[M == B & C > 0]) / C[M == B & C > 0] + 4
+  Hprime[i1] <- 0
+  Hprime[i2] <- ((G[i2] - B[i2]) / C[i2]) %% 6
+  Hprime[i3] <- (B[i3] - R[i3]) / C[i3] + 2
+  Hprime[i4] <- (R[i4] - G[i4]) / C[i4] + 4
 
   H <- Hprime * 60
   L <- (M + m) / 2
 
   S <- double(length(R))
-  S[C > 0] <- C[C > 0] / (1 - abs(2 * L[C > 0] - 1))
-  S[C == 0] <- 0
+  S[!i1] <- C[!i1] / (1 - abs(2 * L[!i1] - 1))
+  S[i1] <- 0
 
   cbind(H, S, L)
 }
@@ -77,12 +79,13 @@ Lab_DIN99d <- function(Lab) {
   b <- Lab[, 3]
 
   L99d <- 325.22 * log(1 + 0.0036 * L)
-  e <- a * cos(50 * pi / 180) + b * sin(50 * pi / 180)
-  f <- 1.14 * (- a * sin(50 * pi / 180) + b * cos(50 * pi / 180))
+  e    <- a * cos(50 * pi / 180) + b * sin(50 * pi / 180)
+  f    <- 1.14 * (- a * sin(50 * pi / 180) + b * cos(50 * pi / 180))
   C99d <- 22.5 * log(1 + 0.06 * sqrt(e ^ 2 + f ^ 2))
   h99d <- (atan2(f, e) * 180 / pi) + 50
   a99d <- C99d * cos(h99d * pi / 180)
   b99d <- C99d * sin(h99d * pi / 180)
+
   cbind(L99d, a99d, b99d)
 }
 
