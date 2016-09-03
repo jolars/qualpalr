@@ -4,7 +4,7 @@ Version: 0.1.0.9001
 Authors@R: person("Johan", "Larsson", email = "johanlarsson@outlook.com",
     role = c("aut", "cre"))
 Description: Automatic generation of distinct qualitative color palettes using
-    optimization routines on the delta-E CIEDE2000 color difference algorithm.
+    the DIN99d color space, optionally catering to color blindness.
 Imports:
 Suggests:
     testthat,
