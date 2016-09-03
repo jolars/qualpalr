@@ -15,11 +15,21 @@
 #' distance matrix is computed and transformed using power transformations
 #' discovered by Huang 2015 in order to fine tune differences.
 #'
-#' `qualpal` then greedily searches this distance matrix for the most distinct
+#' \code{qualpal} then greedily searches the distance matrix for the most distinct
 #' colors; it does this iteratively by first selecting the two most distinct
 #' colors, then finding the third that has the smallest pairwise distance to the
 #' previously selected points, repeating this until `n` colors have been
 #' collected.
+#'
+#' Optionally, \code{qualpal} can adapt palettes to cater to color blindness. This is
+#' accomplished by taking the color subspace provided by the user and
+#' daltonizing it using the methods described Fidaner et al. 2006. (The url to
+#' this source is currently broken.) The user chooses one of the three types of
+#' color blindness (dichromacy): \emph{protanopia}, \emph{deuteranopia}, or
+#' \emph{titanopia}, sorted here by order of their prevalence. The daltonized
+#' subspace is then processed as usual by \code{qualpal}.
+#'
+#' \code{qualpal} currently only supports the sRGB color space.
 #'
 #' @section Predefined color spaces: Instead of specifying a color space
 #'   manually, the following predefined color spaces can by accessed by
@@ -27,8 +37,8 @@
 #'   \describe{
 #'   \item{\code{pretty}}{Tries to provide aesthetically pleasing, but still
 #'   distinct color palettes. Hue ranges from 0 to 360, saturation from 0.1 to
-#'   0.5, and lightness from 0.5 to 0.85. Does not handle large numbers of
-#'   colors well.}
+#'   0.5, and lightness from 0.5 to 0.85. Is not suitable for large numbers of
+#'   \code{n}}
 #'   \item{\code{pretty_dark}}{Like \code{pretty} but darker. Hue ranges from 0
 #'   to 360, saturation from 0.1 to 0.5, and lightness from 0.2 to 0.4.}
 #'   \item{\code{rainbow}}{Uses all hues, chromas, and most of the lightness
@@ -46,27 +56,27 @@
 #'   2) a \emph{character vector} specifying one of the predefined color spaces
 #'   (see below).
 #' @return qualpal returns a list of class "qualpal" with the following
-#'   components. \item{HSL}{A matrix of the colors in the HSL color space.}
-#'   \item{Lab}{A matrix of the colors in the CIE Lab color space.} \item{RGB}{A
-#'   matrix of the colors in the sRGB color space.} \item{hex}{A character
-#'   vector of the colors in hex notation.} \item{ciede2000}{A distance
-#'   matrix of color differences according to the CIEDE 2000 formula.}
-#'   \item{min_ciede2000}{The smallest pairwise CIEDE 2000 (the
-#'   maximization objective of the optimizer.}
-#' @seealso \code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}},
-#'   \code{\link[dfoptim]{nmkb}}
+#'   components.
+#'   \item{HSL}{A matrix of the colors in the HSL color space.}
+#'   \item{DIN99d}{A matrix of the colors in the DIN99d color space.}
+#'   \item{RGB}{A matrix of the colors in the sRGB color space.}
+#'   \item{hex}{A character vector of the colors in hex notation.}
+#'   \item{de_DIN99d}{A distance matrix of color differenes according to delta E
+#'     DIN99d.}
+#'   \item{min_de_DIN99d}{The smallest pairwise delta E DIN99d.}
+#' @seealso
+#'   \code{\link{plot.qualpal}},
+#'   \code{\link{pairs.qualpal}}
 #' @examples
 #' # generates 3 distinct colors from the default color subspace
 #' qualpal(3)
 #' qualpal(n = 3, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
 #'
-#' # Trace the optimizer
-#' qualpal(3, "colorblind", trace = TRUE)
+#' qualpal(3, "pretty")
 #'
-#' # Rigorous (and slow) evaluation using control parameters of nmkb
-#' \dontrun{
-#' qualpal(6, "rainbow", maxfeval = 10000, tol = 1e-10)
-#' }
+#' # Adapt color palette to deuteranopia
+#' qualpal(5, colorspace = "pretty_dark", colorblind = "deutan")
+#'
 #' \dontrun{
 #' # The range of hue cannot exceed 360
 #' qualpal(n = 3, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
@@ -75,7 +85,7 @@
 
 qualpal <- function(n,
                     colorspace = "pretty",
-                    colorblind = c("normal", "deutan", "protan", "tritan"),
+                    colorblind = c("normal", "protan", "deutan", "tritan"),
                     ...) {
   if (is.list(colorspace)) {
     if (!(all(c("h", "s", "l") %in% names(colorspace)))) {
@@ -92,7 +102,7 @@ qualpal <- function(n,
   }
 
   if (length(list(...) > 0)) warning("... is deprecated since the optimizer is no
-                                   longer used.")
+                                   longer in use.")
 
   h <- colorspace[["h"]]
   s <- colorspace[["s"]]
@@ -113,12 +123,13 @@ qualpal <- function(n,
     is.numeric(s),
     is.numeric(l),
     is.numeric(n),
-    n > 1
+    n > 1,
+    n < 10 ^ 3
   )
 
-  HSL <- expand.grid(seq(min(h), max(h), length.out = 13),
-                     seq(min(s), max(s), length.out = 13),
-                     seq(min(l), max(l), length.out = 13))
+  HSL <- expand.grid(seq(min(h), max(h), length.out = 10),
+                     seq(min(s), max(s), length.out = 10),
+                     seq(min(l), max(l), length.out = 10))
 
   HSL[HSL[, 1] < 0, 1] <- HSL[HSL[, 1] < 0, 1] + 360
   RGB <- HSL_RGB(HSL)
@@ -127,8 +138,8 @@ qualpal <- function(n,
     LMS <- RGB_LMS(RGB)
     LMS <- switch(
       match.arg(colorblind),
-      deutan = do.call(LMS_deutan, args = list(LMS)),
       protan = do.call(LMS_protan, args = list(LMS)),
+      deutan = do.call(LMS_deutan, args = list(LMS)),
       tritan = do.call(LMS_tritan, args = list(LMS))
     )
     RGB_div <- LMS_RGB(LMS)
@@ -139,17 +150,12 @@ qualpal <- function(n,
     RGB[RGB < 0] <- 0
   }
 
-  XYZ <- convertColor(RGB, from = "sRGB", to = "XYZ")
-
-  # Apply correction to xyz in preparation of converting to DIN99d
-  XYZ_mod <- XYZ
-  XYZ_mod[, 1] <- 1.12 * XYZ[, 1] - 0.12 * XYZ[, 3]
-  Lab_mod <- convertColor(XYZ_mod, from = "XYZ", to = "Lab")
-  DIN99d <- Lab_DIN99d(Lab_mod)
+  RGB    <- RGB
+  XYZ    <- sRGB_XYZ(RGB)
+  DIN99d <- XYZ_DIN99d(XYZ)
 
   DIN99d_dist <- as.matrix(stats::dist(DIN99d))
-  # Apply power transformations from Huang 2015
-  DIN99d_dist <- 1.28 * (DIN99d_dist ^ 0.74)
+  DIN99d_dist <- 1.28 * (DIN99d_dist ^ 0.74) # transformations from Huang 2015
 
   # Start by finding the two most distant points
   col_ind <-
@@ -162,10 +168,10 @@ qualpal <- function(n,
     col_ind <- c(col_ind, new_col)
   }
 
-  RGB    <- convertColor(XYZ[col_ind, ], from = "XYZ", to = "sRGB")
-  HSL    <- RGB_HSL(RGB)
+  RGB    <- XYZ_sRGB(XYZ[col_ind, ])
+  HSL    <- RGB_HSL(RGB[col_ind, ])
   DIN99d <- DIN99d[col_ind, ]
-  hex    <- grDevices::rgb(RGB[, 1], RGB[, 2], RGB[, 3])
+  hex    <- grDevices::rgb(RGB)
 
   dimnames(HSL)    <- list(hex, c("Hue", "Saturation", "Lightness"))
   dimnames(DIN99d) <- list(hex, c("L(99d)", "a(99d)", "b(99d)"))
@@ -176,11 +182,11 @@ qualpal <- function(n,
 
   structure(
     list(
-      RGB = HSL,
-      RGB = RGB,
-      DIN99d = DIN99d,
-      hex = hex,
-      de_DIN99d = col_diff,
+      HSL           = round(HSL, 2),
+      RGB           = round(RGB, 2),
+      DIN99d        = round(DIN99d, 1),
+      hex           = hex,
+      de_DIN99d     = round(col_diff, 0),
       min_de_DIN99d = min(col_diff)
     ),
     class = c("qualpal", "list")
@@ -222,14 +228,16 @@ plot.qualpal <- function(x, ...) {
 #' Scatter matrix plot of qualitative color palette
 #'
 #' Plots the colors in a \code{qualpal} object as a scatter matrix plot on
-#' either the Lab (the default) or HSL color space.
+#' either the din99d (the default) or HSL color space.
 #'
 #' @param x A list object of class \code{"qualpal"} generated from
 #'   \code{\link{qualpal}}.
-#' @param colorspace The color space in which to plot the colors ("Lab" or
+#' @param colorspace The color space in which to plot the colors ("DIN99d" or
 #'   "HSL").
 #' @param ... Arguments to pass on to \code{\link[graphics]{pairs}}.
-#' @seealso \code{\link{qualpal}}, \code{\link{plot.qualpal}},
+#' @seealso
+#'   \code{\link{qualpal}},
+#'   \code{\link{plot.qualpal}},
 #'   \code{\link[graphics]{pairs}}
 #'
 #' @examples
@@ -241,9 +249,7 @@ plot.qualpal <- function(x, ...) {
 pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL"), ...) {
   stopifnot(inherits(x, "qualpal"))
   args <- list(
-    x = switch(match.arg(colorspace),
-               DIN99d = x$DIN99d,
-               HSL = x$HSL),
+    x   = switch(match.arg(colorspace), DIN99d = x$DIN99d, HSL = x$HSL),
     col = x$hex,
     ...
   )
@@ -259,7 +265,7 @@ predefined_colorspaces <- function(colorspace) {
   list(
     pretty      = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
     pretty_dark = list(h = c(0, 360), s = c(0.1, 0.5), l = c(0.2, 0.4)),
-    rainbow     = list(h = c(0, 360), s = c(0, 1), l = c(0, .7)),
+    rainbow     = list(h = c(0, 360), s = c(0,   1),   l = c(0,   0.7)),
     pastels     = list(h = c(0, 360), s = c(0.2, 0.4), l = c(0.8, 0.9))
   )[[colorspace]]
 }

@@ -73,20 +73,118 @@ HSL_RGB <- function(HSL) {
   cbind(R, G, B) + m
 }
 
-Lab_DIN99d <- function(Lab) {
+XYZ_DIN99d <- function(XYZ, Xr = 0.95047, Yr = 1, Zr = 1.08883) {
+  XYZ[, 1] <- 1.12 * XYZ[, 1] - 0.12 * XYZ[, 3]
+
+  Lab <- XYZ_Lab(XYZ, Xr = Xr, Yr = Yr, Zr = Zr)
+
   L <- Lab[, 1]
   a <- Lab[, 2]
   b <- Lab[, 3]
 
+  u <- 50 * pi / 180
+
   L99d <- 325.22 * log(1 + 0.0036 * L)
-  e    <- a * cos(50 * pi / 180) + b * sin(50 * pi / 180)
-  f    <- 1.14 * (- a * sin(50 * pi / 180) + b * cos(50 * pi / 180))
-  C99d <- 22.5 * log(1 + 0.06 * sqrt(e ^ 2 + f ^ 2))
-  h99d <- (atan2(f, e) * 180 / pi) + 50
-  a99d <- C99d * cos(h99d * pi / 180)
-  b99d <- C99d * sin(h99d * pi / 180)
+  e    <- a * cos(u) + b * sin(u)
+  f    <- 1.14 * (b * cos(u) - a * sin(u))
+  G    <- sqrt(e ^ 2 + f ^ 2)
+  C99d <- 22.5 * log(1 + 0.06 * G)
+  h99d <- atan2(f, e) + 50 * pi / 180
+  a99d <- C99d * cos(h99d)
+  b99d <- C99d * sin(h99d)
 
   cbind(L99d, a99d, b99d)
+}
+
+sRGB_XYZ <- function(sRGB) {
+  ind <- sRGB > 0.04045
+
+  sRGB[!ind] <- sRGB[!ind] / 12.92
+  sRGB[ind]  <- ((sRGB[ind] + 0.055) / (1.055)) ^ 2.4
+  sRGB <- matrix(sRGB, ncol = 3)
+
+  t(rbind(c(0.4124564, 0.3575761, 0.1804375),
+          c(0.2126729, 0.7151522, 0.0721750),
+          c(0.0193339, 0.1191920, 0.9503041)) %*% t(sRGB))
+}
+
+XYZ_sRGB <- function(XYZ) {
+  sRGB <- t(rbind(c( 3.2404542, -1.5371385, -0.4985314),
+                  c(-0.9692660,  1.8760108,  0.0415560),
+                  c( 0.0556434, -0.2040259,  1.0572252)) %*% t(XYZ))
+
+  ind <- sRGB > 0.0031308
+
+  sRGB[!ind] <- 12.92 * sRGB[!ind]
+  sRGB[ind]  <- 1.055 * sRGB[ind] ^ (1 / 2.4) - 0.055
+  matrix(sRGB, ncol = 3)
+}
+
+XYZ_Lab <- function(XYZ, Xr = 0.95047, Yr = 1, Zr = 1.08883) {
+  X <- XYZ[, 1]
+  Y <- XYZ[, 2]
+  Z <- XYZ[, 3]
+
+  epsilon <- 216 / 24389
+  kelvin  <- 24389 / 27
+
+  xr <- X / Xr
+  yr <- Y / Yr
+  zr <- Z / Zr
+
+  ix <- xr > epsilon
+  iy <- yr > epsilon
+  iz <- zr > epsilon
+
+  fx <- fy <- fz <- double(length(xr))
+  fx[ix]  <- xr[ix] ^ (1 / 3)
+  fx[!ix] <- (xr[!ix] * kelvin + 16) / 116
+
+  fy[iy]  <- yr[iy] ^ (1 / 3)
+  fy[!iy] <- (yr[!iy] * kelvin + 16) / 116
+
+  fz[iz]  <- zr[iz] ^ (1 / 3)
+  fz[!iz] <- (zr[!iz] * kelvin + 16) / 116
+
+  L <- 116 *  fy - 16
+  a <- 500 * (fx - fy)
+  b <- 200 * (fy - fz)
+
+  cbind(L, a, b)
+}
+
+Lab_XYZ <- function(Lab, Xr = 0.95047, Yr = 1, Zr = 1.08883) {
+  L <- Lab[, 1]
+  a <- Lab[, 2]
+  b <- Lab[, 3]
+
+  epsilon <- 216 / 24389
+  kelvin  <- 24389 / 27
+
+  fy <- (L + 16) / 116
+  fx <- a / 500 + fy
+  fz <- fy - b / 200
+
+  ix <- fx ^ 3 > epsilon
+  iy <-      L > kelvin * epsilon
+  iz <- fz ^ 3 > epsilon
+
+  xr <- yr <- zr <- double(length(L))
+
+  xr[ix]  <- fx[ix] ^ 3
+  xr[!ix] <- (116 * fx[!ix] - 16) / kelvin
+
+  yr[iy]  <- ((L[iy] + 16) / 116) ^ 3
+  yr[!iy] <- L[!iy] / kelvin
+
+  zr[iz]  <- fz[iz] ^ 3
+  zr[!iz] <- (116 * fz[!iz] - 16) / kelvin
+
+  X <- Xr * xr
+  Y <- Yr * yr
+  Z <- Zr * zr
+
+  cbind(X, Y, Z)
 }
 
 XYZ_LMS <- function(XYZ) {
