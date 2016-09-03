@@ -4,8 +4,8 @@
 \alias{qualpal}
 \title{Generate qualitative color palettes}
 \usage{
-qualpal(n, colorspace = "pretty", colorblind = c("normal", "deutan",
-  "protan", "tritan"), ...)
+qualpal(n, colorspace = "pretty", colorblind = c("normal", "protan",
+  "deutan", "tritan"), ...)
 }
 \arguments{
 \item{n}{The number of colors to generate.}
@@ -19,13 +19,14 @@ range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 }
 \value{
 qualpal returns a list of class "qualpal" with the following
-  components. \item{HSL}{A matrix of the colors in the HSL color space.}
-  \item{Lab}{A matrix of the colors in the CIE Lab color space.} \item{RGB}{A
-  matrix of the colors in the sRGB color space.} \item{hex}{A character
-  vector of the colors in hex notation.} \item{ciede2000}{A distance
-  matrix of color differences according to the CIEDE 2000 formula.}
-  \item{min_ciede2000}{The smallest pairwise CIEDE 2000 (the
-  maximization objective of the optimizer.}
+  components.
+  \item{HSL}{A matrix of the colors in the HSL color space.}
+  \item{DIN99d}{A matrix of the colors in the DIN99d color space.}
+  \item{RGB}{A matrix of the colors in the sRGB color space.}
+  \item{hex}{A character vector of the colors in hex notation.}
+  \item{de_DIN99d}{A distance matrix of color differenes according to delta E
+    DIN99d.}
+  \item{min_de_DIN99d}{The smallest pairwise delta E DIN99d.}
 }
 \description{
 Takes a subset of the HSL color space, projects it to the DIN99d color space,
@@ -44,11 +45,21 @@ difference is proportional to the euclidean distance between colors. A
 distance matrix is computed and transformed using power transformations
 discovered by Huang 2015 in order to fine tune differences.
 
-`qualpal` then greedily searches this distance matrix for the most distinct
+\code{qualpal} then greedily searches the distance matrix for the most distinct
 colors; it does this iteratively by first selecting the two most distinct
 colors, then finding the third that has the smallest pairwise distance to the
 previously selected points, repeating this until `n` colors have been
 collected.
+
+Optionally, \code{qualpal} can adapt palettes to cater to color blindness. This is
+accomplished by taking the color subspace provided by the user and
+daltonizing it using the methods described Fidaner et al. 2006. (The url to
+this source is currently broken.) The user chooses one of the three types of
+color blindness (dichromacy): \emph{protanopia}, \emph{deuteranopia}, or
+\emph{titanopia}, sorted here by order of their prevalence. The daltonized
+subspace is then processed as usual by \code{qualpal}.
+
+\code{qualpal} currently only supports the sRGB color space.
 }
 \section{Predefined color spaces}{
  Instead of specifying a color space
@@ -57,8 +68,8 @@ collected.
   \describe{
   \item{\code{pretty}}{Tries to provide aesthetically pleasing, but still
   distinct color palettes. Hue ranges from 0 to 360, saturation from 0.1 to
-  0.5, and lightness from 0.5 to 0.85. Does not handle large numbers of
-  colors well.}
+  0.5, and lightness from 0.5 to 0.85. Is not suitable for large numbers of
+  \code{n}}
   \item{\code{pretty_dark}}{Like \code{pretty} but darker. Hue ranges from 0
   to 360, saturation from 0.1 to 0.5, and lightness from 0.2 to 0.4.}
   \item{\code{rainbow}}{Uses all hues, chromas, and most of the lightness
@@ -73,20 +84,18 @@ collected.
 qualpal(3)
 qualpal(n = 3, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
 
-# Trace the optimizer
-qualpal(3, "colorblind", trace = TRUE)
+qualpal(3, "pretty")
 
-# Rigorous (and slow) evaluation using control parameters of nmkb
-\dontrun{
-qualpal(6, "rainbow", maxfeval = 10000, tol = 1e-10)
-}
+# Adapt color palette to deuteranopia
+qualpal(5, colorspace = "pretty_dark", colorblind = "deutan")
+
 \dontrun{
 # The range of hue cannot exceed 360
 qualpal(n = 3, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
 }
 }
 \seealso{
-\code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}},
-  \code{\link[dfoptim]{nmkb}}
+\code{\link{plot.qualpal}},
+  \code{\link{pairs.qualpal}}
 }
 

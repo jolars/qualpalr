@@ -10,14 +10,14 @@
 \item{x}{A list object of class \code{"qualpal"} generated from
 \code{\link{qualpal}}.}
 
-\item{colorspace}{The color space in which to plot the colors ("Lab" or
+\item{colorspace}{The color space in which to plot the colors ("DIN99d" or
 "HSL").}
 
 \item{...}{Arguments to pass on to \code{\link[graphics]{pairs}}.}
 }
 \description{
 Plots the colors in a \code{qualpal} object as a scatter matrix plot on
-either the Lab (the default) or HSL color space.
+either the din99d (the default) or HSL color space.
 }
 \examples{
 col_pal <- qualpal(n = 3)
@@ -25,7 +25,8 @@ pairs(col_pal)
 pairs(col_pal, colorspace = "HSL")
 }
 \seealso{
-\code{\link{qualpal}}, \code{\link{plot.qualpal}},
+\code{\link{qualpal}},
+  \code{\link{plot.qualpal}},
   \code{\link[graphics]{pairs}}
 }
 
