@@ -55,6 +55,10 @@
 #'   range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 #'   2) a \emph{character vector} specifying one of the predefined color spaces
 #'   (see below).
+#' @param colorblind Daltonize color subspace before picking colors from it.
+#'   Adapts the color subspace to either protanopia, deuteranopia, or
+#'   tritanopia.
+#' @param ... Deprecated.
 #' @return qualpal returns a list of class "qualpal" with the following
 #'   components.
 #'   \item{HSL}{A matrix of the colors in the HSL color space.}
@@ -101,8 +105,7 @@ qualpal <- function(n,
          the color space templates.")
   }
 
-  if (length(list(...) > 0)) warning("... is deprecated since the optimizer is no
-                                   longer in use.")
+  if (length(list(...) > 0)) warning("... is deprecated and will be ignored.")
 
   h <- colorspace[["h"]]
   s <- colorspace[["s"]]
@@ -127,9 +130,13 @@ qualpal <- function(n,
     n < 10 ^ 3
   )
 
-  HSL <- expand.grid(seq(min(h), max(h), length.out = 10),
-                     seq(min(s), max(s), length.out = 10),
-                     seq(min(l), max(l), length.out = 10))
+  rnd <- randtoolbox::torus(1000, dim = 3)
+
+  H <- scale_runif(rnd[, 1], min(h), max(h))
+  S <- sqrt(scale_runif(rnd[, 2], min(s), max(s)))
+  L <- scale_runif(rnd[, 3], min(l), max(l))
+
+  HSL <- cbind(H, S, L)
 
   HSL[HSL[, 1] < 0, 1] <- HSL[HSL[, 1] < 0, 1] + 360
   RGB <- HSL_RGB(HSL)
@@ -145,12 +152,10 @@ qualpal <- function(n,
     RGB_div <- LMS_RGB(LMS)
     RGB_err <- RGB - RGB_div
     RGB <- RGB + daltonize(RGB_err)
-    RGB <- RGB
     RGB[RGB > 1] <- 1
     RGB[RGB < 0] <- 0
   }
 
-  RGB    <- RGB
   XYZ    <- sRGB_XYZ(RGB)
   DIN99d <- XYZ_DIN99d(XYZ)
 
@@ -168,8 +173,8 @@ qualpal <- function(n,
     col_ind <- c(col_ind, new_col)
   }
 
-  RGB    <- XYZ_sRGB(XYZ[col_ind, ])
-  HSL    <- RGB_HSL(RGB[col_ind, ])
+  RGB    <- RGB[col_ind, ]
+  HSL    <- HSL[col_ind, ]
   DIN99d <- DIN99d[col_ind, ]
   hex    <- grDevices::rgb(RGB)
 
@@ -268,4 +273,11 @@ predefined_colorspaces <- function(colorspace) {
     rainbow     = list(h = c(0, 360), s = c(0,   1),   l = c(0,   0.7)),
     pastels     = list(h = c(0, 360), s = c(0.2, 0.4), l = c(0.8, 0.9))
   )[[colorspace]]
+}
+
+
+# Helper functions --------------------------------------------------------
+
+scale_runif <- function(x, new_min, new_max) {
+  (new_max - new_min) * (x - 1) + new_max
 }
