@@ -16,6 +16,12 @@ specifying a min and max value for the range. The values has to be in the
 range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 2) a \emph{character vector} specifying one of the predefined color spaces
 (see below).}
+
+\item{colorblind}{Daltonize color subspace before picking colors from it.
+Adapts the color subspace to either protanopia, deuteranopia, or
+tritanopia.}
+
+\item{...}{Deprecated.}
 }
 \value{
 qualpal returns a list of class "qualpal" with the following
