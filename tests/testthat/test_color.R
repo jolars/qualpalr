@@ -22,6 +22,10 @@ test_that("color conversions work back and forth", {
   expect_true(all(XYZ_LMS(LMS_XYZ(test_lms)) -
                     test_lms <
                     .Machine$double.eps ^ 0.5))
+  test_xyz <- matrix(runif(9), ncol = 3)
+  expect_equal(sum(test_xyz), sum(Lab_XYZ(XYZ_Lab(test_xyz))))
+
+  expect_equal(sum(test_rgb), sum(XYZ_sRGB(sRGB_XYZ(test_rgb))))
 })
 
 test_that("colors are within their respective color spaces", {
