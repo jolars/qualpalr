@@ -3,6 +3,7 @@ title: "An introduction to qualpalr"
 author: "Johan Larsson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+bibliography: qualpal.bib
 vignette: >
   %\VignetteIndexEntry{An introduction to qualpalr}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,38 +12,37 @@ vignette: >
 
 ## Overview
 
-`R` contains several tools that produce high-quality sequential and diverging color palettes, but few that are dedicated to qualitative color palettes. ´qualpalr´ is an attempt to fill that gap by providing an easy-to-use interface to generate qualitative color palettes of any size and from whatever range of colors the user prefers. 
-
-Provided `n` (the desired number of colors to generate), and a subset of the [hsl](https://en.wikipedia.org/wiki/HSL_and_HSV) color space, `qualpalr` uses a [Nelder-Mead optimizer](https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method) (`nmkb` from [dfoptim](https://cran.r-project.org/package=dfoptim) to find the configuration of `n` colors that maximize the smallest pairwise [CIEDE2000](https://en.wikipedia.org/wiki/Color_difference#CIEDE2000) color difference.
+`qualpalr` generates distinct qualitative color palettes, primarily for use in R graphics. Given `n` (the number of colors to generate), along with a subset in the [hsl color space](https://en.wikipedia.org/wiki/HSL_and_HSV) (a cylindrical representation of the RGB color space) `qualpalr` attempts to find the `n` colors in the provided color subspace that *maximize the smallest pairwise color difference*. This is done by projecting the color subset from the HSL color space to the DIN99d space. DIN99d is (approximately) perceptually uniform, that is, the euclidean distance between two colors in the space is proportional to their perceived difference.
 
 ## Examples
 
 `qualpalr` relies on one basic function, `qualpal()`, which takes as its input `n` (the number of colors to generate) and `colorspace`, which can be either
 
 * a list of numeric vectors `h` (hue from -360 to 360), `s` (saturation from 0 to 1), and `l` (lightness from 0 to 1), all of length 2, specifying a min and max.
-* a character vector specifying one of the predefined color subspaces, which at the time of writing are *pretty*, *pretty_dark*, *colorblind*, *rainbow*, and *pastels*.
+* a character vector specifying one of the predefined color subspaces, which at the time of writing are *pretty*, *pretty_dark*, *rainbow*, and *pastels*.
 
 ```{r basic_usage}
 library(qualpalr)
-set.seed(1) # The optimizer uses random initial parameters
 pal <- qualpal(n = 5, list(h = c(0, 360), s = c(0.4, 0.6), l = c(0.5, 0.85)))
-pal <- qualpal(n = 4, colorspace = "pretty")
+
+# Adapt the color space to deuteranopia
+pal <- qualpal(n = 5, colorspace = "pretty", colorblind = "deutan")
 ```
 
-The resulting object, `pal2`, is a list with several color tables and a distance matrix based on the CIEDE2000 formula.
+The resulting object, `pal`, is a list with several color tables and a distance matrix based on the CIEDE2000 formula.
 
 ```{r qualpal_list}
 pal
 ```
 
-For more descriptive versions of what colors were generated, methods for `pairs` and `plot` have been written for `qualpal` objects:
+Methods for `pairs` and `plot` have been written for `qualpal` objects to help visualize the results.
 
 ```{r fig.show='hold'}
 # Multidimensional scaling plot
 plot(pal)
 
 # Pairs plot in the Lab color space
-pairs(pal, colorspace = "Lab")
+pairs(pal, colorspace = "DIN99d")
 
 ```
 
@@ -55,6 +55,82 @@ map("france", fill = TRUE, col = pal$hex, mar = c(0, 0, 0, 0))
 
 ## Details
 
-Control parameters can be passed to `nmkb` via `...` in `qualpal`, of which `maxfeval` (default: 5000) and `tol` (default: 1e-6) are probably of primary interest. See the documentation to [dfoptim](https://cran.r-project.org/package=dfoptim) for details.
+`qualpal` begins by generating a point cloud out of the HSL color subspace provided by the user, using a quasi-random torus sequence from [randtoolbox](https://cran.r-project.org/package=DSviaDRM). Here is the color subset in HSL with settings `h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)`.
 
-`qualpalr` was not designed for speed. It is slow, particularly for large `n`, and I *strongly* recommend aginst using it in other functions. 
+```{r details_input, echo=FALSE}
+library(rgl)
+
+# Set up color subspace as in qualpal()
+h = c(-200, 120)
+s = c(0.3, 0.8)
+l = c(0.4, 0.9)
+
+# Generate a quasi-random tour sequence
+rnd <- randtoolbox::torus(1000, dim = 3)
+
+# Convert random sequence to specified color space
+scale_runif <- function(x, new_min, new_max) {
+  (new_max - new_min) * (x - 1) + new_max
+}
+
+H <- scale_runif(rnd[, 1], min(h), max(h))
+S <- scale_runif(rnd[, 2], min(s), max(s))
+L <- scale_runif(rnd[, 3], min(l), max(l))
+S <- sqrt(S) # adjust to the fact that we're sampling from a cylinder
+
+HSL <- cbind(H, S, L)
+HSL[HSL[, 1] < 0, 1] <- HSL[HSL[, 1] < 0, 1] + 360
+
+# Set up variables to produce the HSL cylinder
+x <- S * cos(H * pi / 180)
+y <- S * sin(H * pi / 180)
+
+# Convert to RGB to enable coloring
+RGB <- qualpalr:::HSL_RGB(HSL)
+
+options(rgl.useNULL = TRUE)
+plot3d(cbind(x, y, L), col = rgb(RGB), main = "HSL")
+rglwidget()
+```
+
+The program then proceeds by projecting these colors into the sRGB space.
+
+```{r RGB_space, echo = FALSE}
+plot3d(RGB, col = rgb(RGB), main = "RGB")
+rglwidget()
+```
+
+It then continues projecting the colors, first into the XYZ space, then CIELab (not shown here), and then finally the DIN99d space.
+
+```{r DIN_space, echo = FALSE}
+XYZ    <- qualpalr:::sRGB_XYZ(RGB)
+DIN99d <- qualpalr:::XYZ_DIN99d(XYZ)
+
+plot3d(DIN99d, col = rgb(RGB), main = "DIN99d")
+rglwidget()
+```
+
+The DIN99d color space [@cui_uniform_2002] is a euclidean, perceptually uniform color space. This means that the difference between two colors is equal to the euclidean distance between them. We take advantage of this by computing a distance matrix on all the colors in the subset, finding their pairwise color differences. We then apply a power transformation [@huang_power_2015] to fine tune these differences.
+
+To select the `n` colors that the user wanted, we proceed greedily: first, we find the two most distanct, then we find the third point that maximizes the minimum distance to the previously selected points. This is repeated until `n` points are selected. These points are then returned to the user; below is an example using `n = 5`.
+
+```{r selected_points, echo = FALSE}
+pal <- qualpal(5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
+plot3d(DIN99d, col = rgb(RGB), main = "DIN99d", alpha = 0.1)
+plot3d(pal$DIN99d, col = pal$hex, main = "DIN99d", add = TRUE, size = 5)
+rglwidget()
+```
+
+### Color specifications
+
+At the time of writing, qualpalr works selectively in the sRGB color space with
+the CIE Standard Illuminant D65 reference white. 
+
+## Thanks
+
+Thanks to [Bruce Lindbloom](http://www.brucelindbloom.com/), who's web page has
+been instrumental in making qualpalr. Also thanks to
+[i want hue](http://tools.medialab.sciences-po.fr/iwanthue/), which inspired me
+to make qualpalr.
+
+## References
