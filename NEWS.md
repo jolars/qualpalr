@@ -1,8 +1,23 @@
+# qualpalr 0.2.1
+## New features
+* Dropped daltonization since it effectively transposed the color
+subspace given by the user. qualpalr now instead only transforms the given color
+subspace to *simulate* protanopia or deuteranopia and then picks colors. This
+has the side-effect of decreasing the distinctness of color palettes when
+`colorblind` is used, but is more consistent with user input.
+
+## Bug fixes and minor improvements
+* Simulations for tritanopia were dropped since there is no reliable source
+to explain how sRGB ranges should be converted (as there is for deuteranopia
+and protanopia in Vienot et al 1999).
+* Added tests using data from Vienot et al 1999 to check that color blind
+simulations work properly.
+
 # qualpalr 0.2.0
 ## New features
 * Redesigned the method by which qualpal picks colors. Now initializes a point
 cloud of colors, projects it to DIN99d space, and picks points greedily.
-* Introduced *real* methods adapting colors to color blindness by daltonizing
+* Introduced *real* methods of adapting colors to color blindness by daltonizing
 color subspaces before picking colors from them.
 * The introduction to qualpalr vignette has been expanded with a thorough
 description of how qualpalr picks colors.
