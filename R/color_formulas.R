@@ -211,12 +211,6 @@ LMS_deutan <- function(LMS) {
           c(0,        0,       1)) %*% t(LMS))
 }
 
-LMS_tritan <- function(LMS) {
-  t(rbind(c(         1,        0, 0),
-          c(         0,        1, 0),
-          c(- 0.395913, 0.801109, 0)) %*% t(LMS))
-}
-
 RGB_LMS <- function(RGB) {
   t(rbind(c(  17.8824, 43.5161,  4.11935),
           c(  3.45565, 27.1554,  3.86714),
@@ -227,10 +221,4 @@ LMS_RGB <- function(LMS) {
   t(solve(rbind(c(  17.8824, 43.5161,  4.11935),
                 c(  3.45565, 27.1554,  3.86714),
                 c(0.0299566, 0.184309, 1.46709))) %*% t(LMS))
-}
-
-daltonize <- function(err) {
-  t(rbind(c(  0, 0, 0),
-          c(0.7, 1, 0),
-          c(0.7, 0, 1)) %*% t(err))
 }
