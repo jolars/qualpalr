@@ -5,7 +5,7 @@
 \title{Generate qualitative color palettes}
 \usage{
 qualpal(n, colorspace = "pretty", colorblind = c("normal", "protan",
-  "deutan", "tritan"), ...)
+  "deutan"), ...)
 }
 \arguments{
 \item{n}{The number of colors to generate.}
@@ -17,9 +17,9 @@ range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 2) a \emph{character vector} specifying one of the predefined color spaces
 (see below).}
 
-\item{colorblind}{Daltonize color subspace before picking colors from it.
-Adapts the color subspace to either protanopia, deuteranopia, or
-tritanopia.}
+\item{colorblind}{Set to \code{"protan"} or \code{"deutan"} to adapt the color
+palette to protanopia or deuteranopia respectively. The default is no
+adapation (\code{"normal"}).}
 
 \item{...}{Deprecated.}
 }
@@ -57,15 +57,14 @@ colors, then finding the third that has the smallest pairwise distance to the
 previously selected points, repeating this until `n` colors have been
 collected.
 
-Optionally, \code{qualpal} can adapt palettes to cater to color blindness. This is
-accomplished by taking the color subspace provided by the user and
-daltonizing it using the methods described Fidaner et al. 2006. (The url to
-this source is currently broken.) The user chooses one of the three types of
-color blindness (dichromacy): \emph{protanopia}, \emph{deuteranopia}, or
-\emph{titanopia}, sorted here by order of their prevalence. The daltonized
-subspace is then processed as usual by \code{qualpal}.
+Optionally, \code{qualpal} can adapt palettes to cater to color blindness, or
+more specifically dichromacy. This is
+accomplished by taking the colors provided by the user and
+transforming them to colors that a protan or deutan would see, that is,
+simulating dichromacy. qualpal then chooses colors from these new colors.
 
-\code{qualpal} currently only supports the sRGB color space.
+\code{qualpal} currently only supports the sRGB color space with the D65
+white point reference.
 }
 \section{Predefined color spaces}{
  Instead of specifying a color space
@@ -79,7 +78,7 @@ subspace is then processed as usual by \code{qualpal}.
   \item{\code{pretty_dark}}{Like \code{pretty} but darker. Hue ranges from 0
   to 360, saturation from 0.1 to 0.5, and lightness from 0.2 to 0.4.}
   \item{\code{rainbow}}{Uses all hues, chromas, and most of the lightness
-  range. Provides distinct, but not asethetically pleasing colors.}
+  range. Provides distinct but not aesthetically pleasing colors.}
   \item{\code{pastels}}{Pastel colors from the complete range of hues
   (0-360), with saturation between 0.2 and 0.4, and lightness between 0.8 and
   0.9.}
