@@ -14,6 +14,7 @@ and protanopia in Vienot et al 1999).
 simulations work properly.
 * Fixed a sampling bug wherein the square root of saturation was taken after
 scaling to the provided range, which generated different ranges than intended.
+* Switched to the sobol quasi-random sequence instead of torus.
 
 # qualpalr 0.2.0
 ## New features
