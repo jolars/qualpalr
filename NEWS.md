@@ -12,6 +12,8 @@ to explain how sRGB ranges should be converted (as there is for deuteranopia
 and protanopia in Vienot et al 1999).
 * Added tests using data from Vienot et al 1999 to check that color blind
 simulations work properly.
+* Fixed a sampling bug wherein the square root of saturation was taken after
+scaling to the provided range, which generated different ranges than intended.
 
 # qualpalr 0.2.0
 ## New features

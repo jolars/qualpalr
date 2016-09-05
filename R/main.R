@@ -21,15 +21,14 @@
 #' previously selected points, repeating this until `n` colors have been
 #' collected.
 #'
-#' Optionally, \code{qualpal} can adapt palettes to cater to color blindness. This is
-#' accomplished by taking the color subspace provided by the user and
-#' daltonizing it using the methods described Fidaner et al. 2006. (The url to
-#' this source is currently broken.) The user chooses one of the three types of
-#' color blindness (dichromacy): \emph{protanopia}, \emph{deuteranopia}, or
-#' \emph{titanopia}, sorted here by order of their prevalence. The daltonized
-#' subspace is then processed as usual by \code{qualpal}.
+#' Optionally, \code{qualpal} can adapt palettes to cater to color blindness, or
+#' more specifically dichromacy. This is
+#' accomplished by taking the colors provided by the user and
+#' transforming them to colors that a protan or deutan would see, that is,
+#' simulating dichromacy. qualpal then chooses colors from these new colors.
 #'
-#' \code{qualpal} currently only supports the sRGB color space.
+#' \code{qualpal} currently only supports the sRGB color space with the D65
+#' white point reference.
 #'
 #' @section Predefined color spaces: Instead of specifying a color space
 #'   manually, the following predefined color spaces can by accessed by
@@ -42,7 +41,7 @@
 #'   \item{\code{pretty_dark}}{Like \code{pretty} but darker. Hue ranges from 0
 #'   to 360, saturation from 0.1 to 0.5, and lightness from 0.2 to 0.4.}
 #'   \item{\code{rainbow}}{Uses all hues, chromas, and most of the lightness
-#'   range. Provides distinct, but not asethetically pleasing colors.}
+#'   range. Provides distinct but not aesthetically pleasing colors.}
 #'   \item{\code{pastels}}{Pastel colors from the complete range of hues
 #'   (0-360), with saturation between 0.2 and 0.4, and lightness between 0.8 and
 #'   0.9.}
@@ -55,9 +54,9 @@
 #'   range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 #'   2) a \emph{character vector} specifying one of the predefined color spaces
 #'   (see below).
-#' @param colorblind Daltonize color subspace before picking colors from it.
-#'   Adapts the color subspace to either protanopia, deuteranopia, or
-#'   tritanopia.
+#' @param colorblind Set to \code{"protan"} or \code{"deutan"} to adapt the color
+#'   palette to protanopia or deuteranopia respectively. The default is no
+#'   adapation (\code{"normal"}).
 #' @param ... Deprecated.
 #' @return qualpal returns a list of class "qualpal" with the following
 #'   components.
@@ -89,9 +88,9 @@
 
 qualpal <- function(n,
                     colorspace = "pretty",
-                    colorblind = c("normal", "protan", "deutan", "tritan"),
+                    colorblind = c("normal", "protan", "deutan"),
                     ...) {
-  if (is.list(colorspace)) {
+  if (inherits(colorspace, "list")) {
     if (!(all(c("h", "s", "l") %in% names(colorspace)))) {
       stop("You forgot to specify h, s, or l.")
     }
@@ -130,10 +129,10 @@ qualpal <- function(n,
     n < 10 ^ 3
   )
 
-  rnd <- randtoolbox::torus(1000, dim = 3)
+  rnd <- randtoolbox::sobol(1000, dim = 3, scrambling = 2)
 
   H <- scale_runif(rnd[, 1], min(h), max(h))
-  S <- sqrt(scale_runif(rnd[, 2], min(s), max(s)))
+  S <- scale_runif(sqrt(rnd[, 2]), min(s), max(s))
   L <- scale_runif(rnd[, 3], min(l), max(l))
 
   HSL <- cbind(H, S, L)
@@ -142,18 +141,15 @@ qualpal <- function(n,
   RGB <- HSL_RGB(HSL)
 
   if (match.arg(colorblind) != "normal") {
-    LMS <- RGB_LMS(RGB)
+    RGB2 <- RGB ^ 2.2
     LMS <- switch(
       match.arg(colorblind),
-      protan = do.call(LMS_protan, args = list(LMS)),
-      deutan = do.call(LMS_deutan, args = list(LMS)),
-      tritan = do.call(LMS_tritan, args = list(LMS))
+      protan = do.call(LMS_protan,
+                       args = list(RGB_LMS(RGB2 * 0.992052 + 0.003974))),
+      deutan = do.call(LMS_deutan,
+                       args = list(RGB_LMS(RGB2 * 0.957237 + 0.0213814)))
     )
-    RGB_div <- LMS_RGB(LMS)
-    RGB_err <- RGB - RGB_div
-    RGB <- RGB + daltonize(RGB_err)
-    RGB[RGB > 1] <- 1
-    RGB[RGB < 0] <- 0
+    RGB <- LMS_RGB(LMS) ^ (1 / 2.2)
   }
 
   XYZ    <- sRGB_XYZ(RGB)
@@ -216,7 +212,6 @@ qualpal <- function(n,
 #' @export
 
 plot.qualpal <- function(x, ...) {
-  stopifnot(inherits(x, "qualpal"))
   args <- list(
     x = stats::cmdscale(x$de_DIN99d, k = ifelse(length(x$hex) == 2, 1, 2)),
     col = x$hex,
@@ -224,6 +219,7 @@ plot.qualpal <- function(x, ...) {
     xlab = "dE DIN99d",
     ...
     )
+
   if (is.null(args[["cex"]])) args[["cex"]] <- 2
   if (is.null(args[["pch"]])) args[["pch"]] <- 19
 
@@ -252,7 +248,6 @@ plot.qualpal <- function(x, ...) {
 #' @export
 
 pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL"), ...) {
-  stopifnot(inherits(x, "qualpal"))
   args <- list(
     x   = switch(match.arg(colorspace), DIN99d = x$DIN99d, HSL = x$HSL),
     col = x$hex,
