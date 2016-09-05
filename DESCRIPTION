@@ -6,7 +6,7 @@ Authors@R: person("Johan", "Larsson", email = "johanlarsson@outlook.com",
 Description: Automatic generation of distinct qualitative color palettes using
     the DIN99d color space, optionally catering to color blindness.
 Imports:
-    randtoolbox
+    randtoolbox (>= 1.17)
 Suggests:
     testthat,
     knitr,
