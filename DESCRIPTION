@@ -1,10 +1,12 @@
 Package: qualpalr
 Title: Automatic Generation of Qualitative Color Palettes
-Version: 0.2.1.9001
+Version: 0.2.1.9002
 Authors@R: person("Johan", "Larsson", email = "johanlarsson@outlook.com",
     role = c("aut", "cre"))
-Description: Automatic generation of distinct qualitative color palettes using
-    the DIN99d color space, optionally catering to color blindness.
+Description: qualpalr generates distinct qualitative color palettes, optionally
+    adapted to color blindness. It takes a subspace of the HSL color space as
+    input and projects it to the DIN99d color space where it selects the most
+    dinstinct colors, returning those to the user.
 Imports:
     randtoolbox (>= 1.17)
 Suggests:
