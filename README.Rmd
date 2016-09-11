@@ -40,7 +40,7 @@ pal$hex
 # Create a palette using one of the predefined color subspaces
 pal2 <- qualpal(n = 4, colorspace = "pretty")
 
-# Produce a distance matrix of the CIEDE2000 color differences
+# Distance matrix of the DIN99d color differences
 pal2$de_DIN99d
 ```
 

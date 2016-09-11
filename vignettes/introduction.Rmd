@@ -10,6 +10,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+
 ## Overview
 
 `qualpalr` generates distinct qualitative color palettes, primarily for use in R graphics. Given `n` (the number of colors to generate), along with a subset in the [hsl color space](https://en.wikipedia.org/wiki/HSL_and_HSV) (a cylindrical representation of the RGB color space) `qualpalr` attempts to find the `n` colors in the provided color subspace that *maximize the smallest pairwise color difference*. This is done by projecting the color subset from the HSL color space to the DIN99d space. DIN99d is (approximately) perceptually uniform, that is, the euclidean distance between two colors in the space is proportional to their perceived difference.
@@ -48,7 +53,7 @@ pairs(pal, colorspace = "DIN99d")
 
 The colors are most easily used in R by accessing `pal$hex`
 
-```{r map, fig.width = 5, fig.height = 5}
+```{r map, fig.width=5, fig.height=5}
 library(maps)
 map("france", fill = TRUE, col = pal$hex, mar = c(0, 0, 0, 0))
 ```
@@ -96,14 +101,14 @@ rglwidget()
 
 The program then proceeds by projecting these colors into the sRGB space.
 
-```{r RGB_space, echo = FALSE}
+```{r RGB_space, echo=FALSE}
 plot3d(RGB, col = rgb(RGB), main = "RGB")
 rglwidget()
 ```
 
 It then continues projecting the colors, first into the XYZ space, then CIELab (not shown here), and then finally the DIN99d space.
 
-```{r DIN_space, echo = FALSE}
+```{r DIN_space, echo=FALSE}
 XYZ    <- qualpalr:::sRGB_XYZ(RGB)
 DIN99d <- qualpalr:::XYZ_DIN99d(XYZ)
 
@@ -115,7 +120,7 @@ The DIN99d color space [@cui_uniform_2002] is a euclidean, perceptually uniform 
 
 To select the `n` colors that the user wanted, we proceed greedily: first, we find the two most distanct, then we find the third point that maximizes the minimum distance to the previously selected points. This is repeated until `n` points are selected. These points are then returned to the user; below is an example using `n = 5`.
 
-```{r selected_points, echo = FALSE}
+```{r selected_points, echo=FALSE}
 pal <- qualpal(5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
 plot3d(DIN99d, col = rgb(RGB), main = "DIN99d", alpha = 0.1)
 plot3d(pal$DIN99d, col = pal$hex, main = "DIN99d", add = TRUE, size = 5)

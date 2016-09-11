@@ -21,17 +21,17 @@ pal <- qualpal(n = 4, list(h = c(0, 360), s = c(0.1, 0.5), l = c(0.6, 0.85)))
 
 # Look at the colors in hex format
 pal$hex
-#> [1] "#7953E1" "#CDE05A" "#DC5B56" "#5EC8E3"
+#> [1] "#6BCB69" "#C86DC5" "#77AACE" "#CF9D74"
 
 # Create a palette using one of the predefined color subspaces
 pal2 <- qualpal(n = 4, colorspace = "pretty")
 
-# Produce a distance matrix of the CIEDE2000 color differences
+# Distance matrix of the DIN99d color differences
 pal2$de_DIN99d
-#>         #CDE059 #6755DE #DD5955
-#> #6755DE      34                
-#> #DD5955      25      26        
-#> #5EC8E3      24      24      30
+#>         #6ACB69 #C96CC6 #76AACE
+#> #C96CC6      30                
+#> #76AACE      21      21        
+#> #CF9D74      20      21      23
 ```
 
 Methods for `pairs()` and `plot()` have been prepared for objects created with `qualpal`.
