@@ -155,8 +155,8 @@ qualpal <- function(n,
   XYZ    <- sRGB_XYZ(RGB)
   DIN99d <- XYZ_DIN99d(XYZ)
 
-  DIN99d_dist <- as.matrix(stats::dist(DIN99d))
-  DIN99d_dist <- 1.28 * (DIN99d_dist ^ 0.74) # transformations from Huang 2015
+  # DIN99d distances with power tranformations from Huang 2014
+  DIN99d_dist <- as.matrix.dist((stats::dist(DIN99d) ^ 0.74) * 1.28)
 
   # Start by finding the two most distant points
   col_ind <-
