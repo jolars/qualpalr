@@ -8,7 +8,10 @@ Description: Automatic generation of distinct qualitative color palettes,
     space as input and projects it to the DIN99d color space where it selects
     the most dinstinct colors, returning these to the user.
 Imports:
-    randtoolbox (>= 1.17)
+    randtoolbox (>= 1.17),
+    graphics,
+    stats,
+    grDevices
 Suggests:
     testthat,
     knitr,
