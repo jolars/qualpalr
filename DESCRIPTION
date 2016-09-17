@@ -2,11 +2,13 @@ Package: qualpalr
 Title: Automatic Generation of Qualitative Color Palettes
 Version: 0.2.1.9004
 Authors@R: person("Johan", "Larsson", email = "johanlarsson@outlook.com",
-    role = c("aut", "cre"))
+                  role = c("aut", "cre"))
 Description: Automatic generation of distinct qualitative color palettes,
     optionally adapted to color blindness. It takes a subspace of the HSL color
     space as input and projects it to the DIN99d color space where it selects
     the most dinstinct colors, returning these to the user.
+Depends:
+    R (>= 3.3.1)
 Imports:
     randtoolbox (>= 1.17),
     graphics,
@@ -18,8 +20,6 @@ Suggests:
     maps,
     rmarkdown,
     rgl
-Depends:
-    R (>= 3.3.1)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

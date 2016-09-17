@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # qualpalr
 
-[![Build Status](https://travis-ci.org/jolars/qualpalr.svg?branch=master)](https://travis-ci.org/jolars/qualpalr)
+[![Travis-CI Build Status](https://travis-ci.org/jolars/qualpalr.svg?branch=master)](https://travis-ci.org/jolars/qualpalr)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jolars/qualpalr?branch=master&svg=true)](https://ci.appveyor.com/project/jolars/qualpalr)
 [![Coverage Status](https://codecov.io/github/jolars/qualpalr/coverage.svg?branch=master)](https://codecov.io/github/jolars/qualpalr?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](http://cran.r-project.org/package=qualpalr)
