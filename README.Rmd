@@ -44,7 +44,7 @@ pal2 <- qualpal(n = 4, colorspace = "pretty")
 pal2$de_DIN99d
 ```
 
-Methods for `pairs()` and `plot()` have been prepared for objects created with `qualpal`. 
+`pairs()` and `plot()` methods have been prepared for objects created with `qualpal`. 
 
 ```{r plot_methods, eval = FALSE}
 plot(pal)

@@ -3,7 +3,7 @@
 qualpalr
 ========
 
-[![Build Status](https://travis-ci.org/jolars/qualpalr.svg?branch=master)](https://travis-ci.org/jolars/qualpalr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jolars/qualpalr?branch=master&svg=true)](https://ci.appveyor.com/project/jolars/qualpalr) [![Coverage Status](https://codecov.io/github/jolars/qualpalr/coverage.svg?branch=master)](https://codecov.io/github/jolars/qualpalr?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/qualpalr)](http://cran.r-project.org/package=qualpalr)
+[![Travis-CI Build Status](https://travis-ci.org/jolars/qualpalr.svg?branch=master)](https://travis-ci.org/jolars/qualpalr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jolars/qualpalr?branch=master&svg=true)](https://ci.appveyor.com/project/jolars/qualpalr) [![Coverage Status](https://codecov.io/github/jolars/qualpalr/coverage.svg?branch=master)](https://codecov.io/github/jolars/qualpalr?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/qualpalr)](http://cran.r-project.org/package=qualpalr)
 
 `qualpalr` generates distinct qualitative color palettes, primarily for use in R graphics. Given `n` (the number of colors to generate), along with a subset in the [hsl color space](https://en.wikipedia.org/wiki/HSL_and_HSV) (a cylindrical representation of the RGB color space) `qualpalr` attempts to find the `n` colors in the provided color subspace that *maximize the smallest pairwise color difference*. This is done by projecting the color subset from the HSL color space to the DIN99d space. DIN99d is (approximately) perceptually uniform, that is, the euclidean distance between two colors in the space is proportional to their perceived difference.
 
@@ -34,7 +34,7 @@ pal2$de_DIN99d
 #> #CF9D74      20      21      23
 ```
 
-Methods for `pairs()` and `plot()` have been prepared for objects created with `qualpal`.
+`pairs()` and `plot()` methods have been prepared for objects created with `qualpal`.
 
 ``` r
 plot(pal)
