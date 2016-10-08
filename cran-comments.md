@@ -1,5 +1,5 @@
 ## Resubmission
-This is a resubmission. In this version I have changed the url in readme.md from
+This is a resubmission. In this version I have changed the url in README.md from
 http://cran.r-project.org/package=qualpalr to
 https://cran.r-project.org/package=qualpalr
 
