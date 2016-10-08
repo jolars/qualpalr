@@ -1,8 +1,7 @@
 ## Resubmission
-This is a resubmission. In this version I have:
-
-* Changed the url in readme.md from http://cran.r-project.org/package=qualpalr
-to https://cran.r-project.org/package=qualpalr
+This is a resubmission. In this version I have changed the url in readme.md from
+http://cran.r-project.org/package=qualpalr to
+https://cran.r-project.org/package=qualpalr
 
 ## Test environments
 * local Windows Pro 10 install (v 1607, build 14393.222), R 3.3.1
