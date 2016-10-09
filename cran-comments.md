@@ -14,7 +14,7 @@ https://cran.r-project.org/package=qualpalr
 * ubuntu 12.04.5, R 3.3.1, (on travis-ci)
 
 ## R CMD check results
-There were no ERRORs, WARNINGs or NOTEs. 
+There were no errors, warnings, or notes.
 
 ## Downstream dependencies
 I ran R CMD check on downstream dependencies of qualpalr and all
