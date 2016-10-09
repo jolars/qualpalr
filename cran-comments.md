@@ -1,3 +1,7 @@
+## Resubmission 2
+This is the second resubmission. In this version I have (actually) changed the
+url as described below. Apologies for the incomplete resubmission.
+
 ## Resubmission
 This is a resubmission. In this version I have changed the url in README.md from
 http://cran.r-project.org/package=qualpalr to
