@@ -1,3 +1,10 @@
+# qualpalr 0.2.1.9000
+## New features
+
+## Minor improvements
+
+## Bug fixes
+
 # qualpalr 0.2.1
 ## New features
 * Dropped daltonization since it effectively transposed the color
