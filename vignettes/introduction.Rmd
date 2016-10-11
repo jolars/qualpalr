@@ -34,7 +34,7 @@ pal <- qualpal(n = 5, list(h = c(0, 360), s = c(0.4, 0.6), l = c(0.5, 0.85)))
 pal <- qualpal(n = 5, colorspace = "pretty", colorblind = "deutan")
 ```
 
-The resulting object, `pal`, is a list with several color tables and a distance matrix based on the CIEDE2000 formula.
+The resulting object, `pal`, is a list with several color tables and a distance matrix based on the DIN99d color difference formula.
 
 ```{r qualpal_list}
 pal
@@ -60,7 +60,7 @@ map("france", fill = TRUE, col = pal$hex, mar = c(0, 0, 0, 0))
 
 ## Details
 
-`qualpal` begins by generating a point cloud out of the HSL color subspace provided by the user, using a quasi-random torus sequence from [randtoolbox](https://cran.r-project.org/package=DSviaDRM). Here is the color subset in HSL with settings `h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)`.
+`qualpal` begins by generating a point cloud out of the HSL color subspace provided by the user, using a quasi-random sobol sequence from [randtoolbox](https://cran.r-project.org/package=DSviaDRM). Here is the color subset in HSL with settings `h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)`.
 
 ```{r details_input, echo=FALSE}
 options(rgl.useNULL = TRUE)
@@ -118,7 +118,7 @@ rglwidget()
 
 The DIN99d color space [@cui_uniform_2002] is a euclidean, perceptually uniform color space. This means that the difference between two colors is equal to the euclidean distance between them. We take advantage of this by computing a distance matrix on all the colors in the subset, finding their pairwise color differences. We then apply a power transformation [@huang_power_2015] to fine tune these differences.
 
-To select the `n` colors that the user wanted, we proceed greedily: first, we find the two most distanct, then we find the third point that maximizes the minimum distance to the previously selected points. This is repeated until `n` points are selected. These points are then returned to the user; below is an example using `n = 5`.
+To select the `n` colors that the user wanted, we proceed greedily: first, we find the two most distant points, then we find the third point that maximizes the minimum distance to the previously selected points. This is repeated until `n` points are selected. These points are then returned to the user; below is an example using `n = 5`.
 
 ```{r selected_points, echo=FALSE}
 pal <- qualpal(5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
@@ -129,13 +129,13 @@ rglwidget()
 
 ### Color specifications
 
-At the time of writing, qualpalr works selectively in the sRGB color space with
-the CIE Standard Illuminant D65 reference white. 
+At the time of writing, qualpalr works only in the sRGB color space with
+the *CIE Standard Illuminant D65* reference white. 
 
 ## Thanks
 
 [Bruce Lindbloom's webpage](http://www.brucelindbloom.com/) has
-been instrumental in making qualpalr. Also thanks to
+been instrumental in making qualpalr. Thanks also to
 [i want hue](http://tools.medialab.sciences-po.fr/iwanthue/), which inspired me
 to make qualpalr.
 
