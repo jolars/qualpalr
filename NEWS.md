@@ -1,9 +1,11 @@
-# qualpalr 0.2.1.9000
+# qualpalr 0.2.1
 ## New features
 
 ## Minor improvements
+* Phase out the ... argument to `qualpal`.
 
 ## Bug fixes
+* Fixed typos and misnomers in the _Introduction to qualpalr_ vignette.
 
 # qualpalr 0.2.1
 ## New features

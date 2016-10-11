@@ -57,7 +57,6 @@
 #' @param colorblind Set to \code{"protan"} or \code{"deutan"} to adapt the color
 #'   palette to protanopia or deuteranopia respectively. The default is no
 #'   adapation (\code{"normal"}).
-#' @param ... Deprecated.
 #' @return qualpal returns a list of class "qualpal" with the following
 #'   components.
 #'   \item{HSL}{A matrix of the colors in the HSL color space.}
@@ -88,8 +87,8 @@
 
 qualpal <- function(n,
                     colorspace = "pretty",
-                    colorblind = c("normal", "protan", "deutan"),
-                    ...) {
+                    colorblind = c("normal", "protan", "deutan")
+                    ) {
   if (inherits(colorspace, "list")) {
     if (!(all(c("h", "s", "l") %in% names(colorspace)))) {
       stop("You forgot to specify h, s, or l.")
@@ -103,8 +102,6 @@ qualpal <- function(n,
     stop("colorspace should be a list or a character vector specifying one of
          the color space templates.")
   }
-
-  if (length(list(...) > 0)) warning("... is deprecated and will be ignored.")
 
   h <- colorspace[["h"]]
   s <- colorspace[["s"]]
