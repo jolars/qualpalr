@@ -3,9 +3,10 @@
 
 ## Minor improvements
 * Phase out the ... argument to `qualpal`.
+* Lightness range of the predefined rainbow palette increased to [0, 1].
 
 ## Bug fixes
-* Fixed typos and misnomers in the _Introduction to qualpalr_ vignette.
+* Fixed typos and invalid links in the _Introduction to qualpalr_ vignette.
 
 # qualpalr 0.2.1
 ## New features
