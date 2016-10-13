@@ -10,10 +10,10 @@
 \item{x}{A list object of class \code{"qualpal"} generated from
 \code{\link{qualpal}}.}
 
-\item{...}{Arguments to pass on to \code{plot()}.}
+\item{...}{Arguments to pass on to \code{\link[graphics]{plot}}.}
 }
 \description{
-Uses the colors in a \code{qualpal} object to compute and plot a
+Uses the colors in a \code{qualpalr} object to compute and plot a
 multidimensional scaling (MDS) map using \code{\link[stats]{cmdscale}} on the
 Delta E DIN99d distance matrix.
 }

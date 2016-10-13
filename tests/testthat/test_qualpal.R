@@ -21,7 +21,6 @@ test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal(n = 2, list(h = c(-200, 200), s = c(0, 1), l = c(0, 1))))
   expect_error(qualpal(n = 2, list(h = c(0, 200), s = c(0, 1))))
   expect_error(qualpal(n = 2, list(h = 2, s = c(0, 1), l = c(0, 1))))
-  expect_warning(qualpal(n = 2, "pretty", neval = 5000))
 })
 
 test_that("plots return errors when used inappropriately", {

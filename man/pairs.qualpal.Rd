@@ -17,7 +17,7 @@
 }
 \description{
 Plots the colors in a \code{qualpal} object as a scatter matrix plot on
-either the din99d (the default) or HSL color space.
+either the DIN99d (the default) or HSL color space.
 }
 \examples{
 col_pal <- qualpal(n = 3)
