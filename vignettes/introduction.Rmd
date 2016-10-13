@@ -60,7 +60,7 @@ map("france", fill = TRUE, col = pal$hex, mar = c(0, 0, 0, 0))
 
 ## Details
 
-`qualpal` begins by generating a point cloud out of the HSL color subspace provided by the user, using a quasi-random sobol sequence from [randtoolbox](https://cran.r-project.org/package=DSviaDRM). Here is the color subset in HSL with settings `h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)`.
+`qualpal` begins by generating a point cloud out of the HSL color subspace provided by the user, using a quasi-random sobol sequence from [randtoolbox](https://cran.r-project.org/package=randtoolbox). Here is the color subset in HSL with settings `h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)`.
 
 ```{r details_input, echo=FALSE}
 options(rgl.useNULL = TRUE)
