@@ -2,7 +2,7 @@
 ## New features
 
 ## Minor improvements
-* Phase out the ... argument to `qualpal`.
+* Phased out the ... argument to `qualpal`.
 * Lightness range of the predefined rainbow palette increased to [0, 1].
 
 ## Bug fixes
