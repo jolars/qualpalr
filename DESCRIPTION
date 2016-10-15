@@ -1,6 +1,6 @@
 Package: qualpalr
 Title: Automatic Generation of Qualitative Color Palettes
-Version: 0.2.1.9002
+Version: 0.2.1.9003
 Authors@R: person("Johan", "Larsson", email = "johanlarsson@outlook.com",
                   role = c("aut", "cre"))
 Description: Automatic generation of distinct qualitative color palettes,
