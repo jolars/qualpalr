@@ -8,3 +8,5 @@
 ^README-.*\.png$
 ^cran-comments\.md$
 ^appveyor\.yml$
+^CONDUCT\.md$
+^LICENSE$

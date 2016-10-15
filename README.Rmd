@@ -65,6 +65,12 @@ The development version can be installed by running
 devtools::install_github("jolars/qualpalr")
 ```
 
+## Code of conduct
+
+Please note that this project is released with a
+[Contributor Code of Conduct](CONDUCT.md). By participating in this project you
+agree to abide by its terms.
+
 ## License
 
 `qualpalr` is open source software, licensed under GPL-3.

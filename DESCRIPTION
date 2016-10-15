@@ -1,6 +1,6 @@
 Package: qualpalr
 Title: Automatic Generation of Qualitative Color Palettes
-Version: 0.2.1.9001
+Version: 0.2.1.9002
 Authors@R: person("Johan", "Larsson", email = "johanlarsson@outlook.com",
                   role = c("aut", "cre"))
 Description: Automatic generation of distinct qualitative color palettes,
@@ -24,6 +24,6 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
-URL: http://github.com/jolars/qualpalr
-BugReports: http://github.com/jolars/qualpalr/issues
+URL: https://github.com/jolars/qualpalr
+BugReports: https://github.com/jolars/qualpalr/issues
 VignetteBuilder: knitr
