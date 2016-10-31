@@ -10,3 +10,4 @@
 ^appveyor\.yml$
 ^CONDUCT\.md$
 ^LICENSE$
+^experimental$
