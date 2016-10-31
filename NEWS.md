@@ -1,5 +1,7 @@
-# qualpalr 0.2.1
+# qualpalr 0.2.1.9000
 ## New features
+* Improved algorithm for finding distinct colors. (For details
+[see this](http://larssonjohan.com/r/farthest-points/).)
 
 ## Minor improvements
 * Phased out the ... argument to `qualpal`.
