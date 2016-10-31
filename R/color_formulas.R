@@ -211,6 +211,12 @@ LMS_deutan <- function(LMS) {
           c(0,        0,       1)) %*% t(LMS))
 }
 
+LMS_tritan <- function(LMS) {
+  t(rbind(c(1,                0, 0),
+          c(0,                1, 0),
+          c(-0.395913, 0.801109, 1)) %*% t(LMS))
+}
+
 RGB_LMS <- function(RGB) {
   t(rbind(c(  17.8824, 43.5161,  4.11935),
           c(  3.45565, 27.1554,  3.86714),
