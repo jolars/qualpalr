@@ -79,10 +79,8 @@
 #' }
 #' @export
 
-qualpal <- function(n,
-                    colorspace = "pretty",
-                    colorblind = c("normal", "protan", "deutan")
-                    ) {
+qualpal <- function(n, colorspace = "pretty",
+                    colorblind = c("normal", "protan", "deutan")) {
   if (inherits(colorspace, "list")) {
     if (!(all(c("h", "s", "l") %in% names(colorspace)))) {
       stop("You forgot to specify h, s, or l.")
@@ -120,7 +118,7 @@ qualpal <- function(n,
     n < 10 ^ 3
   )
 
-  rnd <- randtoolbox::sobol(1000, dim = 3, scrambling = 2)
+  rnd <- randtoolbox::sobol(1000, dim = 3, scrambling = 3)
 
   H <- scale_runif(rnd[, 1], min(h), max(h))
   S <- scale_runif(sqrt(rnd[, 2]), min(s), max(s))
@@ -146,19 +144,7 @@ qualpal <- function(n,
   XYZ    <- sRGB_XYZ(RGB)
   DIN99d <- XYZ_DIN99d(XYZ)
 
-  # DIN99d distances with power tranformations from Huang 2014
-  DIN99d_dist <- as.matrix((stats::dist(DIN99d) ^ 0.74) * 1.28)
-
-  # Start by finding the two most distant points
-  col_ind <-
-    as.vector(arrayInd(which.max(DIN99d_dist), .dim = dim(DIN99d_dist)))
-
-  # Iterate over all distances, each time finding the point most distant to
-  # the already selected points
-  while (length(col_ind) < n) {
-    new_col <- which.max(apply(DIN99d_dist[, col_ind], 1, min))
-    col_ind <- c(col_ind, new_col)
-  }
+  col_ind <- farthest_points(DIN99d, n)
 
   RGB    <- RGB[col_ind, ]
   HSL    <- HSL[col_ind, ]
