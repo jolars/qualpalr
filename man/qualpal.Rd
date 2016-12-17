@@ -92,6 +92,9 @@ qualpal(5, colorspace = "pretty_dark", colorblind = "deutan")
 # The range of hue cannot exceed 360
 qualpal(n = 3, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
 }
+
+
+
 }
 \seealso{
 \code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}}
