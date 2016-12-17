@@ -101,7 +101,7 @@ sRGB_XYZ <- function(sRGB) {
 
   sRGB[!ind] <- sRGB[!ind] / 12.92
   sRGB[ind]  <- ((sRGB[ind] + 0.055) / (1.055)) ^ 2.4
-  sRGB <- matrix(sRGB, ncol = 3)
+  sRGB       <- matrix(sRGB, ncol = 3)
 
   t(rbind(c(0.4124564, 0.3575761, 0.1804375),
           c(0.2126729, 0.7151522, 0.0721750),
