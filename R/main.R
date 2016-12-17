@@ -77,6 +77,13 @@
 #' # The range of hue cannot exceed 360
 #' qualpal(n = 3, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
 #' }
+#'
+#'
+#'
+#' @importFrom Rcpp evalCpp
+#' @importFrom RcppParallel RcppParallelLibs
+#' @useDynLib qualpalr
+#'
 #' @export
 
 qualpal <- function(n, colorspace = "pretty",
@@ -155,8 +162,7 @@ qualpal <- function(n, colorspace = "pretty",
   dimnames(DIN99d) <- list(hex, c("L(99d)", "a(99d)", "b(99d)"))
   dimnames(RGB)    <- list(hex, c("Red", "Green", "Blue"))
 
-  col_diff <- stats::dist(DIN99d)
-  col_diff <- 1.28 * (col_diff ^ 0.74)
+  col_diff <- stats::as.dist(edist(DIN99d))
 
   structure(
     list(
