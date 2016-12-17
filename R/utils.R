@@ -3,8 +3,14 @@
 
 farthest_points <- function (data, n) {
   # DIN99d distances with power tranformations from Huang 2014
-  dm <- as.matrix((stats::dist(data) ^ 0.74) * 1.28)
+  dm <- edist(data)
+
   r <- sample.int(nrow(dm), n)
+
+  dimnames(dm) <- list(
+    seq.int(1, nrow(dm)),
+    seq.int(1, ncol(dm))
+  )
 
   repeat {
     r_old <- r
@@ -16,10 +22,4 @@ farthest_points <- function (data, n) {
     if (identical(r_old, r)) return(r)
   }
 }
-
-
-
-
-
-
 
