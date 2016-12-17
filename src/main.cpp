@@ -42,7 +42,7 @@ struct dist_worker : public Worker {
 };
 
 // [[Rcpp::export]]
-Rcpp::NumericMatrix edist(NumericMatrix mat) {
+NumericMatrix edist(NumericMatrix mat) {
 
   NumericMatrix rmat(mat.nrow(), mat.nrow());
   dist_worker dist_worker(mat, rmat);
