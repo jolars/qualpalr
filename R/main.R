@@ -88,35 +88,46 @@
 
 qualpal <- function(n, colorspace = "pretty",
                     colorblind = c("normal", "protan", "deutan")) {
-  if (inherits(colorspace, "list")) {
-    if (!(all(c("h", "s", "l") %in% names(colorspace)))) {
-      stop("You forgot to specify h, s, or l.")
-    }
+  if (is.list(colorspace)) {
+
+    assertthat::assert_that(
+      assertthat::has_attr(colorspace, "names"),
+      "h" %in% names(colorspace),
+      "s" %in% names(colorspace),
+      "l" %in% names(colorspace)
+    )
+
   } else if (is.character(colorspace)) {
+
+    assertthat::assert_that(assertthat::is.string(colorspace))
     colorspace <- predefined_colorspaces(colorspace)
     if (is.null(colorspace)) {
       stop("The predefined color space does not exist.")
+
     }
   } else {
+
     stop("colorspace must be a list or a character vector specifying one of
          the color space templates.")
+
   }
 
   h <- colorspace[["h"]]
   s <- colorspace[["s"]]
   l <- colorspace[["l"]]
 
-  if((!n %% 1 == 0)) stop("n must be an integer.")
-
-  stopifnot(
+  assertthat::assert_that(
     diff(range(h)) <= 360,
-    min(h) >= - 360 & max(h) <= 360,
-    min(s) >= 0 & max(s) <= 1,
-    min(l) >= 0 & max(l) <= 1,
+    min(h) >= - 360,
+    max(h) <= 360,
+    min(s) >= 0,
+    max(s) <= 1,
+    min(l) >= 0,
+    max(l) <= 1,
     length(h) == 2,
     length(s) == 2,
     length(l) == 2,
-    length(n) == 1,
+    assertthat::is.count(n),
     is.numeric(h),
     is.numeric(s),
     is.numeric(l),
@@ -203,7 +214,7 @@ plot.qualpal <- function(x, ...) {
     ...
     )
 
-  if (is.null(args[["cex"]])) args[["cex"]] <- 2
+  if (is.null(args[["cex"]])) args[["cex"]] <- 3
   if (is.null(args[["pch"]])) args[["pch"]] <- 19
 
   do.call(graphics::plot, args)
@@ -236,7 +247,7 @@ pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL"), ...) {
     col = x$hex,
     ...
   )
-  if (is.null(args[["cex"]])) args[["cex"]] <- 2
+  if (is.null(args[["cex"]])) args[["cex"]] <- 3
   if (is.null(args[["pch"]])) args[["pch"]] <- 19
 
   do.call(graphics::pairs, args)
