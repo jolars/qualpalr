@@ -8,12 +8,13 @@ Description: Automatic generation of distinct qualitative color palettes,
     space as input and projects it to the DIN99d color space where it selects
     and return colors that are maximally distinct.
 Depends:
-    R (>= 3.3.1)
+    R (>= 3.3.2)
 Imports:
     randtoolbox (>= 1.17),
     graphics,
     stats,
     grDevices,
+    assertthat,
     Rcpp (>= 0.12.8),
     RcppParallel (>= 4.3.20)
 Suggests:
