@@ -33,5 +33,5 @@ VignetteBuilder: knitr
 LinkingTo:
   Rcpp (>= 0.12.8),
   RcppParallel (>= 4.3.20),
-  RcppArmadillo (>= 0.7.600.1.0)
+  RcppArmadillo (>= 0.7.500.0.0)
 SystemRequirements: GNU make
