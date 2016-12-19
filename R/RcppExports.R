@@ -5,3 +5,7 @@ edist <- function(mat) {
     .Call('qualpalr_edist', PACKAGE = 'qualpalr', mat)
 }
 
+farthest_points <- function(data, n) {
+    .Call('qualpalr_farthest_points', PACKAGE = 'qualpalr', data, n)
+}
+
