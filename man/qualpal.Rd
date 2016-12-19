@@ -4,8 +4,8 @@
 \alias{qualpal}
 \title{Generate qualitative color palettes}
 \usage{
-qualpal(n, colorspace = "pretty", colorblind = c("normal", "protan",
-  "deutan"))
+qualpal(n, colorspace = "pretty", colorblind, cvd = c("protan", "deutan",
+  "tritan"), cvd_severity = 0)
 }
 \arguments{
 \item{n}{The number of colors to generate.}
@@ -17,9 +17,13 @@ range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 2) a \emph{character vector} specifying one of the predefined color spaces
 (see below).}
 
-\item{colorblind}{Set to \code{"protan"} or \code{"deutan"} to adapt the
-color palette to protanopia or deuteranopia respectively. The default is no
-adapation (\code{"normal"}).}
+\item{colorblind}{Deprecated.}
+
+\item{cvd}{Color vision deficiency adaptation. Use the `cvd_severity` argument
+to set the severity of color vision deficiency to adapt to.}
+
+\item{cvd_severity}{Severity of color vision deficiency to adapt to. Set to 0
+for normal vision (the default) and to 1 for dichromatic vision.}
 }
 \value{
 qualpal returns a list of class "qualpal" with the following
@@ -54,10 +58,10 @@ distinct colors, then finding the third that has the smallest pairwise
 distance to the previously selected points, repeating this until `n` colors
 have been collected.
 
-Optionally, \code{qualpal} can adapt palettes to cater to color blindness, or
-more specifically dichromacy. This is accomplished by taking the colors
-provided by the user and transforming them to colors that a protan or deutan
-would see, that is, simulating dichromacy. qualpal then chooses colors from
+Optionally, \code{qualpal} can adapt palettes to cater to color vision
+defiency (cvd). This is accomplished by taking the colors
+provided by the user and transforming them to colors that someone with cvd
+would see, that is, simulating cvd. qualpal then chooses colors from
 these new colors.
 
 \code{qualpal} currently only supports the sRGB color space with the D65
@@ -86,14 +90,15 @@ qualpal(n = 3, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
 qualpal(3, "pretty")
 
 # Adapt color palette to deuteranopia
-qualpal(5, colorspace = "pretty_dark", colorblind = "deutan")
+qualpal(5, colorspace = "pretty_dark", cvd = "deutan", cvd_severity = 1)
+
+#' # Adapt color palette to protanomaly
+qualpal(8, colorspace = "pretty_dark", cvd = "protan", cvd_severity = 0.4)
 
 \dontrun{
 # The range of hue cannot exceed 360
 qualpal(n = 3, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
 }
-
-
 
 }
 \seealso{

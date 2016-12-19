@@ -22,10 +22,10 @@
 #' distance to the previously selected points, repeating this until `n` colors
 #' have been collected.
 #'
-#' Optionally, \code{qualpal} can adapt palettes to cater to color blindness, or
-#' more specifically dichromacy. This is accomplished by taking the colors
-#' provided by the user and transforming them to colors that a protan or deutan
-#' would see, that is, simulating dichromacy. qualpal then chooses colors from
+#' Optionally, \code{qualpal} can adapt palettes to cater to color vision
+#' defiency (cvd). This is accomplished by taking the colors
+#' provided by the user and transforming them to colors that someone with cvd
+#' would see, that is, simulating cvd. qualpal then chooses colors from
 #' these new colors.
 #'
 #' \code{qualpal} currently only supports the sRGB color space with the D65
@@ -52,9 +52,11 @@
 #'   range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 #'   2) a \emph{character vector} specifying one of the predefined color spaces
 #'   (see below).
-#' @param colorblind Set to \code{"protan"} or \code{"deutan"} to adapt the
-#'   color palette to protanopia or deuteranopia respectively. The default is no
-#'   adapation (\code{"normal"}).
+#' @param colorblind Deprecated.
+#' @param cvd Color vision deficiency adaptation. Use the `cvd_severity` argument
+#'   to set the severity of color vision deficiency to adapt to.
+#' @param cvd_severity Severity of color vision deficiency to adapt to. Set to 0
+#'   for normal vision (the default) and to 1 for dichromatic vision.
 #' @return qualpal returns a list of class "qualpal" with the following
 #'   components. \item{HSL}{A matrix of the colors in the HSL color space.}
 #'   \item{DIN99d}{A matrix of the colors in the DIN99d color space.}
@@ -71,23 +73,21 @@
 #' qualpal(3, "pretty")
 #'
 #' # Adapt color palette to deuteranopia
-#' qualpal(5, colorspace = "pretty_dark", colorblind = "deutan")
+#' qualpal(5, colorspace = "pretty_dark", cvd = "deutan", cvd_severity = 1)
+#'
+#' #' # Adapt color palette to protanomaly
+#' qualpal(8, colorspace = "pretty_dark", cvd = "protan", cvd_severity = 0.4)
 #'
 #' \dontrun{
 #' # The range of hue cannot exceed 360
 #' qualpal(n = 3, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
 #' }
 #'
-#'
-#'
-#' @importFrom Rcpp evalCpp
-#' @importFrom RcppParallel RcppParallelLibs
-#' @useDynLib qualpalr
-#'
 #' @export
 
-qualpal <- function(n, colorspace = "pretty",
-                    colorblind = c("normal", "protan", "deutan")) {
+qualpal <- function(n, colorspace = "pretty", colorblind,
+                    cvd = c("protan", "deutan", "tritan"),
+                    cvd_severity = 0) {
   if (is.list(colorspace)) {
 
     assertthat::assert_that(
@@ -132,11 +132,20 @@ qualpal <- function(n, colorspace = "pretty",
     is.numeric(s),
     is.numeric(l),
     is.numeric(n),
+    assertthat::is.number(cvd_severity),
+    cvd_severity >= 0,
+    cvd_severity <= 1,
     n > 1,
-    n < 10 ^ 3
+    n < 100
   )
 
-  rnd <- randtoolbox::sobol(1000, dim = 3, scrambling = 3)
+  if (!missing(colorblind)) {
+    warning("Argument colorblind is deprecated; please use cvd instead.",
+            call. = FALSE)
+    cvd <- colorblind
+  }
+
+  rnd <- randtoolbox::sobol(500, dim = 3, scrambling = 3)
 
   H <- scale_runif(rnd[, 1], min(h), max(h))
   S <- scale_runif(sqrt(rnd[, 2]), min(s), max(s))
@@ -147,16 +156,9 @@ qualpal <- function(n, colorspace = "pretty",
   HSL[HSL[, 1] < 0, 1] <- HSL[HSL[, 1] < 0, 1] + 360
   RGB <- HSL_RGB(HSL)
 
-  if (match.arg(colorblind) != "normal") {
-    RGB2 <- RGB ^ 2.2
-    LMS <- switch(
-      match.arg(colorblind),
-      protan = do.call(LMS_protan,
-                       args = list(RGB_LMS(RGB2 * 0.992052 + 0.003974))),
-      deutan = do.call(LMS_deutan,
-                       args = list(RGB_LMS(RGB2 * 0.957237 + 0.0213814)))
-    )
-    RGB <- LMS_RGB(LMS) ^ (1 / 2.2)
+  # Simulate color deficiency if required
+  if (match.arg(cvd) != "normal") {
+    RGB <- sRGB_CVD(RGB, cvd = match.arg(cvd), cvd_severity = cvd_severity)
   }
 
   XYZ    <- sRGB_XYZ(RGB)
