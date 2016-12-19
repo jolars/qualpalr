@@ -1,7 +1,13 @@
 // Adopted from http://gallery.rcpp.org/articles/parallel-distance-matrix/
 
-#include <Rcpp.h>
+#include <RcppArmadilloExtensions/sample.h>
+#include <RcppParallel.h>
+#include <ext/algorithm>
+
 using namespace Rcpp;
+using namespace RcppParallel;
+
+// [[Rcpp::depends(RcppParallel, RcppArmadillo)]]
 
 template <typename InputIterator1, typename InputIterator2>
 inline double euclid(InputIterator1 begin1, InputIterator1 end1,
@@ -17,10 +23,6 @@ inline double euclid(InputIterator1 begin1, InputIterator1 end1,
 
   return pow(sqrt(out), 0.74) * 1.28;
 }
-
-// [[Rcpp::depends(RcppParallel)]]
-#include <RcppParallel.h>
-using namespace RcppParallel;
 
 struct dist_worker : public Worker {
   const RMatrix<double> mat;
@@ -49,4 +51,58 @@ NumericMatrix edist(NumericMatrix mat) {
   parallelFor(0, mat.nrow(), dist_worker);
 
   return rmat;
+}
+
+arma::uvec set_difference(arma::uvec& x, arma::uvec& y) {
+
+  std::vector<int> a = arma::conv_to< std::vector<int> >::from(arma::sort(x));
+  std::vector<int> b = arma::conv_to< std::vector<int> >::from(arma::sort(y));
+  std::vector<int> out;
+
+  std::set_difference(a.begin(), a.end(), b.begin(), b.end(),
+                      std::inserter(out, out.end()));
+
+  return arma::conv_to< arma::uvec >::from(out);
+}
+
+// Farthest point optimization
+
+using namespace arma;
+
+// [[Rcpp::export]]
+arma::uvec farthest_points(Rcpp::NumericMatrix data, int n) {
+
+  arma::mat dm = as<arma::mat>(edist(data));
+
+  arma::uword N = dm.n_cols;
+
+  arma::uvec full(N);
+
+  for (arma::uword i = 0; i < N; i++) {full(i) = i;}
+
+  arma::uvec r = Rcpp::RcppArmadillo::sample(full, n, false),
+             r_old(n),
+             rr(n - 1),
+             ri(1),
+             excl(N - n + 1);
+
+  while (any(r_old != r)) {
+
+    r_old = r;
+
+    for (int i = 0; i < n; i++) {
+      ri.fill(r(i));
+
+      rr = set_difference(r, ri);
+
+      excl = set_difference(full, rr);
+
+      arma::rowvec mins = min(dm.submat(rr, excl), 0);
+
+      arma::uvec fulla = full(excl);
+
+      r(i) = fulla(mins.index_max());
+    }
+  }
+  return r + 1;
 }
