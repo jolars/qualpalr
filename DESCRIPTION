@@ -15,8 +15,8 @@ Imports:
     stats,
     grDevices,
     assertthat,
-    Rcpp (>= 0.12.8),
-    RcppParallel (>= 4.3.20)
+    Rcpp,
+    RcppParallel 
 Suggests:
     testthat,
     knitr,
@@ -30,5 +30,8 @@ RoxygenNote: 5.0.1
 URL: https://github.com/jolars/qualpalr
 BugReports: https://github.com/jolars/qualpalr/issues
 VignetteBuilder: knitr
-LinkingTo: Rcpp, RcppParallel
+LinkingTo:
+  Rcpp (>= 0.12.8),
+  RcppParallel (>= 4.3.20),
+  RcppArmadillo (>= 0.7.600.1.0)
 SystemRequirements: GNU make
