@@ -1,5 +1,9 @@
 # qualpalr 0.3.0.9000
 
+## Bug fixes
+* Dropped the c++ header `<ext/algoritm>` that caused the 
+package build to fail on some platforms.
+
 # qualpalr 0.3.0
 ## New features
 * Improved algorithm for finding distinct colors. (For details
