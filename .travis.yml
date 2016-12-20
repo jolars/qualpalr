@@ -4,19 +4,18 @@ language: r
 sudo: false
 cache: packages
 
-env:
-
-matrix:
-  include:
-  - r: release
-  allow_failures:
-  - r: oldrel
-  - r: devel
+r:
+  - release
+  - devel
+  - oldrel
 
 r_packages:
 
 r_github_packages:
   - jimhester/covr
 
+before_install:
+  - if [[ "$TRAVIS_R_VERSION_STRING" = 'devel' ]]; then mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars; fi
+
 after_success:
-  - Rscript -e 'covr::codecov()'
+  - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
