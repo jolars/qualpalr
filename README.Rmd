@@ -7,10 +7,7 @@ output: github_document
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-",
-  fig.width = 5,
-  fig.height = 5
+  comment = "#>"
 )
 ```
 
@@ -37,8 +34,9 @@ pal <- qualpal(n = 4, list(h = c(0, 360), s = c(0.1, 0.5), l = c(0.6, 0.85)))
 # Look at the colors in hex format
 pal$hex
 
-# Create a palette using one of the predefined color subspaces
-pal2 <- qualpal(n = 4, colorspace = "pretty")
+# Create a palette using one of the predefined color subspaces, adapted to color
+# vision deficiency
+pal2 <- qualpal(n = 4, colorspace = "pretty", cvd = "deutan", cvd_severity = 0.5)
 
 # Distance matrix of the DIN99d color differences
 pal2$de_DIN99d
@@ -65,6 +63,10 @@ The development version can be installed by running
 devtools::install_github("jolars/qualpalr")
 ```
 
+## Versioning
+
+Versioning is based on [semantic versioning](http://semver.org/). 
+
 ## Code of conduct
 
 Please note that this project is released with a
@@ -73,5 +75,5 @@ agree to abide by its terms.
 
 ## License
 
-`qualpalr` is open source software, licensed under GPL-3.
+`qualpalr` is open source software, licensed under [GPL-3](LICENSE).
 
