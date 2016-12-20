@@ -2,18 +2,26 @@
 * Local Windows 10 Pro installation 10.0.14393, R 3.3.2
 * Ubuntu 12.04 (on travis-ci), R 3.3.1
 * Windows Server 2012 R2 x64 (build 9600), R 3.3.2, (on appveyor)
-* Win-builder (devel and release)
+* Win-builder (R 2016-12-20 r71820)
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 2 notes
 
-R CMD check generated the following note:
+R CMD check generated the following notes:
 
-    checking for GNU extensions in Makefiles ... NOTE
-    GNU make is a SystemRequirements.
+> * checking CRAN incoming feasibility ... NOTE
+> Maintainer: 'Johan Larsson <johanlarsson@outlook.com>'
+> 
+> Possibly mis-spelled words in DESCRIPTION:
+>   HSL (7:71)
 
-GNU make is a requirement for RcppParallel.
+and
+    
+> * checking for GNU extensions in Makefiles ... NOTE
+> GNU make is a SystemRequirements.
+
+GNU make is required by RcppParallel and "HSL" is spelled as intended.
 
 ## Reverse dependencies
 
