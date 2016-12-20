@@ -1,3 +1,5 @@
+# qualpalr 0.3.0.9000
+
 # qualpalr 0.3.0
 ## New features
 * Improved algorithm for finding distinct colors. (For details
