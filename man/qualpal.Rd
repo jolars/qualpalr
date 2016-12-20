@@ -29,11 +29,12 @@ for normal vision (the default) and to 1 for dichromatic vision.}
 \value{
 qualpal returns a list of class "qualpal" with the following
   components. \item{HSL}{A matrix of the colors in the HSL color space.}
-  \item{DIN99d}{A matrix of the colors in the DIN99d color space.}
+  \item{DIN99d}{A matrix of the colors in the DIN99d color space (after
+    power transformations).}
   \item{RGB}{A matrix of the colors in the sRGB color space.} \item{hex}{A
   character vector of the colors in hex notation.} \item{de_DIN99d}{A
   distance matrix of color differenes according to delta E DIN99d.}
-  \item{min_de_DIN99d}{The smallest pairwise delta E DIN99d.}
+  \item{min_de_DIN99d}{The smallest pairwise DIN99d color difference.}
 }
 \description{
 Takes a subset of the HSL color space, projects it to the DIN99d color space,
