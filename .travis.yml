@@ -4,10 +4,16 @@ language: r
 sudo: false
 cache: packages
 
-r:
-  - release
-  - oldrel
-  - devel
+env:
+  global:
+  - _R_CHECK_FORCE_SUGGESTS_=false
+  - MAKEFLAGS="-j 2"
+
+matrix:
+  include:
+  - r: release
+  - r: oldrel
+  - r: devel
 
 r_packages:
 
