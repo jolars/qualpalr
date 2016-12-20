@@ -19,8 +19,9 @@ range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 
 \item{colorblind}{Deprecated.}
 
-\item{cvd}{Color vision deficiency adaptation. Use the `cvd_severity` argument
-to set the severity of color vision deficiency to adapt to.}
+\item{cvd}{Color vision deficiency adaptation. Use \code{cvd_severity}
+to set the severity of color vision deficiency to adapt to. Permissable
+values are \code{"protan", "deutan",} and \code{"tritan"}.}
 
 \item{cvd_severity}{Severity of color vision deficiency to adapt to. Set to 0
 for normal vision (the default) and to 1 for dichromatic vision.}
@@ -52,11 +53,11 @@ distance matrix is computed and, as an additional step, is transformed using
 power transformations discovered by Huang 2015 in order to fine tune
 differences.
 
-\code{qualpal} then greedily searches the distance matrix for the most
-distinct colors; it does this iteratively by first selecting the two most
-distinct colors, then finding the third that has the smallest pairwise
-distance to the previously selected points, repeating this until `n` colors
-have been collected.
+\code{qualpal} then searches the distance matrix for the most
+distinct colors; it does this iteratively by first selecting a random set of
+colors and then iterates over each color, putting colors back into the total
+set and replaces it with a new color until it has gone through the whole
+range without changing any of the colors.
 
 Optionally, \code{qualpal} can adapt palettes to cater to color vision
 defiency (cvd). This is accomplished by taking the colors
@@ -92,7 +93,7 @@ qualpal(3, "pretty")
 # Adapt color palette to deuteranopia
 qualpal(5, colorspace = "pretty_dark", cvd = "deutan", cvd_severity = 1)
 
-#' # Adapt color palette to protanomaly
+#' # Adapt color palette to protanomaly with severity 0.4
 qualpal(8, colorspace = "pretty_dark", cvd = "protan", cvd_severity = 0.4)
 
 \dontrun{
