@@ -1,7 +1,7 @@
 ## Test environments
 * Local Windows 10 Pro installation 10.0.14393, R 3.3.2
 * Ubuntu 12.04 (on travis-ci), R 3.3.1
-* Windows Server 2012 R2 x64 (build 9600), R 3.3.1, (on appveyor)
+* Windows Server 2012 R2 x64 (build 9600), R 3.3.2, (on appveyor)
 * Win-builder (devel and release)
 
 ## R CMD check results
