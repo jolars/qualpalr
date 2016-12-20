@@ -2,7 +2,7 @@
 
 #include <RcppArmadilloExtensions/sample.h>
 #include <RcppParallel.h>
-#include <ext/algorithm>
+#include <algorithm>
 
 using namespace Rcpp;
 using namespace RcppParallel;
