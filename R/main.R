@@ -147,7 +147,7 @@ qualpal <- function(n, colorspace = "pretty", colorblind,
     cvd <- colorblind
   }
 
-  rnd <- randtoolbox::sobol(500, dim = 3, scrambling = 3)
+  rnd <- randtoolbox::sobol(1000, dim = 3, scrambling = 3)
 
   H <- scale_runif(rnd[, 1], min(h), max(h))
   S <- scale_runif(sqrt(rnd[, 2]), min(s), max(s))
