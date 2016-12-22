@@ -1,5 +1,3 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
 language: r
 sudo: false
 cache: packages
@@ -9,11 +7,9 @@ r:
   - devel
 
 r_packages:
+  - covr
 
 r_check_args: --use-valgrind --as-cran
-
-r_github_packages:
-  - jimhester/covr
 
 r_check_revdep: true
 
@@ -24,9 +20,6 @@ addons:
 
 before_install:
   - if [[ "$TRAVIS_R_VERSION_STRING" = 'devel' ]]; then mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars; fi
-
-script:
-  - R -d valgrind --no-save < qualpalr.Rcheck/qualpalr-Ex.R
 
 after_success:
   - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
