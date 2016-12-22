@@ -137,7 +137,8 @@ qualpal <- function(n, colorspace = "pretty", colorblind,
     assertthat::is.number(cvd_severity),
     cvd_severity >= 0,
     cvd_severity <= 1,
-    n < 100
+    n < 100,
+    n > 1
   )
 
   if (!missing(colorblind)) {
