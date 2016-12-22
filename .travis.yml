@@ -23,4 +23,4 @@ before_install:
 
 after_success:
   - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
-  - bash <(R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < /jolars/qualpalr/tests/testthat.R)
+  - if [[ "$TRAVIS_R_VERSION_STRING" = 'release' ]]; then bash <(R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < /home/travis/build/jolars/qualpalr/tests/testthat.R)
