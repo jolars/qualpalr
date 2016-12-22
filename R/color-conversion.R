@@ -111,7 +111,7 @@ sRGB_XYZ <- function(sRGB) {
 XYZ_sRGB <- function(XYZ) {
   sRGB <- t(tcrossprod(solve(rbind(c(0.4124564, 0.3575761, 0.1804375),
                                    c(0.2126729, 0.7151522, 0.0721750),
-                                   c(0.0193339, 0.1191920, 0.9503041))), sRGB))
+                                   c(0.0193339, 0.1191920, 0.9503041))), XYZ))
 
   ind <- sRGB > 0.0031308
 
@@ -196,5 +196,5 @@ XYZ_LMS <- function(XYZ) {
 LMS_XYZ <- function(LMS) {
   tcrossprod(solve(rbind(c( 0.15514, 0.54312, -0.03286),
                          c(-0.15514, 0.45684,  0.03286),
-                         c(       0,       0,  0.01608))), XYZ)
+                         c(       0,       0,  0.01608))), LMS)
 }
