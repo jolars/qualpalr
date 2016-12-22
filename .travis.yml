@@ -1,36 +1,41 @@
 language: r
 sudo: false
 cache: packages
+warnings_are_errors: true
 
 matrix:
   include:
     - os: linux
-      r: release
+      dist: precise
       compiler: gcc
+      r: release
       r_github_packages:
         - jimhester/covr
       after_success:
         - Rscript -e 'covr::codecov()'
 
     - os: linux
-      r: release
+      dist: precise
       compiler: clang
+      r: release
 
     - os: linux
+      dist: precise
       r: devel
       compiler: gcc
       before_install:
         - mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars
 
     - os: linux
-      r: devel
       dist: trusty
+      r: devel
       compiler: clang
       sudo: required
 
     - os: linux
+      dist: precise
       r: release
-      r_check_args: --as-cran --use-valgrind
+      r_check_args: '--use-valgrind'
       addons:
         apt:
           packages:
@@ -39,16 +44,21 @@ matrix:
     - os: osx
       r: release
       latex: false
-      r_build_args: --no-build-vignettes
-      r_check_args: --ignore-vignettes --no-examples
+      r_build_args: '--no-build-vignettes'
+      r_check_args: '--ignore-vignettes --no-examples'
 
     - os: osx
       r: devel
+      osx_image: xcode8
       latex: false
-      r_build_args: --no-build-vignettes
-      r_check_args: --ignore-vignettes --no-examples
+      r_build_args: '--no-build-vignettes'
+      r_check_args: '--ignore-vignettes --no-examples'
 
   allow_failures:
     - os: linux
       r: oldrel
 
+notifications:
+  email:
+    on_success: change
+    on_failure: change

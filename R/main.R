@@ -43,7 +43,7 @@
 #'   the lightness range. Provides distinct but not aesthetically pleasing
 #'   colors.} \item{\code{pastels}}{Pastel colors from the complete range of
 #'   hues (0-360), with saturation between 0.2 and 0.4, and lightness between
-#'   0.8 and 0.9.} }
+#'   0.8 and 0.9.}}
 #'
 #' @param n The number of colors to generate.
 #' @param colorspace Either 1) a list of three named numeric vectors: \code{h}
@@ -56,8 +56,9 @@
 #' @param cvd Color vision deficiency adaptation. Use \code{cvd_severity}
 #'   to set the severity of color vision deficiency to adapt to. Permissable
 #'   values are \code{"protan", "deutan",} and \code{"tritan"}.
-#' @param cvd_severity Severity of color vision deficiency to adapt to. Set to 0
-#'   for normal vision (the default) and to 1 for dichromatic vision.
+#' @param cvd_severity Severity of color vision deficiency to adapt to. Can take
+#'   any value from 0, for normal vision (the default), and 1, for dichromatic
+#'   vision.
 #' @return qualpal returns a list of class "qualpal" with the following
 #'   components. \item{HSL}{A matrix of the colors in the HSL color space.}
 #'   \item{DIN99d}{A matrix of the colors in the DIN99d color space (after
@@ -133,11 +134,9 @@ qualpal <- function(n, colorspace = "pretty", colorblind,
     is.numeric(h),
     is.numeric(s),
     is.numeric(l),
-    is.numeric(n),
     assertthat::is.number(cvd_severity),
     cvd_severity >= 0,
     cvd_severity <= 1,
-    n > 1,
     n < 100
   )
 

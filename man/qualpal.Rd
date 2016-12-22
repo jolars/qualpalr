@@ -23,8 +23,9 @@ range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 to set the severity of color vision deficiency to adapt to. Permissable
 values are \code{"protan", "deutan",} and \code{"tritan"}.}
 
-\item{cvd_severity}{Severity of color vision deficiency to adapt to. Set to 0
-for normal vision (the default) and to 1 for dichromatic vision.}
+\item{cvd_severity}{Severity of color vision deficiency to adapt to. Can take
+any value from 0, for normal vision (the default), and 1, for dichromatic
+vision.}
 }
 \value{
 qualpal returns a list of class "qualpal" with the following
