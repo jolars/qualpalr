@@ -63,10 +63,12 @@ arma::uvec std_setdiff(const arma::uvec &x, const arma::uvec &y) {
 
   return arma::conv_to<arma::uvec>::from(out);
 }
+
 // Farthest point optimization
 
 // [[Rcpp::export]]
-arma::uvec farthest_points(const Rcpp::NumericMatrix &data, arma::uword n) {
+arma::uvec farthest_points(const Rcpp::NumericMatrix &data,
+                           const arma::uword n) {
 
   arma::mat dm = as<arma::mat>(edist(data));
   arma::uword N = dm.n_cols;
@@ -76,7 +78,6 @@ arma::uvec farthest_points(const Rcpp::NumericMatrix &data, arma::uword n) {
   arma::uvec r_old(n);
 
   do {
-
     r_old = r;
 
     for (arma::uword i = 0; i < n; i++) {
@@ -88,11 +89,11 @@ arma::uvec farthest_points(const Rcpp::NumericMatrix &data, arma::uword n) {
       arma::uvec rr = std_setdiff(r, ri);
       arma::uvec excl = std_setdiff(full_range, rr);
       arma::uvec indices = full_range(excl);
-      arma::rowvec mins = min(dm.submat(rr, excl), 0);
+      arma::rowvec mins = arma::min(dm.submat(rr, excl), 0);
       r(i) = indices(mins.index_max());
 
     }
-  } while (any(r_old != r));
+  } while (!all(r_old == r));
 
   return r + 1;
 }
