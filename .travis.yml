@@ -23,4 +23,4 @@ before_install:
 
 after_success:
   - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
-  - R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < testthat.R
+  - Rscript -e "valgrind --tool=memcheck --leak-check=full" --vanilla < .tests/testthat.R
