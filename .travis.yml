@@ -1,7 +1,6 @@
 language: r
 sudo: false
 cache: packages
-r_check_args: --as-cran
 
 matrix:
   include:
@@ -9,10 +8,32 @@ matrix:
       r: release
       r_packages: covr
       after_success: Rscript -e 'covr::codecov()'
+      env: NB='Linux + gcc + covr'
+
+    - os: linux
+      r: release
+      compiler: clang
+      env: NB='Linux clang'
+
     - os: linux
       r: devel
       before_install:
         mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars
+      env: NB='Linux'
+
+    - os: linux
+      r: devel
+      dist: trusty
+      sudo: required
+      env: NB='Linux + covr
+
+    - os: linux
+      r: devel
+      dist: trusty
+      sudo: required
+      compiler: clang
+      env: NB='Linux + covr
+
     - os: linux
       r: release
       r_check_args: --as-cran --use-valgrind
@@ -20,13 +41,19 @@ matrix:
         apt:
           packages:
             - valgrind
-      env: NB='w/ valgrind
+      env: NB='Linux + valgrind'
+
     - os: osx
       r: release
       latex: false
-      r_check_args: --as-cran --ignore-vignettes
+      r_build_args: --no-build-vignettes
+      r_check_args: --ignore-vignettes --no-examples
+      env: NB='OSX'
+
     - os: osx
       r: devel
       latex: false
-      r_check_args: --as-cran --ignore-vignettes
+      r_build_args: --no-build-vignettes
+      r_check_args: --ignore-vignettes --no-examples
+      env: NB='OSX'
 
