@@ -18,13 +18,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // farthest_points
-arma::uvec farthest_points(const Rcpp::NumericMatrix& data, arma::uword n);
+arma::uvec farthest_points(const Rcpp::NumericMatrix& data, const arma::uword n);
 RcppExport SEXP qualpalr_farthest_points(SEXP dataSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< arma::uword >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const arma::uword >::type n(nSEXP);
     rcpp_result_gen = Rcpp::wrap(farthest_points(data, n));
     return rcpp_result_gen;
 END_RCPP
