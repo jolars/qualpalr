@@ -1,6 +1,6 @@
 # Generate CVD conversion matrices from Machado 2010
 
-cvd_severity_dat <- rep(seq(0, 1, by = 0.1), times = 3, each = 3)
+cvd_severity_dat <- rep(0:10, times = 3, each = 3)
 
 cvd_type_dat <- gl(3, 33, labels = c("protan", "deutan", "tritan"))
 
