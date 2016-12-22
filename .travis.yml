@@ -18,9 +18,13 @@ addons:
     packages:
       - valgrind
 
+env:
+  global:
+    - R_CHECK_ARGS="--no-build-vignettes --no-manual --use-valgrind"
+
 before_install:
   - if [[ "$TRAVIS_R_VERSION_STRING" = 'devel' ]]; then mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars; fi
 
 after_success:
   - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
-  - if [[ "$TRAVIS_R_VERSION_STRING" = 'release' ]]; then bash <(R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < /home/travis/build/jolars/qualpalr/tests/testthat.R)
+  - R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < /home/travis/build/jolars/qualpalr/tests/testthat.R)
