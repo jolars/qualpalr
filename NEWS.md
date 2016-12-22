@@ -1,5 +1,6 @@
-# qualpalr 0.3.1
+# qualpalr 0.3.1.9000
 
+# qualpalr 0.3.1
 ## Bug fixes
 * Dropped a C++ header that caused the package build to fail
 on some platforms.
