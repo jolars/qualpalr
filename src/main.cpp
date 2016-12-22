@@ -2,7 +2,6 @@
 
 #include <RcppArmadilloExtensions/sample.h>
 #include <RcppParallel.h>
-#include <algorithm>
 
 using namespace Rcpp;
 using namespace RcppParallel;
@@ -53,7 +52,7 @@ NumericMatrix edist(NumericMatrix mat) {
   return rmat;
 }
 
-arma::uvec std_setdiff(arma::uvec& x, arma::uvec& y) {
+arma::uvec std_setdiff(const arma::uvec &x, const arma::uvec &y) {
 
   std::vector<int> a = arma::conv_to< std::vector<int> >::from(arma::sort(x));
   std::vector<int> b = arma::conv_to< std::vector<int> >::from(arma::sort(y));
@@ -62,38 +61,38 @@ arma::uvec std_setdiff(arma::uvec& x, arma::uvec& y) {
   std::set_difference(a.begin(), a.end(), b.begin(), b.end(),
                       std::inserter(out, out.end()));
 
-  return arma::conv_to< arma::uvec >::from(out);
+  return arma::conv_to<arma::uvec>::from(out);
 }
-
 // Farthest point optimization
 
 // [[Rcpp::export]]
-arma::uvec farthest_points(Rcpp::NumericMatrix data, arma::uword n) {
+arma::uvec farthest_points(const Rcpp::NumericMatrix &data, arma::uword n) {
 
   arma::mat dm = as<arma::mat>(edist(data));
   arma::uword N = dm.n_cols;
+
   arma::uvec full_range = arma::linspace<arma::uvec>(0, N - 1, N);
+  arma::uvec r = RcppArmadillo::sample(full_range, n, false);
+  arma::uvec r_old(n);
 
-  arma::uvec r = Rcpp::RcppArmadillo::sample(full_range, n, false),
-             r_old(n),
-             rr(n - 1),
-             ri(1),
-             excl(N - n + 1);
-
-  while (any(r_old != r)) {
+  do {
 
     r_old = r;
 
     for (arma::uword i = 0; i < n; i++) {
 
-      ri(0) = r(i);
-      rr = std_setdiff(r, ri);
-      excl = std_setdiff(full_range, rr);
+      arma::uvec::fixed<1> ri;
+
+      ri.fill(r(i));
+
+      arma::uvec rr = std_setdiff(r, ri);
+      arma::uvec excl = std_setdiff(full_range, rr);
       arma::uvec indices = full_range(excl);
       arma::rowvec mins = min(dm.submat(rr, excl), 0);
       r(i) = indices(mins.index_max());
 
     }
-  }
+  } while (any(r_old != r));
+
   return r + 1;
 }
