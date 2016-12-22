@@ -11,8 +11,8 @@ test_that("qualpal() returns the proper list object", {
 
 test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal("cvd"))
-  expect_error(qualpal(2, severity = 1.5))
-  expect_error(qualpal(3, severity = -5))
+  expect_error(qualpal(2, cvd_severity = 1.5))
+  expect_error(qualpal(3, cvd_severity = -5))
   expect_error(qualpal(5, cvd = "normal"))
   expect_warning(qualpal(5, colorblind = "deutan"))
   expect_error(qualpal(1))
@@ -27,9 +27,4 @@ test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal(n = 2, list(h = c(0, 200), s = c(0, 1))))
   expect_error(qualpal(n = 2, list(h = 2, s = c(0, 1), l = c(0, 1))))
   expect_error(qualpal(n = 500))
-})
-
-test_that("plots return errors when used inappropriately", {
-  fit <- qualpal(n = 2)
-  expect_error(pairs.qualpal(fit, colorspace = "ABC"))
 })
