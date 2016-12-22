@@ -83,7 +83,7 @@ white point reference.
   the lightness range. Provides distinct but not aesthetically pleasing
   colors.} \item{\code{pastels}}{Pastel colors from the complete range of
   hues (0-360), with saturation between 0.2 and 0.4, and lightness between
-  0.8 and 0.9.} }
+  0.8 and 0.9.}}
 }
 \examples{
 # generate 3 distinct colors from the default color subspace
