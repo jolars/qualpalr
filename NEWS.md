@@ -1,7 +1,7 @@
-# qualpalr 0.3.0.9000
+# qualpalr 0.3.1
 
 ## Bug fixes
-* Dropped the c++ header `<ext/algoritm>` that caused the package build to fail
+* Dropped a C++ header that caused the package build to fail
 on some platforms.
 * Fixed issues with unitialized variables in the internal farthest points
 optimizer.
