@@ -7,6 +7,7 @@ cache: packages
 r:
   - release
   - devel
+  - oldrel
 
 r_packages:
 
@@ -14,7 +15,7 @@ r_github_packages:
   - jimhester/covr
 
 before_install:
-  - if [[ "$TRAVIS_R_VERSION_STRING" = 'devel' ]]; then mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars; fi
+  - if [[ "$TRAVIS_R_VERSION_STRING" = 'devel' || "$TRAVIS_R_VERSION_STRING" = 'oldrel' ]]; then mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars; fi
 
 after_success:
   - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
