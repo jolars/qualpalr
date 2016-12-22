@@ -6,33 +6,33 @@ matrix:
   include:
     - os: linux
       r: release
-      r_packages: covr
-      after_success: Rscript -e 'covr::codecov()'
-      env: NB='Linux + gcc + covr'
+      compiler: gcc
+      r_github_packages:
+        - jimhester/covr
+      after_success:
+        - Rscript -e 'covr::codecov()'
 
     - os: linux
       r: release
       compiler: clang
-      env: NB='Linux clang'
 
     - os: linux
       r: devel
+      compiler: gcc
       before_install:
-        mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars
-      env: NB='Linux'
+        - mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars
 
     - os: linux
       r: devel
       dist: trusty
+      compiler: gcc
       sudo: required
-      env: NB='Linux + covr
 
     - os: linux
       r: devel
       dist: trusty
-      sudo: required
       compiler: clang
-      env: NB='Linux + covr
+      sudo: required
 
     - os: linux
       r: release
@@ -41,19 +41,20 @@ matrix:
         apt:
           packages:
             - valgrind
-      env: NB='Linux + valgrind'
 
     - os: osx
       r: release
       latex: false
       r_build_args: --no-build-vignettes
       r_check_args: --ignore-vignettes --no-examples
-      env: NB='OSX'
 
     - os: osx
       r: devel
       latex: false
       r_build_args: --no-build-vignettes
       r_check_args: --ignore-vignettes --no-examples
-      env: NB='OSX'
+
+  allow_failures:
+    - os: linux
+      r: oldrel
 

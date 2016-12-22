@@ -120,7 +120,7 @@ qualpal <- function(n, colorspace = "pretty", colorblind,
 
   assertthat::assert_that(
     diff(range(h)) <= 360,
-    min(h) >= - 360,
+    min(h) >= -360,
     max(h) <= 360,
     min(s) >= 0,
     max(s) <= 1,
