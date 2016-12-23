@@ -247,7 +247,9 @@ plot.qualpal <- function(x, ...) {
 
 pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL"), ...) {
   args <- list(
-    x   = switch(match.arg(colorspace), DIN99d = x$DIN99d, HSL = x$HSL),
+    x   = switch(match.arg(colorspace),
+                 DIN99d = x[["DIN99d"]],
+                 HSL = x[["HSL"]]),
     col = x$hex,
     ...
   )
