@@ -186,15 +186,3 @@ Lab_XYZ <- function(Lab, Xr = 0.95047, Yr = 1, Zr = 1.08883) {
 
   cbind(X, Y, Z)
 }
-
-XYZ_LMS <- function(XYZ) {
-  tcrossprod(rbind(c( 0.15514, 0.54312, -0.03286),
-                   c(-0.15514, 0.45684,  0.03286),
-                   c(       0,       0,  0.01608)), XYZ)
-}
-
-LMS_XYZ <- function(LMS) {
-  tcrossprod(solve(rbind(c( 0.15514, 0.54312, -0.03286),
-                         c(-0.15514, 0.45684,  0.03286),
-                         c(       0,       0,  0.01608))), LMS)
-}
