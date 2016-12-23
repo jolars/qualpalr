@@ -15,18 +15,6 @@ matrix:
         - Rscript -e 'covr::codecov()'
 
     - os: linux
-      dist: precise
-      compiler: clang
-      r: release
-
-    - os: linux
-      dist: precise
-      r: devel
-      compiler: gcc
-      before_install:
-        - mkdir ~/.R && echo 'CXX1X=g++ -std=c++0x -g -O2 -fPIC' > ~/.R/Makevars
-
-    - os: linux
       dist: trusty
       r: devel
       compiler: clang
@@ -34,6 +22,7 @@ matrix:
 
     - os: linux
       dist: precise
+      compiler: gcc
       r: release
       r_check_args: '--use-valgrind'
       addons:
@@ -46,10 +35,8 @@ matrix:
       latex: false
       r_build_args: '--no-build-vignettes'
       r_check_args: '--ignore-vignettes --no-examples'
-  allow_failures:
-    - os: linux
-      r: oldrel
 
+  allow_failures:
     - os: osx
       r: devel
       osx_image: xcode8
