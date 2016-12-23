@@ -43,4 +43,5 @@ test_that("formulas perform as expected on worked example from Cui 2002", {
     XYZ_DIN99d(xyz1, Xr = 0.9481, Yr = 1, Zr = 1.0733),
     XYZ_DIN99d(xyz2, Xr = 0.9481, Yr = 1, Zr = 1.0733)
   ))), 3.1210819361106368)
+
 })

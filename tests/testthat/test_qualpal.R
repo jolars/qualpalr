@@ -7,7 +7,7 @@ test_that("qualpal() returns the proper list object", {
   expect_is(fit, "qualpal")
   expect_equal(length(fit), 6)
   expect_equal(length(fit$hex), 2)
-  })
+})
 
 test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal("cvd"))
@@ -27,4 +27,10 @@ test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal(n = 2, list(h = c(0, 200), s = c(0, 1))))
   expect_error(qualpal(n = 2, list(h = 2, s = c(0, 1), l = c(0, 1))))
   expect_error(qualpal(n = 500))
+})
+
+test_that("plotting functions work", {
+  f <- qualpal(5)
+  expect_error(plot(f), NA)
+  expect_error(pairs(f, colorspace = "f"))
 })
