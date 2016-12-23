@@ -29,8 +29,8 @@ test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal(n = 500))
 })
 
-test_that("plotting functions work", {
+test_that("plotting checks for errors", {
   f <- qualpal(5)
-  expect_error(plot(f), NA)
+
   expect_error(pairs(f, colorspace = "f"))
 })
