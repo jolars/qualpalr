@@ -3,6 +3,6 @@
 S3method(pairs,qualpal)
 S3method(plot,qualpal)
 export(qualpal)
-importFrom(Rcpp,evalCpp)
+importFrom(Rcpp,sourceCpp)
 importFrom(RcppParallel,RcppParallelLibs)
 useDynLib(qualpalr)

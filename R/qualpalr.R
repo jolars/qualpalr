@@ -1,4 +1,4 @@
 #' @useDynLib qualpalr
-#' @importFrom Rcpp evalCpp
+#' @importFrom Rcpp sourceCpp
 #' @importFrom RcppParallel RcppParallelLibs
 NULL
