@@ -46,6 +46,9 @@ matrix:
       latex: false
       r_build_args: '--no-build-vignettes'
       r_check_args: '--ignore-vignettes --no-examples'
+  allow_failures:
+    - os: linux
+      r: oldrel
 
     - os: osx
       r: devel
@@ -53,10 +56,6 @@ matrix:
       latex: false
       r_build_args: '--no-build-vignettes'
       r_check_args: '--ignore-vignettes --no-examples'
-
-  allow_failures:
-    - os: linux
-      r: oldrel
 
 notifications:
   email:
