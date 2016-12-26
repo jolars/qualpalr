@@ -9,10 +9,18 @@ matrix:
       dist: precise
       compiler: gcc
       r: release
+      r_check_args: '--as-cran --use-valgrind'
+      env:
+        - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
       r_github_packages:
         - jimhester/covr
       after_success:
         - Rscript -e 'covr::codecov()'
+
+    - os: linux
+      dist: precise
+      compiler: clang
+      r: release
 
     - os: linux
       dist: trusty
@@ -21,25 +29,13 @@ matrix:
       sudo: required
 
     - os: linux
-      dist: precise
-      compiler: gcc
-      r: release
-      r_check_args: '--use-valgrind'
-      addons:
-        apt:
-          packages:
-            - valgrind
-
-    - os: osx
-      r: release
-      latex: false
-      r_build_args: '--no-build-vignettes'
-      r_check_args: '--ignore-vignettes --no-examples'
-
-  allow_failures:
-    - os: osx
+      dist: trusty
       r: devel
-      osx_image: xcode8
+      compiler: gcc
+      sudo: required
+
+    - os: osx
+      r: release
       latex: false
       r_build_args: '--no-build-vignettes'
       r_check_args: '--ignore-vignettes --no-examples'
