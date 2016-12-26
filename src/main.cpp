@@ -43,7 +43,7 @@ struct dist_worker : public Worker {
 };
 
 // [[Rcpp::export]]
-NumericMatrix edist(NumericMatrix mat) {
+NumericMatrix edist(const NumericMatrix mat) {
 
   NumericMatrix rmat(mat.nrow(), mat.nrow());
   dist_worker dist_worker(mat, rmat);
@@ -52,7 +52,7 @@ NumericMatrix edist(NumericMatrix mat) {
   return rmat;
 }
 
-arma::uvec std_setdiff(const arma::uvec &x, const arma::uvec &y) {
+arma::uvec std_setdiff(const arma::uvec & x, const arma::uvec & y) {
 
   std::vector<int> a = arma::conv_to< std::vector<int> >::from(arma::sort(x));
   std::vector<int> b = arma::conv_to< std::vector<int> >::from(arma::sort(y));
