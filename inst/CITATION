@@ -1,0 +1,15 @@
+citHeader("To cite eulerr in publications use:")
+
+citEntry(entry = "Manual",
+  title        = "{qualpalr}: Automatic Generation of Qualitative Color Palettes",
+  author       = personList(as.person("Johan Larsson")),
+  year         = "2016",
+  note         = "{R package version 0.3.1}",
+  url          = "{https://github.com/jolars/qualpalr}",
+
+  textVersion  =
+  paste("Johan Larsson (2016).",
+        "{qualpalr}: Automatic Generation of Qualitative Color Palettes",
+        "R package version 0.3.1",
+        "URL https://github.com/jolars/qualpalr")
+)
