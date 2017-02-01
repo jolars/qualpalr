@@ -1,4 +1,4 @@
-citHeader("To cite eulerr in publications use:")
+citHeader("To cite qualpalr in publications use:")
 
 citEntry(entry = "Manual",
   title        = "{qualpalr}: Automatic Generation of Qualitative Color Palettes",
