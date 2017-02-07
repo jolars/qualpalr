@@ -14,7 +14,6 @@ test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal(2, cvd_severity = 1.5))
   expect_error(qualpal(3, cvd_severity = -5))
   expect_error(qualpal(5, cvd = "normal"))
-  expect_warning(qualpal(5, colorblind = "deutan"))
   expect_error(qualpal(1))
   expect_error(qualpal(n = 0))
   expect_error(qualpal(n = 2, cvd = "deutrenop"))
