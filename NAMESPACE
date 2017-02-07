@@ -2,6 +2,7 @@
 
 S3method(pairs,qualpal)
 S3method(plot,qualpal)
+export(optimize_qualpal)
 export(qualpal)
 importFrom(Rcpp,sourceCpp)
 importFrom(RcppParallel,RcppParallelLibs)
