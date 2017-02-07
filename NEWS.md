@@ -1,4 +1,10 @@
 # qualpalr 0.3.1.9000
+## Major changes
+* `optimize_qualpal()` is a new function that tweaks the amount of color
+vision deficiency adaption to meet a target color difference.
+
+## Minor  changes
+* `qualpal()` argument `colorblind` was made defunct.
 
 # qualpalr 0.3.1
 ## Bug fixes
