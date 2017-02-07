@@ -17,5 +17,6 @@ Predefined colorspaces
 }
 \examples{
 NULL
+
 }
 \keyword{internal}
