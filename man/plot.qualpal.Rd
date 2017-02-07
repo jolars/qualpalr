@@ -25,4 +25,3 @@ plot(col_pal)
 \code{\link{qualpal}}, \code{\link{pairs.qualpal}},
   \code{\link[graphics]{plot}}
 }
-

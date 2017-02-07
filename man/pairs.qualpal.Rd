@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{pairs.qualpal}
 \alias{pairs.qualpal}
-\title{Scatter matrix plot of qualitative color palette}
+\title{Scatterplot matrix of qualitative color palette}
 \usage{
 \method{pairs}{qualpal}(x, colorspace = c("DIN99d", "HSL"), ...)
 }
@@ -16,7 +16,7 @@
 \item{...}{Arguments to pass on to \code{\link[graphics]{pairs}}.}
 }
 \description{
-Plots the colors in a \code{qualpal} object as a scatter matrix plot on
+Plots the colors in a \code{qualpal} object as a scatterplot matrix on
 either the DIN99d (the default) or HSL color space.
 }
 \examples{
@@ -29,4 +29,3 @@ pairs(col_pal, colorspace = "HSL")
   \code{\link{plot.qualpal}},
   \code{\link[graphics]{pairs}}
 }
-

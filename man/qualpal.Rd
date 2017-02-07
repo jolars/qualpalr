@@ -4,11 +4,11 @@
 \alias{qualpal}
 \title{Generate qualitative color palettes}
 \usage{
-qualpal(n, colorspace = "pretty", colorblind, cvd = c("protan", "deutan",
-  "tritan"), cvd_severity = 0)
+qualpal(n, colorspace = "pretty", cvd = c("protan", "deutan", "tritan"),
+  cvd_severity = 0)
 }
 \arguments{
-\item{n}{The number of colors to generate.}
+\item{n}{Number of colors to generate.}
 
 \item{colorspace}{Either 1) a list of three named numeric vectors: \code{h}
 (hue), \code{s} (saturation), and \code{l} (lightness), all of length 2
@@ -16,8 +16,6 @@ specifying a min and max value for the range. The values has to be in the
 range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 2) a \emph{character vector} specifying one of the predefined color spaces
 (see below).}
-
-\item{colorblind}{Deprecated.}
 
 \item{cvd}{Color vision deficiency adaptation. Use \code{cvd_severity}
 to set the severity of color vision deficiency to adapt to. Permissable
@@ -28,7 +26,7 @@ any value from 0, for normal vision (the default), and 1, for dichromatic
 vision.}
 }
 \value{
-qualpal returns a list of class "qualpal" with the following
+A list of class \code{qualpal} with the following
   components. \item{HSL}{A matrix of the colors in the HSL color space.}
   \item{DIN99d}{A matrix of the colors in the DIN99d color space (after
     power transformations).}
@@ -85,6 +83,7 @@ white point reference.
   hues (0-360), with saturation between 0.2 and 0.4, and lightness between
   0.8 and 0.9.}}
 }
+
 \examples{
 # generate 3 distinct colors from the default color subspace
 qualpal(3)
@@ -107,4 +106,3 @@ qualpal(n = 3, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
 \seealso{
 \code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}}
 }
-
