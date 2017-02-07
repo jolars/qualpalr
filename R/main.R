@@ -45,21 +45,20 @@
 #'   hues (0-360), with saturation between 0.2 and 0.4, and lightness between
 #'   0.8 and 0.9.}}
 #'
-#' @param n The number of colors to generate.
+#' @param n Number of colors to generate.
 #' @param colorspace Either 1) a list of three named numeric vectors: \code{h}
 #'   (hue), \code{s} (saturation), and \code{l} (lightness), all of length 2
 #'   specifying a min and max value for the range. The values has to be in the
 #'   range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 #'   2) a \emph{character vector} specifying one of the predefined color spaces
 #'   (see below).
-#' @param colorblind Deprecated.
 #' @param cvd Color vision deficiency adaptation. Use \code{cvd_severity}
 #'   to set the severity of color vision deficiency to adapt to. Permissable
 #'   values are \code{"protan", "deutan",} and \code{"tritan"}.
 #' @param cvd_severity Severity of color vision deficiency to adapt to. Can take
 #'   any value from 0, for normal vision (the default), and 1, for dichromatic
 #'   vision.
-#' @return qualpal returns a list of class "qualpal" with the following
+#' @return A list of class \code{qualpal} with the following
 #'   components. \item{HSL}{A matrix of the colors in the HSL color space.}
 #'   \item{DIN99d}{A matrix of the colors in the DIN99d color space (after
 #'     power transformations).}
@@ -78,7 +77,7 @@
 #' # Adapt color palette to deuteranopia
 #' qualpal(5, colorspace = "pretty_dark", cvd = "deutan", cvd_severity = 1)
 #'
-#' #' # Adapt color palette to protanomaly with severity 0.4
+#' # Adapt color palette to protanomaly with severity 0.4
 #' qualpal(8, colorspace = "pretty_dark", cvd = "protan", cvd_severity = 0.4)
 #'
 #' \dontrun{
@@ -88,31 +87,26 @@
 #'
 #' @export
 
-qualpal <- function(n, colorspace = "pretty", colorblind,
+qualpal <- function(n,
+                    colorspace = "pretty",
                     cvd = c("protan", "deutan", "tritan"),
                     cvd_severity = 0) {
   if (is.list(colorspace)) {
-
     assertthat::assert_that(
       assertthat::has_attr(colorspace, "names"),
       "h" %in% names(colorspace),
       "s" %in% names(colorspace),
       "l" %in% names(colorspace)
     )
-
   } else if (is.character(colorspace)) {
-
     assertthat::assert_that(assertthat::is.string(colorspace))
     colorspace <- predefined_colorspaces(colorspace)
     if (is.null(colorspace)) {
       stop("The predefined color space does not exist.")
-
     }
   } else {
-
     stop("colorspace must be a list or a character vector specifying one of
          the color space templates.")
-
   }
 
   h <- colorspace[["h"]]
@@ -140,12 +134,6 @@ qualpal <- function(n, colorspace = "pretty", colorblind,
     n < 100,
     n > 1
   )
-
-  if (!missing(colorblind)) {
-    warning("Argument colorblind is deprecated; please use cvd instead.",
-            call. = FALSE)
-    cvd <- colorblind
-  }
 
   rnd <- randtoolbox::sobol(1000, dim = 3, scrambling = 3)
 
@@ -224,9 +212,9 @@ plot.qualpal <- function(x, ...) {
   do.call(graphics::plot, args)
 }
 
-#' Scatter matrix plot of qualitative color palette
+#' Scatterplot matrix of qualitative color palette
 #'
-#' Plots the colors in a \code{qualpal} object as a scatter matrix plot on
+#' Plots the colors in a \code{qualpal} object as a scatterplot matrix on
 #' either the DIN99d (the default) or HSL color space.
 #'
 #' @param x A list object of class \code{"qualpal"} generated from
@@ -247,20 +235,25 @@ plot.qualpal <- function(x, ...) {
 
 pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL"), ...) {
   args <- list(
-    x   = switch(match.arg(colorspace),
-                 DIN99d = x[["DIN99d"]],
-                 HSL = x[["HSL"]]),
+    x = switch(match.arg(colorspace), DIN99d = x[["DIN99d"]], HSL = x[["HSL"]]),
     col = x$hex,
     ...
   )
   if (is.null(args[["cex"]])) args[["cex"]] <- 3
   if (is.null(args[["pch"]])) args[["pch"]] <- 19
-
   do.call(graphics::pairs, args)
 }
 
-# Predefined colorspaces ----------------------------------------------------
-
+#' Predefined colorspaces
+#'
+#' @param colorspace Character vector
+#'
+#' @return Specification for HSL color space as a list.
+#'
+#' @keywords internal
+#' @examples
+#' NULL
+#'
 predefined_colorspaces <- function(colorspace) {
   list(
     pretty      = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),

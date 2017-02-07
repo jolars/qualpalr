@@ -94,7 +94,7 @@ qualpal(3, "pretty")
 # Adapt color palette to deuteranopia
 qualpal(5, colorspace = "pretty_dark", cvd = "deutan", cvd_severity = 1)
 
-#' # Adapt color palette to protanomaly with severity 0.4
+# Adapt color palette to protanomaly with severity 0.4
 qualpal(8, colorspace = "pretty_dark", cvd = "protan", cvd_severity = 0.4)
 
 \dontrun{
