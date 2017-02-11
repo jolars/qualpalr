@@ -1,9 +1,11 @@
 #' Generate qualitative color palettes
 #'
-#' Takes a subset of the HSL color space, projects it to the DIN99d color space,
-#' and generates a color palette from the most distinct colors.
+#' Given a color space or collection of colors, \code{qualpal()} and projects
+#' them to the DIN99d color space, where it generates a color palette from the
+#' most visually distinct colors, optionally taking color vision deficiency
+#' into account.
 #'
-#' \code{qualpal} takes a color subspace in the HSL color space, where lightness
+#' The function takes a color subspace in the HSL color space, where lightness
 #' and saturation take values from 0 to 1. Hue take values from -360 to 360,
 #' although negative values are brought to lie in the range \{0, 360\}; this
 #' behavior exists to enable color subspaces that span all hues being tha the
@@ -31,27 +33,46 @@
 #' \code{qualpal} currently only supports the sRGB color space with the D65
 #' white point reference.
 #'
-#' @section Predefined color spaces: Instead of specifying a color space
-#'   manually, the following predefined color spaces can by accessed by
-#'   specifying their name as a character vector to \code{colorspace}.
-#'   \describe{ \item{\code{pretty}}{Tries to provide aesthetically pleasing,
-#'   but still distinct color palettes. Hue ranges from 0 to 360, saturation
-#'   from 0.1 to 0.5, and lightness from 0.5 to 0.85. Is not suitable for large
-#'   numbers of \code{n}} \item{\code{pretty_dark}}{Like \code{pretty} but
-#'   darker. Hue ranges from 0 to 360, saturation from 0.1 to 0.5, and lightness
-#'   from 0.2 to 0.4.} \item{\code{rainbow}}{Uses all hues, chromas, and most of
-#'   the lightness range. Provides distinct but not aesthetically pleasing
-#'   colors.} \item{\code{pastels}}{Pastel colors from the complete range of
-#'   hues (0-360), with saturation between 0.2 and 0.4, and lightness between
-#'   0.8 and 0.9.}}
+#' @param n The number of colors to generate.
+#' @param colorspace A color space to generate colors from. Can be any of the
+#'   following:
+#'   \itemize{
+#'     \item{A \code{\link{list}} with the following \emph{named} vectors,
+#'       each of length two, giving a range for each item.}{
+#'       \describe{
+#'         \item{\code{h}}{Hue, in the range [0, 1]}
+#'         \item{\code{s}}{Saturation, in the range [-360, 360]}
+#'         \item{\code{l}}{Lightness, in the range [0, 1]}
+#'       }
+#'     }
+#'     \item{A \code{\link{character}} vector of length one specifying one of
+#'       these predefined color spaces:}{
+#'       \describe{
+#'         \item{\code{pretty}}{
+#'           Tries to provide aesthetically pleasing,
+#'           but still distinct color palettes. Hue ranges from 0 to 360,
+#'           saturation from 0.1 to 0.5, and lightness from 0.5 to 0.85. This
+#'           palette is not suitable for high \code{n}}
+#'         \item{\code{pretty_dark}}{
+#'           Like \code{pretty} but darker. Hue ranges from 0 to 360, saturation
+#'           from 0.1 to 0.5, and lightness from 0.2 to 0.4.
+#'         }
+#'         \item{\code{rainbow}}{
+#'           Uses all hues, chromas, and most of the lightness range. Provides
+#'           distinct but not aesthetically pleasing colors.
+#'         }
+#'         \item{\code{pastels}}{
+#'           Pastel colors from the complete range of hues (0-360), with
+#'           saturation between 0.2 and 0.4, and lightness between 0.8 and 0.9.
+#'         }
+#'       }
+#'     }
+#'     \item{A \code{\link{matrix}} of colors from the sRGB color space, each
+#'       row representing a unique color.}
+#'     \item{A \code{\link{data.frame}} that can be converted to a matrix via
+#'       \link{data.matrix}}
+#'   }
 #'
-#' @param n Number of colors to generate.
-#' @param colorspace Either 1) a list of three named numeric vectors: \code{h}
-#'   (hue), \code{s} (saturation), and \code{l} (lightness), all of length 2
-#'   specifying a min and max value for the range. The values has to be in the
-#'   range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
-#'   2) a \emph{character vector} specifying one of the predefined color spaces
-#'   (see below).
 #' @param cvd Color vision deficiency adaptation. Use \code{cvd_severity}
 #'   to set the severity of color vision deficiency to adapt to. Permissable
 #'   values are \code{"protan", "deutan",} and \code{"tritan"}.
@@ -59,55 +80,131 @@
 #'   any value from 0, for normal vision (the default), and 1, for dichromatic
 #'   vision.
 #' @return A list of class \code{qualpal} with the following
-#'   components. \item{HSL}{A matrix of the colors in the HSL color space.}
-#'   \item{DIN99d}{A matrix of the colors in the DIN99d color space (after
-#'     power transformations).}
-#'   \item{RGB}{A matrix of the colors in the sRGB color space.} \item{hex}{A
-#'   character vector of the colors in hex notation.} \item{de_DIN99d}{A
-#'   distance matrix of color differenes according to delta E DIN99d.}
-#'   \item{min_de_DIN99d}{The smallest pairwise DIN99d color difference.}
+#'   components.
+#'   \item{HSL}{
+#'     A matrix of the colors in the HSL color space.
+#'   }
+#'   \item{DIN99d}{
+#'     A matrix of the colors in the DIN99d color space (after power
+#'     transformations).
+#'   }
+#'   \item{RGB}{
+#'     A matrix of the colors in the sRGB color space.} \item{hex}{A
+#'     character vector of the colors in hex notation.} \item{de_DIN99d}{A
+#'     distance matrix of color differenes according to delta E DIN99d.
+#'   }
+#'   \item{min_de_DIN99d}{
+#'     The smallest pairwise DIN99d color difference.
+#'   }
 #' @seealso \code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}}
 #' @examples
-#' # generate 3 distinct colors from the default color subspace
+#' # Generate 3 distinct colors from the default color space
 #' qualpal(3)
-#' qualpal(n = 3, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
+#'
+#' # Provide a custom color space
+#' qualpal(n = 3, list(h = c(35, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
 #'
 #' qualpal(3, "pretty")
 #'
-#' # Adapt color palette to deuteranopia
+#' # Adapt palette to deuteranopia
 #' qualpal(5, colorspace = "pretty_dark", cvd = "deutan", cvd_severity = 1)
 #'
-#' # Adapt color palette to protanomaly with severity 0.4
+#' # Adapt palette to protanomaly with severity 0.4
 #' qualpal(8, colorspace = "pretty_dark", cvd = "protan", cvd_severity = 0.4)
 #'
 #' \dontrun{
 #' # The range of hue cannot exceed 360
-#' qualpal(n = 3, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
+#' qualpal(n = 3, list(h = c(-20, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
 #' }
 #'
 #' @export
-
-qualpal <- function(n,
-                    colorspace = "pretty",
+qualpal <- function(n, colorspace = "pretty",
                     cvd = c("protan", "deutan", "tritan"),
                     cvd_severity = 0) {
-  if (is.list(colorspace)) {
-    assertthat::assert_that(
-      assertthat::has_attr(colorspace, "names"),
-      "h" %in% names(colorspace),
-      "s" %in% names(colorspace),
-      "l" %in% names(colorspace)
-    )
-  } else if (is.character(colorspace)) {
-    assertthat::assert_that(assertthat::is.string(colorspace))
-    colorspace <- predefined_colorspaces(colorspace)
-    if (is.null(colorspace)) {
-      stop("The predefined color space does not exist.")
-    }
-  } else {
-    stop("colorspace must be a list or a character vector specifying one of
-         the color space templates.")
+  UseMethod("qualpal", colorspace)
+}
+
+#' @export
+qualpal.matrix <- function(n, colorspace,
+                           cvd = c("protan", "deutan", "tritan"),
+                           cvd_severity = 0) {
+  assertthat::assert_that(
+    is.matrix(colorspace),
+    max(colorspace) <= 1,
+    min(colorspace) >= 0
+  )
+
+  RGB <- colorspace
+  HSL <- RGB_HSL(RGB)
+
+  # Simulate color deficiency if required
+  if (match.arg(cvd) != "normal") {
+    RGB <- sRGB_CVD(RGB, cvd = match.arg(cvd), cvd_severity = cvd_severity)
   }
+
+  XYZ    <- sRGB_XYZ(RGB)
+  DIN99d <- XYZ_DIN99d(XYZ)
+
+  col_ind <- farthest_points(DIN99d, n)
+
+  RGB    <- RGB[col_ind, ]
+  HSL    <- HSL[col_ind, ]
+  DIN99d <- DIN99d[col_ind, ]
+  hex    <- grDevices::rgb(RGB)
+
+  dimnames(HSL)    <- list(hex, c("Hue", "Saturation", "Lightness"))
+  dimnames(DIN99d) <- list(hex, c("L(99d)", "a(99d)", "b(99d)"))
+  dimnames(RGB)    <- list(hex, c("Red", "Green", "Blue"))
+
+  col_diff <- stats::as.dist(edist(DIN99d))
+
+  structure(
+    list(
+      HSL           = round(HSL, 2),
+      RGB           = round(RGB, 2),
+      DIN99d        = round(DIN99d, 1),
+      hex           = hex,
+      de_DIN99d     = round(col_diff, 0),
+      min_de_DIN99d = min(col_diff)
+    ),
+    class = c("qualpal", "list")
+  )
+}
+
+#' @export
+qualpal.data.frame <- function(n, colorspace,
+                               cvd = c("protan", "deutan", "tritan"),
+                               cvd_severity = 0) {
+  mat <- data.matrix(colorspace)
+
+  qualpal(n = n, colorspace = mat, cvd = cvd, cvd_severity = cvd_severity)
+}
+
+#' @export
+qualpal.character <- function(n, colorspace = "pretty",
+                              cvd = c("protan", "deutan", "tritan"),
+                              cvd_severity = 0) {
+  assertthat::assert_that(
+    assertthat::is.string(colorspace)
+  )
+
+  colorspace <- predefined_colorspaces(colorspace)
+
+  qualpal(n = n, colorspace = colorspace, cvd = cvd,
+          cvd_severity = cvd_severity)
+}
+
+
+#' @export
+qualpal.list <- function(n, colorspace,
+                         cvd = c("protan", "deutan", "tritan"),
+                         cvd_severity = 0) {
+  assertthat::assert_that(
+    assertthat::has_attr(colorspace, "names"),
+    "h" %in% names(colorspace),
+    "s" %in% names(colorspace),
+    "l" %in% names(colorspace)
+  )
 
   h <- colorspace[["h"]]
   s <- colorspace[["s"]]
@@ -146,119 +243,21 @@ qualpal <- function(n,
   HSL[HSL[, 1] < 0, 1] <- HSL[HSL[, 1] < 0, 1] + 360
   RGB <- HSL_RGB(HSL)
 
-  # Simulate color deficiency if required
-  if (match.arg(cvd) != "normal") {
-    RGB <- sRGB_CVD(RGB, cvd = match.arg(cvd), cvd_severity = cvd_severity)
-  }
-
-  XYZ    <- sRGB_XYZ(RGB)
-  DIN99d <- XYZ_DIN99d(XYZ)
-
-  col_ind <- farthest_points(DIN99d, n)
-
-  RGB    <- RGB[col_ind, ]
-  HSL    <- HSL[col_ind, ]
-  DIN99d <- DIN99d[col_ind, ]
-  hex    <- grDevices::rgb(RGB)
-
-  dimnames(HSL)    <- list(hex, c("Hue", "Saturation", "Lightness"))
-  dimnames(DIN99d) <- list(hex, c("L(99d)", "a(99d)", "b(99d)"))
-  dimnames(RGB)    <- list(hex, c("Red", "Green", "Blue"))
-
-  col_diff <- stats::as.dist(edist(DIN99d))
-
-  structure(
-    list(
-      HSL           = round(HSL, 2),
-      RGB           = round(RGB, 2),
-      DIN99d        = round(DIN99d, 1),
-      hex           = hex,
-      de_DIN99d     = round(col_diff, 0),
-      min_de_DIN99d = min(col_diff)
-    ),
-    class = c("qualpal", "list")
-  )
+  qualpal(n = n, colorspace = RGB, cvd = cvd, cvd_severity = cvd_severity)
 }
 
-#' Multidimensional scaling map of qualitative color palette
-#'
-#' Uses the colors in a \code{qualpalr} object to compute and plot a
-#' multidimensional scaling (MDS) map using \code{\link[stats]{cmdscale}} on the
-#' Delta E DIN99d distance matrix.
-#'
-#' @param x A list object of class \code{"qualpal"} generated from
-#'   \code{\link{qualpal}}.
-#' @param ... Arguments to pass on to \code{\link[graphics]{plot}}.
-#' @seealso \code{\link{qualpal}}, \code{\link{pairs.qualpal}},
-#'   \code{\link[graphics]{plot}}
-#'
-#' @examples
-#' col_pal <- qualpal(n = 3)
-#' plot(col_pal)
-#' @export
 
-plot.qualpal <- function(x, ...) {
-  args <- list(
-    x = stats::cmdscale(x$de_DIN99d, k = ifelse(length(x$hex) == 2, 1, 2)),
-    col = x$hex,
-    ylab = "dE DIN99d",
-    xlab = "dE DIN99d",
-    ...
-    )
+# Predefined color spaces -------------------------------------------------
 
-  if (is.null(args[["cex"]])) args[["cex"]] <- 3
-  if (is.null(args[["pch"]])) args[["pch"]] <- 19
-
-  do.call(graphics::plot, args)
-}
-
-#' Scatterplot matrix of qualitative color palette
-#'
-#' Plots the colors in a \code{qualpal} object as a scatterplot matrix on
-#' either the DIN99d (the default) or HSL color space.
-#'
-#' @param x A list object of class \code{"qualpal"} generated from
-#'   \code{\link{qualpal}}.
-#' @param colorspace The color space in which to plot the colors ("DIN99d" or
-#'   "HSL").
-#' @param ... Arguments to pass on to \code{\link[graphics]{pairs}}.
-#' @seealso
-#'   \code{\link{qualpal}},
-#'   \code{\link{plot.qualpal}},
-#'   \code{\link[graphics]{pairs}}
-#'
-#' @examples
-#' col_pal <- qualpal(n = 3)
-#' pairs(col_pal)
-#' pairs(col_pal, colorspace = "HSL")
-#' @export
-
-pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL"), ...) {
-  args <- list(
-    x = switch(match.arg(colorspace), DIN99d = x[["DIN99d"]], HSL = x[["HSL"]]),
-    col = x$hex,
-    ...
-  )
-  if (is.null(args[["cex"]])) args[["cex"]] <- 3
-  if (is.null(args[["pch"]])) args[["pch"]] <- 19
-  do.call(graphics::pairs, args)
-}
-
-#' Predefined colorspaces
-#'
-#' @param colorspace Character vector
-#'
-#' @return Specification for HSL color space as a list.
-#'
-#' @keywords internal
-#' @examples
-#' NULL
-#'
 predefined_colorspaces <- function(colorspace) {
-  list(
+  spaces <- list(
     pretty      = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
     pretty_dark = list(h = c(0, 360), s = c(0.1, 0.5), l = c(0.2, 0.4)),
     rainbow     = list(h = c(0, 360), s = c(0,   1),   l = c(0,   1)),
     pastels     = list(h = c(0, 360), s = c(0.2, 0.4), l = c(0.8, 0.9))
-  )[[colorspace]]
+  )
+
+  assertthat::assert_that(colorspace %in% names(spaces))
+
+  spaces[[colorspace]]
 }

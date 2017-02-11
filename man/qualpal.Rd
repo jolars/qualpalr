@@ -8,14 +8,46 @@ qualpal(n, colorspace = "pretty", cvd = c("protan", "deutan", "tritan"),
   cvd_severity = 0)
 }
 \arguments{
-\item{n}{Number of colors to generate.}
+\item{n}{The number of colors to generate.}
 
-\item{colorspace}{Either 1) a list of three named numeric vectors: \code{h}
-(hue), \code{s} (saturation), and \code{l} (lightness), all of length 2
-specifying a min and max value for the range. The values has to be in the
-range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
-2) a \emph{character vector} specifying one of the predefined color spaces
-(see below).}
+\item{colorspace}{A color space to generate colors from. Can be any of the
+following:
+\itemize{
+  \item{A \code{\link{list}} with the following \emph{named} vectors,
+    each of length two, giving a range for each item.}{
+    \describe{
+      \item{\code{h}}{Hue, in the range [0, 1]}
+      \item{\code{s}}{Saturation, in the range [-360, 360]}
+      \item{\code{l}}{Lightness, in the range [0, 1]}
+    }
+  }
+  \item{A \code{\link{character}} vector of length one specifying one of
+    these predefined color spaces:}{
+    \describe{
+      \item{\code{pretty}}{
+        Tries to provide aesthetically pleasing,
+        but still distinct color palettes. Hue ranges from 0 to 360,
+        saturation from 0.1 to 0.5, and lightness from 0.5 to 0.85. This
+        palette is not suitable for high \code{n}}
+      \item{\code{pretty_dark}}{
+        Like \code{pretty} but darker. Hue ranges from 0 to 360, saturation
+        from 0.1 to 0.5, and lightness from 0.2 to 0.4.
+      }
+      \item{\code{rainbow}}{
+        Uses all hues, chromas, and most of the lightness range. Provides
+        distinct but not aesthetically pleasing colors.
+      }
+      \item{\code{pastels}}{
+        Pastel colors from the complete range of hues (0-360), with
+        saturation between 0.2 and 0.4, and lightness between 0.8 and 0.9.
+      }
+    }
+  }
+  \item{A \code{\link{matrix}} of colors from the sRGB color space, each
+    row representing a unique color.}
+  \item{A \code{\link{data.frame}} that can be converted to a matrix via
+    \link{data.matrix}}
+}}
 
 \item{cvd}{Color vision deficiency adaptation. Use \code{cvd_severity}
 to set the severity of color vision deficiency to adapt to. Permissable
@@ -27,20 +59,31 @@ vision.}
 }
 \value{
 A list of class \code{qualpal} with the following
-  components. \item{HSL}{A matrix of the colors in the HSL color space.}
-  \item{DIN99d}{A matrix of the colors in the DIN99d color space (after
-    power transformations).}
-  \item{RGB}{A matrix of the colors in the sRGB color space.} \item{hex}{A
-  character vector of the colors in hex notation.} \item{de_DIN99d}{A
-  distance matrix of color differenes according to delta E DIN99d.}
-  \item{min_de_DIN99d}{The smallest pairwise DIN99d color difference.}
+  components.
+  \item{HSL}{
+    A matrix of the colors in the HSL color space.
+  }
+  \item{DIN99d}{
+    A matrix of the colors in the DIN99d color space (after power
+    transformations).
+  }
+  \item{RGB}{
+    A matrix of the colors in the sRGB color space.} \item{hex}{A
+    character vector of the colors in hex notation.} \item{de_DIN99d}{A
+    distance matrix of color differenes according to delta E DIN99d.
+  }
+  \item{min_de_DIN99d}{
+    The smallest pairwise DIN99d color difference.
+  }
 }
 \description{
-Takes a subset of the HSL color space, projects it to the DIN99d color space,
-and generates a color palette from the most distinct colors.
+Given a color space or collection of colors, \code{qualpal()} and projects
+them to the DIN99d color space, where it generates a color palette from the
+most visually distinct colors, optionally taking color vision deficiency
+into account.
 }
 \details{
-\code{qualpal} takes a color subspace in the HSL color space, where lightness
+The function takes a color subspace in the HSL color space, where lightness
 and saturation take values from 0 to 1. Hue take values from -360 to 360,
 although negative values are brought to lie in the range \{0, 360\}; this
 behavior exists to enable color subspaces that span all hues being tha the
@@ -68,38 +111,24 @@ these new colors.
 \code{qualpal} currently only supports the sRGB color space with the D65
 white point reference.
 }
-\section{Predefined color spaces}{
- Instead of specifying a color space
-  manually, the following predefined color spaces can by accessed by
-  specifying their name as a character vector to \code{colorspace}.
-  \describe{ \item{\code{pretty}}{Tries to provide aesthetically pleasing,
-  but still distinct color palettes. Hue ranges from 0 to 360, saturation
-  from 0.1 to 0.5, and lightness from 0.5 to 0.85. Is not suitable for large
-  numbers of \code{n}} \item{\code{pretty_dark}}{Like \code{pretty} but
-  darker. Hue ranges from 0 to 360, saturation from 0.1 to 0.5, and lightness
-  from 0.2 to 0.4.} \item{\code{rainbow}}{Uses all hues, chromas, and most of
-  the lightness range. Provides distinct but not aesthetically pleasing
-  colors.} \item{\code{pastels}}{Pastel colors from the complete range of
-  hues (0-360), with saturation between 0.2 and 0.4, and lightness between
-  0.8 and 0.9.}}
-}
-
 \examples{
-# generate 3 distinct colors from the default color subspace
+# Generate 3 distinct colors from the default color space
 qualpal(3)
-qualpal(n = 3, list(h = c(35, 360), s = c(.5, .7), l = c(0, .45)))
+
+# Provide a custom color space
+qualpal(n = 3, list(h = c(35, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
 
 qualpal(3, "pretty")
 
-# Adapt color palette to deuteranopia
+# Adapt palette to deuteranopia
 qualpal(5, colorspace = "pretty_dark", cvd = "deutan", cvd_severity = 1)
 
-# Adapt color palette to protanomaly with severity 0.4
+# Adapt palette to protanomaly with severity 0.4
 qualpal(8, colorspace = "pretty_dark", cvd = "protan", cvd_severity = 0.4)
 
 \dontrun{
 # The range of hue cannot exceed 360
-qualpal(n = 3, list(h = c(-20, 360), s = c(.5, .7), l = c(0, .45)))
+qualpal(n = 3, list(h = c(-20, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
 }
 
 }
