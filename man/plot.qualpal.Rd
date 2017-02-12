@@ -7,18 +7,18 @@
 \method{plot}{qualpal}(x, ...)
 }
 \arguments{
-\item{x}{A list object of class \code{"qualpal"} generated from
+\item{x}{An object of class \code{"qualpal"} generated from
 \code{\link{qualpal}}.}
 
 \item{...}{Arguments to pass on to \code{\link[graphics]{plot}}.}
 }
 \description{
-Uses the colors in a \code{qualpalr} object to compute and plot a
+Uses the colors in a \link{qualpal} object to compute and plot a
 multidimensional scaling (MDS) map using \code{\link[stats]{cmdscale}} on the
 Delta E DIN99d distance matrix.
 }
 \examples{
-col_pal <- qualpal(n = 3)
+col_pal <- qualpal(3)
 plot(col_pal)
 }
 \seealso{

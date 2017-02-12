@@ -77,10 +77,10 @@ A list of class \code{qualpal} with the following
   }
 }
 \description{
-Given a color space or collection of colors, \code{qualpal()} and projects
-them to the DIN99d color space, where it generates a color palette from the
-most visually distinct colors, optionally taking color vision deficiency
-into account.
+Given a color space or collection of colors, \code{qualpal()} projects
+these colors to the DIN99d color space, where it generates a color palette
+from the most visually distinct colors, optionally taking color vision
+deficiency into account.
 }
 \details{
 The function takes a color subspace in the HSL color space, where lightness
@@ -128,7 +128,7 @@ qualpal(8, colorspace = "pretty_dark", cvd = "protan", cvd_severity = 0.4)
 
 \dontrun{
 # The range of hue cannot exceed 360
-qualpal(n = 3, list(h = c(-20, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
+qualpal(3, list(h = c(-20, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
 }
 
 }
