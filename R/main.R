@@ -1,9 +1,9 @@
 #' Generate qualitative color palettes
 #'
-#' Given a color space or collection of colors, \code{qualpal()} and projects
-#' them to the DIN99d color space, where it generates a color palette from the
-#' most visually distinct colors, optionally taking color vision deficiency
-#' into account.
+#' Given a color space or collection of colors, \code{qualpal()} projects
+#' these colors to the DIN99d color space, where it generates a color palette
+#' from the most visually distinct colors, optionally taking color vision
+#' deficiency into account.
 #'
 #' The function takes a color subspace in the HSL color space, where lightness
 #' and saturation take values from 0 to 1. Hue take values from -360 to 360,
@@ -114,7 +114,7 @@
 #'
 #' \dontrun{
 #' # The range of hue cannot exceed 360
-#' qualpal(n = 3, list(h = c(-20, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
+#' qualpal(3, list(h = c(-20, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
 #' }
 #'
 #' @export
@@ -129,16 +129,23 @@ qualpal.matrix <- function(n, colorspace,
                            cvd = c("protan", "deutan", "tritan"),
                            cvd_severity = 0) {
   assertthat::assert_that(
+    assertthat::is.count(n),
+    is.character(cvd),
+    assertthat::is.number(cvd_severity),
     is.matrix(colorspace),
     max(colorspace) <= 1,
-    min(colorspace) >= 0
+    min(colorspace) >= 0,
+    n < 100,
+    n > 1,
+    cvd_severity >= 0,
+    cvd_severity <= 1
   )
 
   RGB <- colorspace
   HSL <- RGB_HSL(RGB)
 
   # Simulate color deficiency if required
-  if (match.arg(cvd) != "normal") {
+  if (cvd_severity > 0) {
     RGB <- sRGB_CVD(RGB, cvd = match.arg(cvd), cvd_severity = cvd_severity)
   }
 
@@ -221,18 +228,12 @@ qualpal.list <- function(n, colorspace,
     length(h) == 2,
     length(s) == 2,
     length(l) == 2,
-    assertthat::is.count(n),
     is.numeric(h),
     is.numeric(s),
-    is.numeric(l),
-    assertthat::is.number(cvd_severity),
-    cvd_severity >= 0,
-    cvd_severity <= 1,
-    n < 100,
-    n > 1
+    is.numeric(l)
   )
 
-  rnd <- randtoolbox::sobol(1000, dim = 3, scrambling = 3)
+  rnd <- randtoolbox::torus(1000, dim = 3)
 
   H <- scale_runif(rnd[, 1], min(h), max(h))
   S <- scale_runif(sqrt(rnd[, 2]), min(s), max(s))
