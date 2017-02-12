@@ -2,9 +2,9 @@ library(qualpalr)
 context("qualpal() tests")
 
 test_that("qualpal() returns the proper list object", {
-  fit <- qualpal(n = 2)
-  expect_is(fit, "list")
-  expect_is(fit, "qualpal")
+  fit <- qualpal(2)
+  expect_s3_class(fit, "list")
+  expect_s3_class(fit, "qualpal")
   expect_equal(length(fit), 6)
   expect_equal(length(fit$hex), 2)
 })
@@ -13,10 +13,10 @@ test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal("cvd"))
   expect_error(qualpal(2, cvd_severity = 1.5))
   expect_error(qualpal(3, cvd_severity = -5))
-  expect_error(qualpal(5, cvd = "normal"))
+  expect_error(qualpal(5, cvd = "normal", cvd_severity = 0.2))
   expect_error(qualpal(1))
   expect_error(qualpal(n = 0))
-  expect_error(qualpal(n = 2, cvd = "deutrenop"))
+  expect_error(qualpal(n = 2, cvd = "deutrenop", cvd_severity = 0.4))
   expect_error(qualpal(n = 10 ^ 3))
   expect_error(qualpal(n = 2, "prety"))
   expect_error(qualpal(n = 3, colorspace = c(0, 200)))
@@ -28,8 +28,9 @@ test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal(n = 500))
 })
 
-test_that("plotting checks for errors", {
-  f <- qualpal(5)
-
-  expect_error(pairs(f, colorspace = "f"))
+test_that("proper use of qualpal() works", {
+  expect_error(qualpal(3), NA)
+  expect_error(qualpal(3, cvd = "deutan", cvd_severity = 0.487), NA)
+  expect_error(qualpal(5, "pretty"), NA)
+  expect_error(qualpal(3, "pretty_dark", cvd_severity = 0.1), NA)
 })
