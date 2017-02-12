@@ -1,4 +1,7 @@
-// Adopted from http://gallery.rcpp.org/articles/parallel-distance-matrix/
+// The distance matrix algorithm has been adopted from
+// http://gallery.rcpp.org/articles/parallel-distance-matrix/ and is copyrighted
+// too JJ Allaire and Jim Bullard 2014 under GPL-2. The code has been altered
+// from its original form.
 
 #include <RcppArmadilloExtensions/sample.h>
 #include <RcppParallel.h>
@@ -11,7 +14,6 @@ using namespace RcppParallel;
 template <typename InputIterator1, typename InputIterator2>
 inline double euclid(InputIterator1 begin1, InputIterator1 end1,
                      InputIterator2 begin2, InputIterator2 end2) {
-
   double out = 0;
 
   InputIterator1 it1 = begin1;
