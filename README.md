@@ -24,7 +24,7 @@ We can retrieve the generated colors in hex format
 
 ``` r
 pal$hex
-#> [1] "#C86D6A" "#DCCFE0" "#766AC9" "#74C970"
+#> [1] "#9A6FCD" "#6EB3C6" "#CD7F6D" "#C3D37B"
 ```
 
 Altneratively, we can create a palette using one of the predefined color subspaces and, optionally, adapt it to color deficiency (here *deuteranomaly*).
@@ -39,15 +39,15 @@ We can look at a distance matrix of the pairwise color differences from the pale
 ``` r
 pal2$de_DIN99d
 #>    1  2  3
-#> 2 18      
-#> 3 22 20   
+#> 2 20      
+#> 3 19 19   
 #> 4 28 18 18
 ```
 
 The palette may also be plotted with in a multidimensional scaling plot generated from the distance matrix of the colors in the palette.
 
 ``` r
-plot(pal)
+plot(pal2)
 ```
 
 ![](README-plot-1.png)
@@ -55,10 +55,10 @@ plot(pal)
 Or it might be plotted in one of the provided color spaces as a scatterplot matrix.
 
 ``` r
-pairs(pal, colorspace = "HSL")
+pairs(pal2, colorspace = "HSL")
 ```
 
-![](README-unnamed-chunk-5-1.png)
+![](README-pairs-1.png)
 
 Installation
 ------------
