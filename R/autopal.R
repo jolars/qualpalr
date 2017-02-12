@@ -1,4 +1,3 @@
-
 #' Optimize color palette for color vision deficiency
 #'
 #' This function adapts color palettes to color vision deficiency (CVD) by
@@ -29,22 +28,25 @@
 #' @export
 #'
 #' @examples
-#' pal <- optimize_qualpal(3, cvd = "protan", target = 15)
+#' pal <- autopal(3, cvd = "protan", target = 15)
 #' plot(pal)
 #'
-optimize_qualpal <- function(n, colorspace = "pretty",
-                             cvd = c("protan", "deutan", "tritan"),
-                             target = 20) {
+autopal <- function(n, colorspace = "pretty",
+                    cvd = c("protan", "deutan", "tritan"),
+                    target = 20) {
   assertthat::assert_that(
     assertthat::is.number(target),
-    assertthat::is.number(n)
+    assertthat::is.count(n),
+    assertthat::is.string(colorspace),
+    is.character(cvd)
   )
 
   # Run the optimizer
-  fit <- stats::optimize(costfun, target = target, n = n, colorspace =  colorspace,
+  fit <- stats::optimize(costfun, target = target, n = n,
+                         colorspace =  colorspace,
                          cvd = match.arg(cvd), lower = 0, upper  = 1)
 
-  # Create a new qualpal with the new value on cvd_severity
+  # Generate a new qualpal with the optimized cvd_severity value
   qualpal(n = n, colorspace = colorspace, cvd = match.arg(cvd),
           cvd_severity = fit[["minimum"]])
 }
@@ -55,7 +57,6 @@ optimize_qualpal <- function(n, colorspace = "pretty",
 costfun <- function(x, target, n, colorspace, cvd) {
   fit <- qualpal(n, colorspace = colorspace, cvd = cvd, cvd_severity = x)
 
-  # Cost
+  # Return cost
   (fit[["min_de_DIN99d"]] - target) ^ 2
 }
-
