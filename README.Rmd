@@ -24,29 +24,48 @@ knitr::opts_chunk$set(
 
 ## Usage
 
-```{r titanic}
+Let's create a palette of 4 colors of hues from 0 to 360, saturation between
+0.1 and 0.5, and lightness from 0.6 to 0.85.
+
+```{r load_package}
 library(qualpalr)
 
-# Create a palette of 4 colors of hues from 0 to 360, saturations between
-# 0.1 and 0.5, and lightness from 0.6 to 0.85
 pal <- qualpal(n = 4, list(h = c(0, 360), s = c(0.1, 0.5), l = c(0.6, 0.85)))
+```
 
-# Look at the colors in hex format
+We can retrieve the generated colors in hex format
+
+```{r}
 pal$hex
+```
 
-# Create a palette using one of the predefined color subspaces, adapted to color
-# vision deficiency
-pal2 <- qualpal(n = 4, colorspace = "pretty", cvd = "deutan", cvd_severity = 0.5)
+Altneratively, we can create a palette using one of the predefined color
+subspaces and, optionally, adapt it to color deficiency (here *deuteranomaly*).
 
-# Distance matrix of the DIN99d color differences
+```{r}
+pal2 <- qualpal(n = 4, colorspace = "pretty", cvd = "deutan",
+                cvd_severity = 0.5)
+```
+
+We can look at a distance matrix of the pairwise color differences from the 
+palette we have generated.
+
+```{r}
 pal2$de_DIN99d
 ```
 
-`pairs()` and `plot()` methods have been prepared for objects created with `qualpal`. 
+The palette may also be plotted with in a multidimensional scaling plot
+generated from the distance matrix of the colors in the palette.
 
-```{r plot_methods, eval = FALSE}
+```{r plot, fig.width=5, fig.height=5}
 plot(pal)
-pairs(pal, colorspace = "hsl")
+```
+
+Or it might be plotted in one of the provided color spaces as a
+scatterplot matrix.
+
+```{r, fig.width=5, fig.height=5}
+pairs(pal, colorspace = "HSL")
 ```
 
 ## Installation
