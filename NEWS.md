@@ -6,8 +6,9 @@ deficiency adapation to match a target color difference.
 `data.frame` of RGB colors.
 
 ## Minor  changes
-* `qualpal()` argument `colorblind` is defunct.
-* Documentation for `qualpal()` is improved.
+* `qualpal()` sorts palettes in order of increasing color distinctness.
+* `qualpal()` argument `colorblind` has been made defunct.
+* Documentation for `qualpal()` has been improved.
 * Colors are now generated with `randtoolbox::torus()` instead of
 `randtoolbox::sobol()`.
 

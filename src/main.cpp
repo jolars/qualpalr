@@ -1,6 +1,6 @@
 // The distance matrix algorithm has been adopted from
 // http://gallery.rcpp.org/articles/parallel-distance-matrix/ and is copyrighted
-// too JJ Allaire and Jim Bullard 2014 under GPL-2. The code has been altered
+// to JJ Allaire and Jim Bullard 2014 under GPL-2. The code has been altered
 // from its original form.
 
 #include <RcppArmadilloExtensions/sample.h>
@@ -81,21 +81,37 @@ arma::uvec farthest_points(const Rcpp::NumericMatrix &data,
 
   do {
     r_old = r;
-
     for (arma::uword i = 0; i < n; i++) {
-
       arma::uvec::fixed<1> ri;
 
       ri.fill(r(i));
 
-      arma::uvec rr = std_setdiff(r, ri);
-      arma::uvec excl = std_setdiff(full_range, rr);
+      arma::uvec incl = std_setdiff(r, ri);
+      arma::uvec excl = std_setdiff(full_range, incl);
       arma::uvec indices = full_range(excl);
-      arma::rowvec mins = arma::min(dm.submat(rr, excl), 0);
+      arma::rowvec mins = arma::min(dm.submat(incl, excl), 0);
       r(i) = indices(mins.index_max());
-
     }
   } while (!all(r_old == r));
 
-  return r + 1;
+  // Arrange the colors in the palette according to how distinct they are from
+  // one another.
+  arma::mat subdat = dm(r, r);
+
+  // Start by finding the two most distant points in our subset
+  arma::uvec sorted = arma::ind2sub(size(subdat), subdat.index_max());
+
+  // Now pick colors from the matrix in order of their color difference
+  // to the previously picked colors
+  arma::uvec sub_range = arma::linspace<arma::uvec>(0, n - 1, n);
+
+  while (sorted.n_elem < n) {
+    arma::uvec excl = std_setdiff(sub_range, sorted);
+    arma::rowvec mincols = arma::min(subdat.submat(sorted, excl), 0);
+    arma::uvec::fixed<1> newrow;
+    newrow.fill(excl(mincols.index_max()));
+    sorted.insert_rows(sorted.n_elem, newrow);
+  }
+
+  return r(sorted) + 1;
 }
