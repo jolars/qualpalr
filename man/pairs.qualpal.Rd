@@ -4,23 +4,23 @@
 \alias{pairs.qualpal}
 \title{Scatterplot matrix of qualitative color palette}
 \usage{
-\method{pairs}{qualpal}(x, colorspace = c("DIN99d", "HSL"), ...)
+\method{pairs}{qualpal}(x, colorspace = c("DIN99d", "HSL", "RGB"), ...)
 }
 \arguments{
 \item{x}{A list object of class \code{"qualpal"} generated from
 \code{\link{qualpal}}.}
 
-\item{colorspace}{The color space in which to plot the colors ("DIN99d" or
-"HSL").}
+\item{colorspace}{The color space in which to plot the colors ("DIN99d",
+"HSL", or "RGB").}
 
 \item{...}{Arguments to pass on to \code{\link[graphics]{pairs}}.}
 }
 \description{
-Plots the colors in a \code{qualpal} object as a scatterplot matrix on
-either the DIN99d (the default) or HSL color space.
+Plots the colors in an object of class  \code{"qualpal"} as a scatterplot
+matrix on either the DIN99d (the default) or HSL color space.
 }
 \examples{
-col_pal <- qualpal(n = 3)
+col_pal <- qualpal(3)
 pairs(col_pal)
 pairs(col_pal, colorspace = "HSL")
 }

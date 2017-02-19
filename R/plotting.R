@@ -33,13 +33,13 @@ plot.qualpal <- function(x, ...) {
 
 #' Scatterplot matrix of qualitative color palette
 #'
-#' Plots the colors in a \code{qualpal} object as a scatterplot matrix on
-#' either the DIN99d (the default) or HSL color space.
+#' Plots the colors in an object of class  \code{"qualpal"} as a scatterplot
+#' matrix on either the DIN99d (the default) or HSL color space.
 #'
 #' @param x A list object of class \code{"qualpal"} generated from
 #'   \code{\link{qualpal}}.
-#' @param colorspace The color space in which to plot the colors ("DIN99d" or
-#'   "HSL").
+#' @param colorspace The color space in which to plot the colors ("DIN99d",
+#'   "HSL", or "RGB").
 #' @param ... Arguments to pass on to \code{\link[graphics]{pairs}}.
 #' @seealso
 #'   \code{\link{qualpal}},
@@ -47,14 +47,17 @@ plot.qualpal <- function(x, ...) {
 #'   \code{\link[graphics]{pairs}}
 #'
 #' @examples
-#' col_pal <- qualpal(n = 3)
+#' col_pal <- qualpal(3)
 #' pairs(col_pal)
 #' pairs(col_pal, colorspace = "HSL")
 #' @export
 
-pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL"), ...) {
+pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL", "RGB"), ...) {
   args <- list(
-    x = switch(match.arg(colorspace), DIN99d = x[["DIN99d"]], HSL = x[["HSL"]]),
+    x = switch(match.arg(colorspace),
+               DIN99d = x[["DIN99d"]],
+               HSL = x[["HSL"]],
+               RGB = x[["RGB"]]),
     col = x[["hex"]],
     ...
   )
