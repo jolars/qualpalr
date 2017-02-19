@@ -164,15 +164,16 @@ qualpal.matrix <- function(n, colorspace,
   dimnames(DIN99d) <- list(hex, c("L(99d)", "a(99d)", "b(99d)"))
   dimnames(RGB)    <- list(hex, c("Red", "Green", "Blue"))
 
-  col_diff <- stats::as.dist(edist(DIN99d))
+  col_diff           <- edist(DIN99d)
+  dimnames(col_diff) <- list(hex, hex)
 
   structure(
     list(
-      HSL           = round(HSL, 2),
-      RGB           = round(RGB, 2),
-      DIN99d        = round(DIN99d, 1),
+      HSL           = HSL,
+      RGB           = RGB,
+      DIN99d        = DIN99d,
       hex           = hex,
-      de_DIN99d     = round(col_diff, 0),
+      de_DIN99d     = stats::as.dist(col_diff),
       min_de_DIN99d = min(col_diff)
     ),
     class = c("qualpal", "list")
@@ -249,6 +250,39 @@ qualpal.list <- function(n, colorspace,
 }
 
 
+#' Print qualpal palette
+#'
+#' Print the result from a call to \code{\link{qualpal}}.
+#'
+#' @param x A n object of class \code{"qualpal"}.
+#' @param colorspace Colorspace to print colors in
+#' @param digits Number of significant digits to print.
+#'   (See \link{print.default}.) Setting it to \code{NULL} uses
+#'   \code{\link{getOption}("digits")}.
+#' @param \dots
+#'
+#' @return Prints the colors as a matrix in the specified color space as well
+#'   as a distance matrix of the color differences. Invisibly returns x.
+#' @export
+#'
+#' @examples
+#' f <- qualpal(3)
+#' print(f, colorspace = "DIN99d", digits = 3)
+print.qualpal <- function(x, colorspace = c("HSL", "DIN99d", "RGB"), digits = 2,
+                          ...) {
+  vsep <- strrep("-", 0.5 * getOption("width"))
+
+  cat(vsep, "\n")
+  cat("Colors in the", match.arg(colorspace), "color space", "\n\n")
+  print(x[[match.arg(colorspace)]], digits = digits, ...)
+
+  cat("\n", vsep, "\n")
+  cat("DIN99d color difference distance matrix", "\n\n")
+  print(x[["de_DIN99d"]], digits = digits, ...)
+
+  invisible(x)
+}
+
 # Predefined color spaces -------------------------------------------------
 
 predefined_colorspaces <- function(colorspace) {
@@ -263,3 +297,5 @@ predefined_colorspaces <- function(colorspace) {
 
   spaces[[colorspace]]
 }
+
+
