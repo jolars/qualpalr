@@ -1,4 +1,4 @@
-# qualpalr 0.3.1.9000
+# qualpalr 0.4.0
 ## Major changes
 * `autopal()` is a new function that tweaks the amount of color vision
 deficiency adapation to match a target color difference.
