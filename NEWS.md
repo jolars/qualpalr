@@ -1,3 +1,5 @@
+# qualpalr 0.4.0.9000
+
 # qualpalr 0.4.0
 ## Major changes
 * `autopal()` is a new function that tweaks the amount of color vision
