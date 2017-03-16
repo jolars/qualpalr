@@ -254,12 +254,12 @@ qualpal.list <- function(n, colorspace,
 #'
 #' Print the result from a call to \code{\link{qualpal}}.
 #'
-#' @param x A n object of class \code{"qualpal"}.
-#' @param colorspace Colorspace to print colors in
-#' @param digits Number of significant digits to print.
+#' @param x An object of class \code{"qualpal"}.
+#' @param colorspace Color space to print colors in.
+#' @param digits Number of significant digits for the output.
 #'   (See \link{print.default}.) Setting it to \code{NULL} uses
 #'   \code{\link{getOption}("digits")}.
-#' @param \dots
+#' @param \dots Arguments to pass to \code{\link{print.default}}.
 #'
 #' @return Prints the colors as a matrix in the specified color space as well
 #'   as a distance matrix of the color differences. Invisibly returns x.

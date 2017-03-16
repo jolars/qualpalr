@@ -2,28 +2,28 @@
 % Please edit documentation in R/main.R
 \name{print.qualpal}
 \alias{print.qualpal}
-\title{Print qualitative color palettes}
+\title{Print qualpal palette}
 \usage{
 \method{print}{qualpal}(x, colorspace = c("HSL", "DIN99d", "RGB"),
   digits = 2, ...)
 }
 \arguments{
-\item{x}{A n object of class \code{"qualpal"}.}
+\item{x}{An object of class \code{"qualpal"}.}
 
-\item{colorspace}{Colorspace to print colors in}
+\item{colorspace}{Color space to print colors in.}
 
-\item{digits}{Number of significant digits to print.
+\item{digits}{Number of significant digits for the output.
 (See \link{print.default}.) Setting it to \code{NULL} uses
 \code{\link{getOption}("digits")}.}
 
-\item{\dots}{}
+\item{\dots}{Arguments to pass to \code{\link{print.default}}.}
 }
 \value{
 Prints the colors as a matrix in the specified color space as well
   as a distance matrix of the color differences. Invisibly returns x.
 }
 \description{
-Print qualitative color palettes
+Print the result from a call to \code{\link{qualpal}}.
 }
 \examples{
 f <- qualpal(3)

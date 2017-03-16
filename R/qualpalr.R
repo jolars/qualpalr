@@ -1,7 +1,7 @@
 #' @keywords internal
 "_PACKAGE"
 
-#' @useDynLib qualpalr
 #' @importFrom Rcpp sourceCpp
 #' @importFrom RcppParallel RcppParallelLibs
+#' @useDynLib qualpalr, .registration = TRUE
 NULL
