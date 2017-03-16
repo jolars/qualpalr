@@ -43,7 +43,7 @@ autopal <- function(n, colorspace = "pretty",
 
   # Run the optimizer
   fit <- stats::optimize(costfun, target = target, n = n,
-                         colorspace =  colorspace,
+                         colorspace = colorspace,
                          cvd = match.arg(cvd), lower = 0, upper  = 1)
 
   # Generate a new qualpal with the optimized cvd_severity value

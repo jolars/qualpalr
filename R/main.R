@@ -166,6 +166,7 @@ qualpal.matrix <- function(n, colorspace,
 
   col_diff           <- edist(DIN99d)
   dimnames(col_diff) <- list(hex, hex)
+  de_DIN99d <- stats::as.dist(col_diff)
 
   structure(
     list(
@@ -173,8 +174,8 @@ qualpal.matrix <- function(n, colorspace,
       RGB           = RGB,
       DIN99d        = DIN99d,
       hex           = hex,
-      de_DIN99d     = stats::as.dist(col_diff),
-      min_de_DIN99d = min(col_diff)
+      de_DIN99d     = de_DIN99d,
+      min_de_DIN99d = min(de_DIN99d)
     ),
     class = c("qualpal", "list")
   )
