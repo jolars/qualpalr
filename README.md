@@ -24,7 +24,7 @@ We can retrieve the generated colors in hex format
 
 ``` r
 pal$hex
-#> [1] "#92CB72" "#B56CCB" "#79AED0" "#D0937E"
+#> [1] "#8367CC" "#CDCF77" "#71BDCF" "#C86D6A"
 ```
 
 Altneratively, we can create a palette using one of the predefined color subspaces and, optionally, adapt it to color deficiency (here *deuteranomaly*).
@@ -38,10 +38,10 @@ We can look at a distance matrix of the pairwise color differences from the pale
 
 ``` r
 pal2$de_DIN99d
-#>          #D4C76F  #616FC8  #D0E0E8
-#> #616FC8 29.14409                  
-#> #D0E0E8 18.78602 21.76547         
-#> #A08587 18.59491 18.38472 18.34490
+#>          #E0D286  #616FC8  #C5D4E7
+#> #616FC8 29.00920                  
+#> #C5D4E7 19.46907 19.53556         
+#> #A2827A 17.78714 20.35253 18.89242
 ```
 
 The palette may also be plotted with in a multidimensional scaling plot generated from the distance matrix of the colors in the palette.
