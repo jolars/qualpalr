@@ -55,7 +55,6 @@ pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL", "RGB"), ...) {
                HSL = x$HSL,
                RGB = x$RGB),
     col = x$hex,
-    asp = 1,
     cex = 3,
     pch = 19
   )
