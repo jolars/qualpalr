@@ -10,7 +10,7 @@
 \item{x}{An object of class \code{"qualpal"} generated from
 \code{\link{qualpal}}.}
 
-\item{...}{Arguments to pass on to \code{\link[graphics]{plot}}.}
+\item{\dots}{Arguments to pass on to \code{\link[graphics]{plot}}.}
 }
 \description{
 Uses the colors in a \link{qualpal} object to compute and plot a

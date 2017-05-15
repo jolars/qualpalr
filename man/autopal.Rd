@@ -34,7 +34,7 @@ A list of class \code{qualpal} with the following
   \item{RGB}{
     A matrix of the colors in the sRGB color space.} \item{hex}{A
     character vector of the colors in hex notation.} \item{de_DIN99d}{A
-    distance matrix of color differenes according to delta E DIN99d.
+    distance matrix of color differences according to delta E DIN99d.
   }
   \item{min_de_DIN99d}{
     The smallest pairwise DIN99d color difference.
