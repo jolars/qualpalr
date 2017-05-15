@@ -17,18 +17,14 @@
 
 plot.qualpal <- function(x, ...) {
   args <- list(
-    x = stats::cmdscale(x[["de_DIN99d"]],
-                        k = ifelse(length(x[["hex"]]) == 2, 1, 2)),
-    col = x[["hex"]],
-    ...
+    x = stats::cmdscale(x$de_DIN99d, k = if (length(x$hex) == 2) 1 else 2),
+    col = x$hex,
+    cex = 3,
+    pch = 19,
+    xlab = "dE DIN99d",
+    ylab = "dE DIN99d"
   )
-
-  if (is.null(args[["cex"]])) args[["cex"]] <- 3
-  if (is.null(args[["pch"]])) args[["pch"]] <- 19
-  if (is.null(args[["xlab"]])) args[["xlab"]] <- "dE DIN99d"
-  if (is.null(args[["ylab"]])) args[["ylab"]] <- "dE DIN99d"
-
-  do.call(graphics::plot, args)
+  do.call(graphics::plot, utils::modifyList(args, list(...)))
 }
 
 #' Scatterplot matrix of qualitative color palette
@@ -40,7 +36,7 @@ plot.qualpal <- function(x, ...) {
 #'   \code{\link{qualpal}}.
 #' @param colorspace The color space in which to plot the colors ("DIN99d",
 #'   "HSL", or "RGB").
-#' @param ... Arguments to pass on to \code{\link[graphics]{pairs}}.
+#' @param \dots Arguments to pass on to \code{\link[graphics]{pairs}}.
 #' @seealso
 #'   \code{\link{qualpal}},
 #'   \code{\link{plot.qualpal}},
@@ -55,14 +51,13 @@ plot.qualpal <- function(x, ...) {
 pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL", "RGB"), ...) {
   args <- list(
     x = switch(match.arg(colorspace),
-               DIN99d = x[["DIN99d"]],
-               HSL = x[["HSL"]],
-               RGB = x[["RGB"]]),
-    col = x[["hex"]],
-    ...
+               DIN99d = x$DIN99d,
+               HSL = x$HSL,
+               RGB = x$RGB),
+    col = x$hex,
+    asp = 1,
+    cex = 3,
+    pch = 19
   )
-  if (is.null(args[["cex"]])) args[["cex"]] <- 3
-  if (is.null(args[["pch"]])) args[["pch"]] <- 19
-
-  do.call(graphics::pairs, args)
+  do.call(graphics::pairs, utils::modifyList(args, list(...)))
 }

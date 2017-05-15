@@ -13,7 +13,7 @@
 \item{colorspace}{The color space in which to plot the colors ("DIN99d",
 "HSL", or "RGB").}
 
-\item{...}{Arguments to pass on to \code{\link[graphics]{pairs}}.}
+\item{\dots}{Arguments to pass on to \code{\link[graphics]{pairs}}.}
 }
 \description{
 Plots the colors in an object of class  \code{"qualpal"} as a scatterplot
