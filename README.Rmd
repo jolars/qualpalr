@@ -4,12 +4,12 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = file.path("tools", "README-"),
-  dev = 'CairoPNG'
+  dev = if (require("Cairo")) "CairoPNG" else "png"
 )
 ```
 
@@ -20,9 +20,18 @@ knitr::opts_chunk$set(
 [![Coverage Status](https://codecov.io/github/jolars/qualpalr/coverage.svg?branch=master)](https://codecov.io/github/jolars/qualpalr?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
 
-`qualpalr` generates distinct qualitative color palettes, primarily for use in R graphics. Given `n` (the number of colors to generate), along with a subset in the [hsl color space](https://en.wikipedia.org/wiki/HSL_and_HSV) (a cylindrical representation of the RGB color space) `qualpalr` attempts to find the `n` colors in the provided color subspace that *maximize the smallest pairwise color difference*. This is done by projecting the color subset from the HSL color space to the DIN99d space. DIN99d is (approximately) perceptually uniform, that is, the euclidean distance between two colors in the space is proportional to their perceived difference.
+`qualpalr` generates distinct qualitative color palettes, primarily for use in
+R graphics. Given `n` (the number of colors to generate), along with a subset in
+the [hsl color space](https://en.wikipedia.org/wiki/HSL_and_HSV) (a cylindrical
+representation of the RGB color space) `qualpalr` attempts to find the `n`
+colors in the provided color subspace that *maximize the smallest pairwise color
+difference*. This is done by projecting the color subset from the HSL color
+space to the DIN99d space. DIN99d is (approximately) perceptually uniform, that
+is, the euclidean distance between two colors in the space is proportional to
+their perceived difference.
 
-`qualpalr` was inspired by [i want hue](http://tools.medialab.sciences-po.fr/iwanthue/).
+`qualpalr` was inspired by
+[i want hue](http://tools.medialab.sciences-po.fr/iwanthue/).
 
 ## Usage
 
