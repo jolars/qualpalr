@@ -3,7 +3,7 @@
 * Ubuntu 12.04 and 14.04, R 3.4.0 and devel (on travis ci)
 * Mac OS X 10.11.6, R 3.4.0 (on travis ci)
 * Windows Server 2012 R2 x32 and x64, R 3.4.0, and devel (on appveyor)
-* Win-builder, devel 2017-03-15 r72357
+* Win-builder, devel 2017-05-12 r72670
 
 ## R CMD check results
 

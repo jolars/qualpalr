@@ -6,7 +6,7 @@
 #'
 #' @param x An object of class \code{"qualpal"} generated from
 #'   \code{\link{qualpal}}.
-#' @param ... Arguments to pass on to \code{\link[graphics]{plot}}.
+#' @param \dots Arguments to pass on to \code{\link[graphics]{plot}}.
 #' @seealso \code{\link{qualpal}}, \code{\link{pairs.qualpal}},
 #'   \code{\link[graphics]{plot}}
 #'
