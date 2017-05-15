@@ -1,4 +1,4 @@
-# qualpalr 0.4.0.9000
+# qualpalr 0.4.1
 ## Bug fixes
 * Fixed `autopal()` which was broken since the minimum color difference
 returned was always 0 due to a bug in `qualpal()`.
