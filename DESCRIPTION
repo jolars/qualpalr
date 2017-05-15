@@ -14,9 +14,10 @@ Imports:
     graphics,
     stats,
     grDevices,
+    utils,
     assertthat,
     Rcpp,
-    RcppParallel 
+    RcppParallel
 Suggests:
     testthat,
     knitr,
