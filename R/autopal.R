@@ -31,7 +31,8 @@
 #' pal <- autopal(3, cvd = "protan", target = 15)
 #' plot(pal)
 #'
-autopal <- function(n, colorspace = "pretty",
+autopal <- function(n,
+                    colorspace = "pretty",
                     cvd = c("protan", "deutan", "tritan"),
                     target = 20) {
   assertthat::assert_that(
@@ -48,7 +49,7 @@ autopal <- function(n, colorspace = "pretty",
 
   # Generate a new qualpal with the optimized cvd_severity value
   qualpal(n = n, colorspace = colorspace, cvd = match.arg(cvd),
-          cvd_severity = fit[["minimum"]])
+          cvd_severity = fit$minimum)
 }
 
 
@@ -58,5 +59,5 @@ costfun <- function(x, target, n, colorspace, cvd) {
   fit <- qualpal(n, colorspace = colorspace, cvd = cvd, cvd_severity = x)
 
   # Return cost
-  (fit[["min_de_DIN99d"]] - target) ^ 2
+  (fit$min_de_DIN99d - target) ^ 2
 }

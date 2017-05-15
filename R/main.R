@@ -118,14 +118,16 @@
 #' }
 #'
 #' @export
-qualpal <- function(n, colorspace = "pretty",
+qualpal <- function(n,
+                    colorspace = "pretty",
                     cvd = c("protan", "deutan", "tritan"),
                     cvd_severity = 0) {
   UseMethod("qualpal", colorspace)
 }
 
 #' @export
-qualpal.matrix <- function(n, colorspace,
+qualpal.matrix <- function(n,
+                           colorspace,
                            cvd = c("protan", "deutan", "tritan"),
                            cvd_severity = 0) {
   assertthat::assert_that(
@@ -186,7 +188,6 @@ qualpal.data.frame <- function(n, colorspace,
                                cvd = c("protan", "deutan", "tritan"),
                                cvd_severity = 0) {
   mat <- data.matrix(colorspace)
-
   qualpal(n = n, colorspace = mat, cvd = cvd, cvd_severity = cvd_severity)
 }
 
@@ -197,9 +198,7 @@ qualpal.character <- function(n, colorspace = "pretty",
   assertthat::assert_that(
     assertthat::is.string(colorspace)
   )
-
   colorspace <- predefined_colorspaces(colorspace)
-
   qualpal(n = n, colorspace = colorspace, cvd = cvd,
           cvd_severity = cvd_severity)
 }
@@ -269,7 +268,9 @@ qualpal.list <- function(n, colorspace,
 #' @examples
 #' f <- qualpal(3)
 #' print(f, colorspace = "DIN99d", digits = 3)
-print.qualpal <- function(x, colorspace = c("HSL", "DIN99d", "RGB"), digits = 2,
+print.qualpal <- function(x,
+                          colorspace = c("HSL", "DIN99d", "RGB"),
+                          digits = 2,
                           ...) {
   vsep <- strrep("-", 0.5 * getOption("width"))
 
