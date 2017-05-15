@@ -25,7 +25,7 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -86,23 +86,32 @@
     <p>Print the result from a call to <code><a href='qualpal.html'>qualpal</a></code>.</p>
     
 
-    <pre><span class='co'># S3 method for qualpal</span>
+    <pre class="usage"><span class='co'># S3 method for qualpal</span>
 <span class='fu'>print</span>(<span class='no'>x</span>, <span class='kw'>colorspace</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"HSL"</span>, <span class='st'>"DIN99d"</span>, <span class='st'>"RGB"</span>),
   <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd><p>An object of class <code>"qualpal"</code>.</p></dd>
-      <dt>colorspace</dt>
-      <dd><p>Color space to print colors in.</p></dd>
-      <dt>digits</dt>
-      <dd><p>Number of significant digits for the output.
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>An object of class <code>"qualpal"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>colorspace</th>
+      <td><p>Color space to print colors in.</p></td>
+    </tr>
+    <tr>
+      <th>digits</th>
+      <td><p>Number of significant digits for the output.
 (See print.default.) Setting it to <code>NULL</code> uses
-<code>getOption("digits")</code>.</p></dd>
-      <dt>&#8230;</dt>
-      <dd><p>Arguments to pass to <code>print.default</code>.</p></dd>
-    </dl>
+<code>getOption("digits")</code>.</p></td>
+    </tr>
+    <tr>
+      <th>&#8230;</th>
+      <td><p>Arguments to pass to <code>print.default</code>.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -113,19 +122,19 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='qualpal.html'>qualpal</a></span>(<span class='fl'>3</span>)
 <span class='fu'>print</span>(<span class='no'>f</span>, <span class='kw'>colorspace</span> <span class='kw'>=</span> <span class='st'>"DIN99d"</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; ---------------------------------------- 
-#&gt; Colors in the  DIN99d color space 
+#&gt; Colors in the DIN99d color space 
 #&gt; 
 #&gt;         L(99d) a(99d) b(99d)
-#&gt; #CF707B   61.9   29.8   5.21
-#&gt; #B0CE74   81.2  -13.8  27.98
-#&gt; #6E9DCE   66.8  -13.1 -21.92
+#&gt; #6C7DCC   58.0  -1.54  -29.5
+#&gt; #6ACA91   77.3 -28.59   14.7
+#&gt; #CD7F6D   64.6  24.44   14.4
 #&gt; 
-#&gt; ---------------------------------------- 
+#&gt;  ---------------------------------------- 
 #&gt; DIN99d color difference distance matrix 
 #&gt; 
-#&gt;         #CF707B #B0CE74
-#&gt; #B0CE74    24.1        
-#&gt; #6E9DCE    23.5    23.8</div></pre>
+#&gt;         #6C7DCC #6ACA91
+#&gt; #6ACA91    24.9        
+#&gt; #CD7F6D    23.6    24.7</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

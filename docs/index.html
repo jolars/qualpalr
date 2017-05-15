@@ -9,7 +9,7 @@
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -64,13 +64,13 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="qualpalr" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#qualpalr" class="anchor"> </a>qualpalr</h1></div>
+<a href="#qualpalr" class="anchor"></a>qualpalr</h1></div>
 
 <p><code>qualpalr</code> generates distinct qualitative color palettes, primarily for use in R graphics. Given <code>n</code> (the number of colors to generate), along with a subset in the <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">hsl color space</a> (a cylindrical representation of the RGB color space) <code>qualpalr</code> attempts to find the <code>n</code> colors in the provided color subspace that <em>maximize the smallest pairwise color difference</em>. This is done by projecting the color subset from the HSL color space to the DIN99d space. DIN99d is (approximately) perceptually uniform, that is, the euclidean distance between two colors in the space is proportional to their perceived difference.</p>
 <p><code>qualpalr</code> was inspired by <a href="http://tools.medialab.sciences-po.fr/iwanthue/">i want hue</a>.</p>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
-<a href="#usage" class="anchor"> </a>Usage</h2>
+<a href="#usage" class="anchor"></a>Usage</h2>
 <p>Let’s create a palette of 4 colors of hues from 0 to 360, saturation between 0.1 and 0.5, and lightness from 0.6 to 0.85.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(qualpalr)
 
@@ -83,10 +83,10 @@ pal &lt;-<span class="st"> </span><span class="kw"><a href="reference/qualpal.ht
                 <span class="dt">cvd_severity =</span> <span class="fl">0.5</span>)</code></pre></div>
 <p>We can look at a distance matrix of the pairwise color differences from the palette we have generated.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pal2$de_DIN99d
-<span class="co">#&gt;          #616FC8  #E0D286  #C5D4E7</span>
-<span class="co">#&gt; #E0D286 29.00920                  </span>
-<span class="co">#&gt; #C5D4E7 19.53556 19.46907         </span>
-<span class="co">#&gt; #A2827A 20.35253 17.78714 18.89242</span></code></pre></div>
+<span class="co">#&gt;          #EAE1AE  #616FC8  #C7D1EB</span>
+<span class="co">#&gt; #616FC8 28.11831                  </span>
+<span class="co">#&gt; #C7D1EB 18.19722 18.63453         </span>
+<span class="co">#&gt; #A2827A 18.14012 20.35253 18.78603</span></code></pre></div>
 <p>The palette may also be plotted with in a multidimensional scaling plot generated from the distance matrix of the colors in the palette.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pal2)</code></pre></div>
 <p><img src="tools/README-plot-1.png" width="480"></p>
@@ -96,7 +96,7 @@ pal &lt;-<span class="st"> </span><span class="kw"><a href="reference/qualpal.ht
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"> </a>Installation</h2>
+<a href="#installation" class="anchor"></a>Installation</h2>
 <p>The current CRAN release can be installed by running</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"qualpalr"</span>)</code></pre></div>
 <p>The development version can be installed by running</p>
@@ -104,17 +104,17 @@ pal &lt;-<span class="st"> </span><span class="kw"><a href="reference/qualpal.ht
 </div>
 <div id="versioning" class="section level2">
 <h2 class="hasAnchor">
-<a href="#versioning" class="anchor"> </a>Versioning</h2>
+<a href="#versioning" class="anchor"></a>Versioning</h2>
 <p>Versioning is based on <a href="http://semver.org/">semantic versioning</a>.</p>
 </div>
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor"> </a>Code of conduct</h2>
+<a href="#code-of-conduct" class="anchor"></a>Code of conduct</h2>
 <p>Please note that this project is released with a <a href="CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">
-<a href="#license" class="anchor"> </a>License</h2>
+<a href="#license" class="anchor"></a>License</h2>
 <p><code>qualpalr</code> is open source software, licensed under <a href="LICENSE">GPL-3</a>.</p>
 </div>
 </div>
@@ -137,7 +137,6 @@ pal &lt;-<span class="st"> </span><span class="kw"><a href="reference/qualpal.ht
 <ul class="list-unstyled">
 <li>Johan Larsson <br><small class="roles"> Author, maintainer </small> </li>
 </ul>
-<div>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/jolars/qualpalr"><img src="https://travis-ci.org/jolars/qualpalr.svg?branch=master" alt="Travis-CI Build Status"></a></li>
@@ -145,7 +144,6 @@ pal &lt;-<span class="st"> </span><span class="kw"><a href="reference/qualpal.ht
 <li><a href="https://codecov.io/github/jolars/qualpalr?branch=master"><img src="https://codecov.io/github/jolars/qualpalr/coverage.svg?branch=master" alt="Coverage Status"></a></li>
 <li><a href="https://cran.r-project.org/package=qualpalr"><img src="http://www.r-pkg.org/badges/version/qualpalr" alt="CRAN_Status_Badge"></a></li>
 </ul>
-</div>
 </div>
 
 </div>
