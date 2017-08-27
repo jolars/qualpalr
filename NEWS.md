@@ -1,4 +1,12 @@
-# qualpalr 0.4.1.9000
+# qualpalr 0.4.2
+
+## Major changes
+* Palettes are no longer generated randomly. **qualpalr** previuosly started
+with a random sample of colors before running the optimization scheme but now
+instead picks a starting set of linearly spaced colors.
+
+## Minor changes
+* C++ functions are registered via Rcpp.
 
 ## Bug fixes
 * `autopal()` erroneously required `colorspace` to be a string.
