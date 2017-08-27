@@ -14,7 +14,6 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-
 ## Overview
 
 `qualpalr` generates distinct qualitative color palettes, primarily for use in
