@@ -50,7 +50,7 @@ The palette may also be plotted with in a multidimensional scaling plot generate
 plot(pal2)
 ```
 
-![](README-plot-1.png)
+![](tools/README-plot-1.png)
 
 Or it might be plotted in one of the provided color spaces as a scatterplot matrix.
 
@@ -58,7 +58,7 @@ Or it might be plotted in one of the provided color spaces as a scatterplot matr
 pairs(pal2, colorspace = "HSL")
 ```
 
-![](README-pairs-1.png)
+![](tools/README-pairs-1.png)
 
 Installation
 ------------
