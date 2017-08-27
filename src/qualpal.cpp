@@ -3,7 +3,7 @@
 // to JJ Allaire and Jim Bullard 2014 under GPL-2. The code has been altered
 // from its original form.
 
-#include <RcppArmadilloExtensions/sample.h>
+#include <RcppArmadillo.h>
 #include <RcppParallel.h>
 
 using namespace Rcpp;
@@ -46,7 +46,6 @@ struct dist_worker : public Worker {
 
 // [[Rcpp::export]]
 NumericMatrix edist(const NumericMatrix mat) {
-
   NumericMatrix rmat(mat.nrow(), mat.nrow());
   dist_worker dist_worker(mat, rmat);
   parallelFor(0, mat.nrow(), dist_worker);
@@ -54,8 +53,7 @@ NumericMatrix edist(const NumericMatrix mat) {
   return rmat;
 }
 
-arma::uvec std_setdiff(const arma::uvec & x, const arma::uvec & y) {
-
+arma::uvec std_setdiff(const arma::uvec& x, const arma::uvec& y) {
   std::vector<int> a = arma::conv_to< std::vector<int> >::from(arma::sort(x));
   std::vector<int> b = arma::conv_to< std::vector<int> >::from(arma::sort(y));
   std::vector<int> out;
@@ -71,17 +69,16 @@ arma::uvec std_setdiff(const arma::uvec & x, const arma::uvec & y) {
 // [[Rcpp::export]]
 arma::uvec farthest_points(const Rcpp::NumericMatrix &data,
                            const arma::uword n) {
-
   arma::mat dm = as<arma::mat>(edist(data));
   arma::uword N = dm.n_cols;
 
   arma::uvec full_range = arma::linspace<arma::uvec>(0, N - 1, N);
-  arma::uvec r = RcppArmadillo::sample(full_range, n, false);
+  arma::uvec r = arma::linspace<arma::uvec>(0, N - 1, n);
   arma::uvec r_old(n);
 
   do {
     r_old = r;
-    for (arma::uword i = 0; i < n; i++) {
+    for (arma::uword i = 0; i < n; ++i) {
       arma::uvec::fixed<1> ri;
 
       ri.fill(r(i));
