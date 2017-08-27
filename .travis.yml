@@ -6,8 +6,6 @@ warnings_are_errors: true
 matrix:
   include:
     - os: linux
-      dist: precise
-      compiler: gcc
       r: release
       addons:
         apt:
@@ -22,24 +20,38 @@ matrix:
         - Rscript -e 'covr::codecov()'
 
     - os: linux
-      dist: precise
       compiler: clang
       r: release
+      sudo: required
 
     - os: linux
-      dist: trusty
       r: devel
       compiler: clang
       sudo: required
 
     - os: linux
-      dist: trusty
       r: devel
+      compiler: gcc
+      sudo: required
+
+    - os: linux
+      r: oldrel
+      compiler: clang
+      sudo: required
+
+    - os: linux
+      r: oldrel
       compiler: gcc
       sudo: required
 
     - os: osx
       r: release
+      latex: false
+      r_build_args: '--no-build-vignettes'
+      r_check_args: '--ignore-vignettes --no-examples'
+
+    - os: osx
+      r: oldrel
       latex: false
       r_build_args: '--no-build-vignettes'
       r_check_args: '--ignore-vignettes --no-examples'
