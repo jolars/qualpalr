@@ -2,6 +2,7 @@ language: r
 sudo: false
 cache: packages
 warnings_are_errors: true
+latex: false
 
 matrix:
   include:
@@ -22,39 +23,28 @@ matrix:
     - os: linux
       compiler: clang
       r: release
-      sudo: required
 
     - os: linux
       r: devel
       compiler: clang
-      sudo: required
 
     - os: linux
       r: devel
       compiler: gcc
-      sudo: required
 
     - os: linux
       r: oldrel
       compiler: clang
-      sudo: required
 
     - os: linux
       r: oldrel
       compiler: gcc
-      sudo: required
 
     - os: osx
       r: release
-      latex: false
-      r_build_args: '--no-build-vignettes'
-      r_check_args: '--ignore-vignettes --no-examples'
 
     - os: osx
       r: oldrel
-      latex: false
-      r_build_args: '--no-build-vignettes'
-      r_check_args: '--ignore-vignettes --no-examples'
 
 notifications:
   email:
