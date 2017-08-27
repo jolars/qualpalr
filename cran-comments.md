@@ -1,9 +1,9 @@
 ## Test environments
-* Local Windows 10 Pro installation 10.0.14393, R 3.4.0
-* Ubuntu 12.04 and 14.04, R 3.4.0 and devel (on travis ci)
-* Mac OS X 10.11.6, R 3.4.0 (on travis ci)
-* Windows Server 2012 R2 x32 and x64, R 3.4.0, and devel (on appveyor)
-* Win-builder, devel 2017-05-12 r72670
+* Local Windows 10 Pro installation, R release
+* Ubuntu Trusty, clang and gcc, R devel, release, and oldrel (on travis ci)
+* OSX El Capitan, R release and oldrel (on travis ci)
+* Windows Server 2012 R2 x32 and x64, R devel, release, and oldrel (on appveyor)
+* Win-builder, devel 2017-08-25 r73135
 
 ## R CMD check results
 
