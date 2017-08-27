@@ -3,9 +3,7 @@ sudo: false
 cache: packages
 warnings_are_errors: true
 latex: false
-
-r_binary_packages:
-  - RcppArmadillo
+dist: trusty
 
 matrix:
   include:
