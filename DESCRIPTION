@@ -17,7 +17,7 @@ Imports:
     utils,
     assertthat,
     Rcpp,
-    RcppParallel
+    RcppParallel,
     RcppArmadillo,
 Suggests:
     testthat,
