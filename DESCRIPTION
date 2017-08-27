@@ -1,6 +1,6 @@
 Package: qualpalr
 Title: Automatic Generation of Qualitative Color Palettes
-Version: 0.4.1.9000
+Version: 0.4.2
 Authors@R: person("Johan", "Larsson", email = "johanlarsson@outlook.com",
                   role = c("aut", "cre"))
 Description: Automatic generation of distinct qualitative color palettes,
@@ -16,8 +16,8 @@ Imports:
     grDevices,
     utils,
     assertthat,
-    Rcpp (>= 0.12.9),
-    RcppParallel (>= 4.3.20)
+    Rcpp,
+    RcppParallel
 Suggests:
     testthat,
     knitr,
@@ -32,7 +32,7 @@ URL: https://github.com/jolars/qualpalr
 BugReports: https://github.com/jolars/qualpalr/issues
 VignetteBuilder: knitr
 LinkingTo:
-    Rcpp,
-    RcppParallel,
+    Rcpp (>= 0.12.9),
+    RcppParallel (>= 4.3.20),
     RcppArmadillo (>= 0.7.600.1.0)
 SystemRequirements: GNU make
