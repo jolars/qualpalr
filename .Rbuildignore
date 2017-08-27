@@ -12,3 +12,4 @@
 ^experimental$
 ^data-raw$
 ^docs$
+^README-.*\.png$
