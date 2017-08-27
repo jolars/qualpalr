@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // edist
 NumericMatrix edist(const NumericMatrix mat);
-RcppExport SEXP qualpalr_edist(SEXP matSEXP) {
+RcppExport SEXP _qualpalr_edist(SEXP matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -19,7 +19,7 @@ END_RCPP
 }
 // farthest_points
 arma::uvec farthest_points(const Rcpp::NumericMatrix& data, const arma::uword n);
-RcppExport SEXP qualpalr_farthest_points(SEXP dataSEXP, SEXP nSEXP) {
+RcppExport SEXP _qualpalr_farthest_points(SEXP dataSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -28,4 +28,15 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(farthest_points(data, n));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_qualpalr_edist", (DL_FUNC) &_qualpalr_edist, 1},
+    {"_qualpalr_farthest_points", (DL_FUNC) &_qualpalr_farthest_points, 2},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_qualpalr(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

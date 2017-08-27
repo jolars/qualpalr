@@ -2,10 +2,10 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 edist <- function(mat) {
-    .Call('qualpalr_edist', PACKAGE = 'qualpalr', mat)
+    .Call(`_qualpalr_edist`, mat)
 }
 
 farthest_points <- function(data, n) {
-    .Call('qualpalr_farthest_points', PACKAGE = 'qualpalr', data, n)
+    .Call(`_qualpalr_farthest_points`, data, n)
 }
 
