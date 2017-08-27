@@ -1,5 +1,8 @@
 # qualpalr 0.4.1.9000
 
+## Bug fixes
+* `autopal()` erroneously required `colorspace` to be a string.
+
 # qualpalr 0.4.1
 ## Bug fixes
 * Fixed `autopal()` which was broken since the minimum color difference

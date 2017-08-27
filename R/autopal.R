@@ -38,7 +38,6 @@ autopal <- function(n,
   assertthat::assert_that(
     assertthat::is.number(target),
     assertthat::is.count(n),
-    assertthat::is.string(colorspace),
     is.character(cvd)
   )
 
