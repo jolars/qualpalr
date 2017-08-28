@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,25 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/introduction.html">An introduction to qualpalr</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -193,94 +209,95 @@ white point reference.</p>
 <span class='fu'>qualpal</span>(<span class='fl'>3</span>)</div><div class='output co'>#&gt; ---------------------------------------- 
 #&gt; Colors in the HSL color space 
 #&gt; 
-#&gt;         Hue Saturation Lightness
-#&gt; #71BDD0 192       0.50      0.63
-#&gt; #B66CCC 286       0.48      0.61
-#&gt; #CB9B6A  30       0.48      0.61
+#&gt;           Hue Saturation Lightness
+#&gt; #C96C69   1.9       0.47      0.60
+#&gt; #6E9DCE 210.6       0.49      0.62
+#&gt; #9FCB6A  87.0       0.48      0.61
 #&gt; 
 #&gt;  ---------------------------------------- 
 #&gt; DIN99d color difference distance matrix 
 #&gt; 
-#&gt;         #71BDD0 #B66CCC
-#&gt; #B66CCC      23        
-#&gt; #CB9B6A      23      23</div><div class='input'>
+#&gt;         #C96C69 #6E9DCE
+#&gt; #6E9DCE      24        
+#&gt; #9FCB6A      24      24</div><div class='input'>
 <span class='co'># Provide a custom color space</span>
 <span class='fu'>qualpal</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='fu'>list</span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>35</span>, <span class='fl'>360</span>), <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.5</span>, <span class='fl'>0.7</span>), <span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0.45</span>)))</div><div class='output co'>#&gt; ---------------------------------------- 
 #&gt; Colors in the HSL color space 
 #&gt; 
 #&gt;         Hue Saturation Lightness
-#&gt; #24B9BE 182       0.68      0.44
-#&gt; #0B0D3B 237       0.70      0.14
-#&gt; #BE2635 354       0.67      0.45
+#&gt; #BF26B8 303       0.67     0.449
+#&gt; #7CC223  87       0.70     0.449
+#&gt; #061D0B 134       0.67     0.067
 #&gt; 
 #&gt;  ---------------------------------------- 
 #&gt; DIN99d color difference distance matrix 
 #&gt; 
-#&gt;         #24B9BE #0B0D3B
-#&gt; #0B0D3B      31        
-#&gt; #BE2635      31      28</div><div class='input'>
+#&gt;         #BF26B8 #7CC223
+#&gt; #7CC223      34        
+#&gt; #061D0B      30      30</div><div class='input'>
 <span class='fu'>qualpal</span>(<span class='fl'>3</span>, <span class='st'>"pretty"</span>)</div><div class='output co'>#&gt; ---------------------------------------- 
 #&gt; Colors in the HSL color space 
 #&gt; 
-#&gt;         Hue Saturation Lightness
-#&gt; #6C7DCC 229       0.48      0.61
-#&gt; #6ACA91 144       0.48      0.61
-#&gt; #CD7F6D  11       0.49      0.62
+#&gt;           Hue Saturation Lightness
+#&gt; #C96C69   1.9       0.47      0.60
+#&gt; #6E9DCE 210.6       0.49      0.62
+#&gt; #9FCB6A  87.0       0.48      0.61
 #&gt; 
 #&gt;  ---------------------------------------- 
 #&gt; DIN99d color difference distance matrix 
 #&gt; 
-#&gt;         #6C7DCC #6ACA91
-#&gt; #6ACA91      25        
-#&gt; #CD7F6D      24      25</div><div class='input'>
+#&gt;         #C96C69 #6E9DCE
+#&gt; #6E9DCE      24        
+#&gt; #9FCB6A      24      24</div><div class='input'>
 <span class='co'># Adapt palette to deuteranopia</span>
 <span class='fu'>qualpal</span>(<span class='fl'>5</span>, <span class='kw'>colorspace</span> <span class='kw'>=</span> <span class='st'>"pretty_dark"</span>, <span class='kw'>cvd</span> <span class='kw'>=</span> <span class='st'>"deutan"</span>, <span class='kw'>cvd_severity</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; ---------------------------------------- 
 #&gt; Colors in the HSL color space 
 #&gt; 
-#&gt;         Hue Saturation Lightness
-#&gt; #324893 275       0.49      0.40
-#&gt; #AB9036  57       0.50      0.40
-#&gt; #78797B 163       0.46      0.40
-#&gt; #2A2B30 335       0.44      0.21
-#&gt; #584B1E  50       0.49      0.22
+#&gt;           Hue Saturation Lightness
+#&gt; #121F4A 247.8       0.47      0.20
+#&gt; #AB9036  57.1       0.50      0.40
+#&gt; #2E2A1B   1.9       0.46      0.20
+#&gt; #54618D 197.1       0.49      0.37
+#&gt; #6F6C61 152.1       0.41      0.36
 #&gt; 
 #&gt;  ---------------------------------------- 
 #&gt; DIN99d color difference distance matrix 
 #&gt; 
-#&gt;         #324893 #AB9036 #78797B #2A2B30
-#&gt; #AB9036      29                        
-#&gt; #78797B      17      18                
-#&gt; #2A2B30      16      26      18        
-#&gt; #584B1E      24      16      16      16</div><div class='input'>
+#&gt;         #121F4A #AB9036 #2E2A1B #54618D
+#&gt; #AB9036      31                        
+#&gt; #2E2A1B      18      23                
+#&gt; #54618D      16      25      20        
+#&gt; #6F6C61      22      15      16      16</div><div class='input'>
 <span class='co'># Adapt palette to protanomaly with severity 0.4</span>
 <span class='fu'>qualpal</span>(<span class='fl'>8</span>, <span class='kw'>colorspace</span> <span class='kw'>=</span> <span class='st'>"pretty_dark"</span>, <span class='kw'>cvd</span> <span class='kw'>=</span> <span class='st'>"protan"</span>, <span class='kw'>cvd_severity</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; ---------------------------------------- 
 #&gt; Colors in the HSL color space 
 #&gt; 
 #&gt;           Hue Saturation Lightness
-#&gt; #191E4C 247.8       0.47      0.20
-#&gt; #698847 132.8       0.48      0.39
-#&gt; #36211B   1.9       0.46      0.20
-#&gt; #5D888F 178.5       0.50      0.38
+#&gt; #563F94 293.5       0.48      0.39
+#&gt; #7F8832  94.3       0.48      0.38
+#&gt; #40271E   4.1       0.48      0.23
+#&gt; #4E6D8E 200.0       0.44      0.38
+#&gt; #658B79 162.7       0.46      0.40
+#&gt; #2C3542 207.7       0.25      0.20
+#&gt; #364529 135.6       0.44      0.20
 #&gt; #7A5936  20.6       0.45      0.39
-#&gt; #384B3C 155.5       0.46      0.22
-#&gt; #3D5898 217.8       0.49      0.40
-#&gt; #633E62 332.0       0.49      0.40
 #&gt; 
 #&gt;  ---------------------------------------- 
 #&gt; DIN99d color difference distance matrix 
 #&gt; 
-#&gt;         #191E4C #698847 #36211B #5D888F #7A5936 #384B3C #3D5898
-#&gt; #698847      28                                                
-#&gt; #36211B      17      23                                        
-#&gt; #5D888F      23      16      24                                
-#&gt; #7A5936      24      16      16      20                        
-#&gt; #384B3C      19      15      16      15      15                
-#&gt; #3D5898      15      24      22      16      23      18        
-#&gt; #633E62      15      24      15      21      18      18      15</div><div class='input'>
-<span class='fu'>not_run</span>({
-  <span class='co'># The range of hue cannot exceed 360</span>
-  <span class='fu'>qualpal</span>(<span class='fl'>3</span>, <span class='fu'>list</span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='fu'>c</span>(-<span class='fl'>20</span>, <span class='fl'>360</span>), <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.5</span>, <span class='fl'>0.7</span>), <span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0.45</span>)))
-})</div></pre>
+#&gt;         #563F94 #7F8832 #40271E #4E6D8E #658B79 #2C3542 #364529
+#&gt; #7F8832      28                                                
+#&gt; #40271E      20      22                                        
+#&gt; #4E6D8E      15      23      22                                
+#&gt; #658B79      23      14      23      15                        
+#&gt; #2C3542      15      24      14      14      20                
+#&gt; #364529      23      16      14      19      16      14        
+#&gt; #7A5936      23      14      14      21      18      19      14</div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># The range of hue cannot exceed 360</span>
+<span class='fu'>qualpal</span>(<span class='fl'>3</span>, <span class='fu'>list</span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='fu'>c</span>(-<span class='fl'>20</span>, <span class='fl'>360</span>), <span class='kw'>s</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.5</span>, <span class='fl'>0.7</span>), <span class='kw'>l</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0.45</span>)))
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

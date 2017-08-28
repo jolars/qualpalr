@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,10 +52,25 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="..//index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/introduction.html">An introduction to qualpalr</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -84,19 +100,45 @@
     </div>
 
     <div class="contents">
-    <div id="qualpalr-0-4-1" class="section level1">
+    <div id="qualpalr-0-4-2" class="section level1">
 <h1 class="hasAnchor">
-<a href="#qualpalr-0-4-1" class="anchor"></a>qualpalr 0.4.1</h1>
-<div id="bug-fixes" class="section level2">
+<a href="#qualpalr-0-4-2" class="anchor"></a>qualpalr 0.4.2</h1>
+<div id="major-changes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#major-changes" class="anchor"></a>Major changes</h2>
 <ul>
-<li>Fixed <code><a href="../reference/autopal.html">autopal()</a></code> which was broken since the minimum color difference returned was always 0 due to a bug in <code><a href="../reference/qualpal.html">qualpal()</a></code>.</li>
+<li>Palettes are no longer generated randomly. <strong>qualpalr</strong> previuosly started with a random sample of colors before running the optimization scheme but now instead picks a starting set of linearly spaced colors.</li>
 </ul>
 </div>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes" class="anchor"></a>Minor changes</h2>
+<ul>
+<li>C++ functions are registered via Rcpp.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>
+<code><a href="../reference/autopal.html">autopal()</a></code> erroneously required <code>colorspace</code> to be a string.</li>
+</ul>
+</div>
+</div>
+    <div id="qualpalr-0-4-1" class="section level1">
+<h1 class="hasAnchor">
+<a href="#qualpalr-0-4-1" class="anchor"></a>qualpalr 0.4.1</h1>
+<div id="bug-fixes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed <code><a href="../reference/autopal.html">autopal()</a></code> which was broken since the minimum color difference returned was always 0 due to a bug in <code><a href="../reference/qualpal.html">qualpal()</a></code>.</li>
+</ul>
+</div>
+<div id="minor-changes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes-1" class="anchor"></a>Minor changes</h2>
 <ul>
 <li>Now registers compiled functions.</li>
 </ul>
@@ -105,9 +147,9 @@
     <div id="qualpalr-0-4-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#qualpalr-0-4-0" class="anchor"></a>qualpalr 0.4.0</h1>
-<div id="major-changes" class="section level2">
+<div id="major-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#major-changes" class="anchor"></a>Major changes</h2>
+<a href="#major-changes-1" class="anchor"></a>Major changes</h2>
 <ul>
 <li>
 <code><a href="../reference/autopal.html">autopal()</a></code> is a new function that tweaks the amount of color vision deficiency adapation to match a target color difference.</li>
@@ -115,25 +157,25 @@
 <code><a href="../reference/qualpal.html">qualpal()</a></code> argument <code>colorspace</code> now also accepts a <code>matrix</code> or <code>data.frame</code> of RGB colors.</li>
 </ul>
 </div>
-<div id="minor-changes-1" class="section level2">
+<div id="minor-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-1" class="anchor"></a>Minor changes</h2>
+<a href="#minor-changes-2" class="anchor"></a>Minor changes</h2>
 <ul>
 <li>
 <code><a href="../reference/qualpal.html">qualpal()</a></code> sorts palettes in order of increasing color distinctness.</li>
 <li>
 <code><a href="../reference/qualpal.html">qualpal()</a></code> argument <code>colorblind</code> has been made defunct.</li>
 <li>Documentation for <code><a href="../reference/qualpal.html">qualpal()</a></code> has been improved.</li>
-<li>Colors are now generated with <code>randtoolbox::torus()</code> instead of <code>randtoolbox::sobol()</code>.</li>
+<li>Colors are now generated with <code><a href="http://www.rdocumentation.org/packages/randtoolbox/topics/quasiRNG">randtoolbox::torus()</a></code> instead of <code><a href="http://www.rdocumentation.org/packages/randtoolbox/topics/quasiRNG">randtoolbox::sobol()</a></code>.</li>
 </ul>
 </div>
 </div>
     <div id="qualpalr-0-3-1" class="section level1">
 <h1 class="hasAnchor">
 <a href="#qualpalr-0-3-1" class="anchor"></a>qualpalr 0.3.1</h1>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Dropped a C++ header that caused the package build to fail on some platforms.</li>
 <li>Fixed issues with unitialized variables in the internal farthest points optimizer.</li>
@@ -161,9 +203,9 @@
 <li>Changed argument name of <code>colorblind</code> to <code>cvd</code> (for color vision deficiency) since the function now adapts to less severe versions of color deficiency. Using <code>colorblind</code> is deprecated and will throw a warning.</li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed typos and invalid links in the <em>Introduction to qualpalr</em> vignette.</li>
 </ul>
@@ -206,7 +248,7 @@
 <h2 class="hasAnchor">
 <a href="#bug-fixes-and-minor-improvements-1" class="anchor"></a>Bug fixes and minor improvements</h2>
 <ul>
-<li>Moved from using <code>grDevices::convertColor</code> to formulas from <a href="http://www.brucelindbloom.com/">Bruce Lindbloom</a> for color conversions, since the former function inaccurately converts colors.</li>
+<li>Moved from using <code><a href="http://www.rdocumentation.org/packages/grDevices/topics/convertColor">grDevices::convertColor</a></code> to formulas from <a href="http://www.brucelindbloom.com/">Bruce Lindbloom</a> for color conversions, since the former function inaccurately converts colors.</li>
 <li>Deprecated <code>...</code> in <code>qualpal</code> since the function no longer uses an optimizer.</li>
 </ul>
 </div>
@@ -218,6 +260,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#qualpalr-0-4-2">0.4.2</a></li>
         <li><a href="#qualpalr-0-4-1">0.4.1</a></li>
         <li><a href="#qualpalr-0-4-0">0.4.0</a></li>
         <li><a href="#qualpalr-0-3-1">0.3.1</a></li>
