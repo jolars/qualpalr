@@ -3,11 +3,11 @@ sudo: false
 cache: packages
 warnings_are_errors: true
 latex: false
-dist: trusty
 
 matrix:
   include:
     - os: linux
+      compiler: gcc
       r: release
       addons:
         apt:
@@ -26,20 +26,20 @@ matrix:
       r: release
 
     - os: linux
-      r: devel
-      compiler: clang
-
-    - os: linux
-      r: devel
       compiler: gcc
+      r: devel
 
     - os: linux
-      r: oldrel
       compiler: clang
+      r: devel
 
     - os: linux
-      r: oldrel
       compiler: gcc
+      r: oldrel
+
+    - os: linux
+      compiler: clang
+      r: oldrel
 
     - os: osx
       r: release
