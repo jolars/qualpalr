@@ -7,12 +7,12 @@
 using namespace Rcpp;
 
 // edist
-NumericMatrix edist(const NumericMatrix mat);
+Rcpp::NumericMatrix edist(const Rcpp::NumericMatrix mat);
 RcppExport SEXP _qualpalr_edist(SEXP matSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericMatrix >::type mat(matSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix >::type mat(matSEXP);
     rcpp_result_gen = Rcpp::wrap(edist(mat));
     return rcpp_result_gen;
 END_RCPP
