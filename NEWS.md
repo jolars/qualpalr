@@ -1,5 +1,8 @@
 # qualpalr 0.4.2.9000
 
+## Minor changes
+* C++ functions call namespaces explicitly using `::`.
+
 # qualpalr 0.4.2
 
 ## Major changes

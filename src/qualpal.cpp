@@ -6,9 +6,6 @@
 #include <RcppArmadillo.h>
 #include <RcppParallel.h>
 
-using namespace Rcpp;
-using namespace RcppParallel;
-
 // [[Rcpp::depends(RcppParallel, RcppArmadillo)]]
 
 template <typename InputIterator1, typename InputIterator2>
@@ -20,22 +17,22 @@ inline double euclid(InputIterator1 begin1, InputIterator1 end1,
   InputIterator2 it2 = begin2;
 
   while (it1 != end1)
-    out += pow(*it1++ - *it2++, 2);
+    out += std::pow(*it1++ - *it2++, 2);
 
-  return pow(sqrt(out), 0.74) * 1.28;
+  return std::pow(std::sqrt(out), 0.74) * 1.28;
 }
 
-struct dist_worker : public Worker {
-  const RMatrix<double> mat;
-  RMatrix<double> rmat;
-  dist_worker(const NumericMatrix mat, NumericMatrix rmat)
+struct dist_worker : public RcppParallel::Worker {
+  const RcppParallel::RMatrix<double> mat;
+  RcppParallel::RMatrix<double> rmat;
+  dist_worker(const Rcpp::NumericMatrix mat, Rcpp::NumericMatrix rmat)
     : mat(mat), rmat(rmat) {}
 
   void operator()(std::size_t begin, std::size_t end) {
     for (std::size_t i = begin; i < end; i++) {
       for (std::size_t j = 0; j < i; j++) {
-        RMatrix<double>::Row row1 = mat.row(i);
-        RMatrix<double>::Row row2 = mat.row(j);
+        RcppParallel::RMatrix<double>::Row row1 = mat.row(i);
+        RcppParallel::RMatrix<double>::Row row2 = mat.row(j);
         double d = euclid(row1.begin(), row1.end(), row2.begin(), row2.end());
         rmat(i, j) = d;
         rmat(j, i) = d;
@@ -45,10 +42,10 @@ struct dist_worker : public Worker {
 };
 
 // [[Rcpp::export]]
-NumericMatrix edist(const NumericMatrix mat) {
-  NumericMatrix rmat(mat.nrow(), mat.nrow());
+Rcpp::NumericMatrix edist(const Rcpp::NumericMatrix mat) {
+  Rcpp::NumericMatrix rmat(mat.nrow(), mat.nrow());
   dist_worker dist_worker(mat, rmat);
-  parallelFor(0, mat.nrow(), dist_worker);
+  RcppParallel::parallelFor(0, mat.nrow(), dist_worker);
 
   return rmat;
 }
@@ -69,7 +66,7 @@ arma::uvec std_setdiff(const arma::uvec& x, const arma::uvec& y) {
 // [[Rcpp::export]]
 arma::uvec farthest_points(const Rcpp::NumericMatrix &data,
                            const arma::uword n) {
-  arma::mat dm = as<arma::mat>(edist(data));
+  arma::mat dm = Rcpp::as<arma::mat>(edist(data));
   arma::uword N = dm.n_cols;
 
   arma::uvec full_range = arma::linspace<arma::uvec>(0, N - 1, N);
