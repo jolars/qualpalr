@@ -1,15 +1,19 @@
-citHeader("To cite qualpalr in publications use:")
+i <- regexpr("(?<=\\s{1})\\d{4}(?=-{1})", meta$Built, perl = TRUE)
+year <- substring(meta$Built, i, i + 3)
+pkg <- meta$Package
+vers <- meta$Version
+title <- meta$Title
+if(is.null(vers))
+  vers <- packageVersion(pkg)
+note <- paste("R package version", vers)
 
-citEntry(entry = "Manual",
-  title        = "{qualpalr}: Automatic Generation of Qualitative Color Palettes",
+citHeader(paste("To cite ", pkg, "in publications, please use:"))
+
+bibentry(
+  bibtype      = "Manual",
+  title        = paste0("{", pkg, "}: ", title),
   author       = personList(as.person("Johan Larsson")),
-  year         = "2016",
-  note         = "R package version 0.3.1",
-  url          = "https://cran.r-project.org/package=qualpalr",
-
-  textVersion  =
-  paste("Johan Larsson (2016).",
-        "qualpalr: Automatic Generation of Qualitative Color Palettes",
-        "R package version 0.3.1",
-        "URL https://cran.r-project.org/package=qualpalr")
+  year         = year,
+  note         = note,
+  url          = paste0("https://cran.r-project.org/package=", pkg)
 )
