@@ -5,7 +5,7 @@
 \title{Generate qualitative color palettes}
 \usage{
 qualpal(n, colorspace = "pretty", cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0)
+  cvd_severity = 0, n_threads = NULL)
 }
 \arguments{
 \item{n}{The number of colors to generate.}
@@ -56,6 +56,9 @@ values are \code{"protan", "deutan",} and \code{"tritan"}.}
 \item{cvd_severity}{Severity of color vision deficiency to adapt to. Can take
 any value from 0, for normal vision (the default), and 1, for dichromatic
 vision.}
+
+\item{n_threads}{The number of threads to use, provided to
+\link[RcppParallel]{setThreadOptions} if non-null.}
 }
 \value{
 A list of class \code{qualpal} with the following
