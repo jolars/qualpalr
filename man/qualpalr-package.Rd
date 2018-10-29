@@ -20,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Johan Larsson \email{johanlarsson@outlook.com} (0000-0002-4029-5945)
+\strong{Maintainer}: Johan Larsson \email{mail@larssonjohan.com} (0000-0002-4029-5945)
 
 }
 \keyword{internal}
