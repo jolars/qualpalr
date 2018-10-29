@@ -4,8 +4,8 @@
 \alias{qualpal}
 \title{Generate qualitative color palettes}
 \usage{
-qualpal(n, colorspace = "pretty", cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0, n_threads = NULL)
+qualpal(n, colorspace = "pretty", cvd = c("protan", "deutan",
+  "tritan"), cvd_severity = 0, n_threads = NULL)
 }
 \arguments{
 \item{n}{The number of colors to generate.}
@@ -16,8 +16,8 @@ following:
   \item{A \code{\link{list}} with the following \emph{named} vectors,
     each of length two, giving a range for each item.}{
     \describe{
-      \item{\code{h}}{Hue, in the range [0, 1]}
-      \item{\code{s}}{Saturation, in the range [-360, 360]}
+      \item{\code{h}}{Hue, in the range [-360, 360]}
+      \item{\code{s}}{Saturation, in the range [0, 1]}
       \item{\code{l}}{Lightness, in the range [0, 1]}
     }
   }
