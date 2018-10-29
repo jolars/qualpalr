@@ -1,4 +1,4 @@
-# qualpalr 0.4.2.9000
+# qualpalr 0.4.3
 
 ## Minor changes
 * `qualpal()` gains an argument, `n_threads`, for specifying the number
