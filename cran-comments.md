@@ -5,11 +5,11 @@
 * Debian Linux, R-devel, GCC ASAN/UBSAN on rhub
 * Fedora Linux, R-devel, clang, gfortran on rhub
 * macOS 10.11 El Capitan, R-release on rhub
-* winbuilder oldrel, release, devel (r75506) 
+* winbuilder release, devel (r75507) 
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 notes
+0 errors | 0 warnings | 2 notes
 
 R CMD check generated the following notes:
 
@@ -17,6 +17,18 @@ R CMD check generated the following notes:
 > GNU make is a SystemRequirements.
 
 GNU make is required by RcppParallel.
+
+> * checking CRAN incoming feasibility ... NOTE
+> Maintainer: 'Johan Larsson <mail@larssonjohan.com>'
+> 
+> New maintainer:
+>   Johan Larsson <mail@larssonjohan.com>
+> Old maintainer(s):
+>   Johan Larsson <johanlarsson@outlook.com>
+
+The email for the maintainer of this package has been changed to
+mail@larssonjohan.com. An email has been sent from johanlarsson@outlook.com
+to verify this.
 
 ## Sanitizer warnings
 
