@@ -52,7 +52,7 @@ optimizer.
 # qualpalr 0.3.0
 ## New features
 * Improved algorithm for finding distinct colors. (For details
-[see this](http://larssonjohan.com/r/farthest-points/).)
+[see this](https://larssonjohan.com/post/2016-10-30-farthest-points/).)
 * Revamped the color deficiency handling to include almost all cases of color
 deficiency using the methods described in
 [Machado 2010](https://www.lume.ufrgs.br/bitstream/handle/10183/26950/000761444.pdf), 
