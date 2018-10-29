@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate qualitative color palettes � qualpal • qualpalr</title>
+<title>Generate qualitative color palettes — qualpal • qualpalr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,28 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Generate qualitative color palettes — qualpal" />
+
+<meta property="og:description" content="Given a color space or collection of colors, qualpal() projects
+these colors to the DIN99d color space, where it generates a color palette
+from the most visually distinct colors, optionally taking color vision
+deficiency into account." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,12 +62,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">qualpalr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">qualpalr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.3</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -73,7 +92,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -85,6 +104,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,23 +112,27 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generate qualitative color palettes</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jolars/qualpalr/blob/master/R/qualpal.R'><code>R/qualpal.R</code></a></small>
+    <div class="hidden name"><code>qualpal.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Given a color space or collection of colors, <code>qualpal()</code> projects
 these colors to the DIN99d color space, where it generates a color palette
 from the most visually distinct colors, optionally taking color vision
 deficiency into account.</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>qualpal</span>(<span class='no'>n</span>, <span class='kw'>colorspace</span> <span class='kw'>=</span> <span class='st'>"pretty"</span>, <span class='kw'>cvd</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"protan"</span>, <span class='st'>"deutan"</span>, <span class='st'>"tritan"</span>),
-  <span class='kw'>cvd_severity</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'>qualpal</span>(<span class='no'>n</span>, <span class='kw'>colorspace</span> <span class='kw'>=</span> <span class='st'>"pretty"</span>, <span class='kw'>cvd</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"protan"</span>, <span class='st'>"deutan"</span>,
+  <span class='st'>"tritan"</span>), <span class='kw'>cvd_severity</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>n_threads</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -122,8 +146,8 @@ following:</p><ul>
 <li><p>A <code>list</code> with the following <em>named</em> vectors,
     each of length two, giving a range for each item.
     <dl class='dl-horizontal'>
-      <dt><code>h</code></dt><dd><p>Hue, in the range [0, 1]</p></dd>
-      <dt><code>s</code></dt><dd><p>Saturation, in the range [-360, 360]</p></dd>
+      <dt><code>h</code></dt><dd><p>Hue, in the range [-360, 360]</p></dd>
+      <dt><code>s</code></dt><dd><p>Saturation, in the range [0, 1]</p></dd>
       <dt><code>l</code></dt><dd><p>Lightness, in the range [0, 1]</p></dd>
     </dl></p></li>
 <li><p>A <code>character</code> vector of length one specifying one of
@@ -158,6 +182,11 @@ values are <code>"protan", "deutan",</code> and <code>"tritan"</code>.</p></td>
 any value from 0, for normal vision (the default), and 1, for dichromatic
 vision.</p></td>
     </tr>
+    <tr>
+      <th>n_threads</th>
+      <td><p>The number of threads to use, provided to
+<a href='http://www.rdocumentation.org/packages/RcppParallel/topics/setThreadOptions'>setThreadOptions</a> if non-null.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -185,8 +214,8 @@ color space, which is approximately perceptually uniform, i.e. color
 difference is proportional to the euclidean distance between two colors. A
 distance matrix is computed and, as an additional step, is transformed using
 power transformations discovered by Huang 2015 in order to fine tune
-differences.
-    <code>qualpal</code> then searches the distance matrix for the most
+differences.</p>
+<p><code>qualpal</code> then searches the distance matrix for the most
 distinct colors; it does this iteratively by first selecting a random set of
 colors and then iterates over each color, putting colors back into the total
 set and replaces it with a new color until it has gone through the whole
@@ -195,13 +224,13 @@ range without changing any of the colors.</p>
 deficiency (cvd). This is accomplished by taking the colors
 provided by the user and transforming them to colors that someone with cvd
 would see, that is, simulating cvd. qualpal then chooses colors from
-these new colors.
-    <code>qualpal</code> currently only supports the sRGB color space with the D65
+these new colors.</p>
+<p><code>qualpal</code> currently only supports the sRGB color space with the D65
 white point reference.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='plot.qualpal.html'>plot.qualpal</a></code>, <code><a href='pairs.qualpal.html'>pairs.qualpal</a></code></p>
+    <div class='dont-index'><p><code><a href='plot.qualpal.html'>plot.qualpal</a></code>, <code><a href='pairs.qualpal.html'>pairs.qualpal</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -322,11 +351,14 @@ white point reference.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Function reference" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,12 +56,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">qualpalr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">qualpalr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.3</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -73,7 +86,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -85,6 +98,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,64 +106,60 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.4.2</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="autopal.html">autopal</a></code> </p>
-          </td>
-          <td><p>Optimize color palette for color vision deficiency</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="pairs.qualpal.html">pairs</a></code> </p>
-          </td>
-          <td><p>Scatterplot matrix of qualitative color palette</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.qualpal.html">plot</a></code> </p>
-          </td>
-          <td><p>Multidimensional scaling map of qualitative color palette</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="print.qualpal.html">print</a></code> </p>
-          </td>
-          <td><p>Print qualpal palette</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="qualpal.html">qualpal</a></code> </p>
-          </td>
-          <td><p>Generate qualitative color palettes</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="autopal.html">autopal()</a></code> </p>
+        </td>
+        <td><p>Optimize color palette for color vision deficiency</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pairs.qualpal.html">pairs(<i>&lt;qualpal&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Scatterplot matrix of qualitative color palette</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot.qualpal.html">plot(<i>&lt;qualpal&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Multidimensional scaling map of qualitative color palette</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.qualpal.html">print(<i>&lt;qualpal&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print qualpal palette</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="qualpal.html">qualpal()</a></code> </p>
+        </td>
+        <td><p>Generate qualitative color palettes</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -166,11 +176,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

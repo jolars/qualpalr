@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • qualpalr</title>
+<title>Changelog • qualpalr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Changelog" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,12 +56,16 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">qualpalr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">qualpalr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.3</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -73,7 +86,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -85,6 +98,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -92,17 +106,32 @@
       
       </header>
 
-      <div class="row">
-
-  <div class="col-md-9">
+<div class="row">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+      <h1>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/jolars/qualpalr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="contents">
+    <div id="qualpalr-0-4-3" class="section level1">
+<h1 class="page-header">
+<a href="#qualpalr-0-4-3" class="anchor"></a>qualpalr 0.4.3<small> Unreleased </small>
+</h1>
+<div id="minor-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-changes" class="anchor"></a>Minor changes</h2>
+<ul>
+<li>
+<code><a href="../reference/qualpal.html">qualpal()</a></code> gains an argument, <code>n_threads</code>, for specifying the number of threads to use when computing the distance matrix between colors.</li>
+<li>C++ functions call namespaces explicitly using <code>::</code>.</li>
+<li>Documentation for hue and saturation in <code><a href="../reference/qualpal.html">qualpal()</a></code> has been fixed. (Closes <a href='https://github.com/jolars/qualpalr/issues/2'>#2</a>, thanks <a href='http://github.com/jflycn'>@jflycn</a>).</li>
+</ul>
+</div>
+</div>
     <div id="qualpalr-0-4-2" class="section level1">
-<h1 class="hasAnchor">
-<a href="#qualpalr-0-4-2" class="anchor"></a>qualpalr 0.4.2</h1>
+<h1 class="page-header">
+<a href="#qualpalr-0-4-2" class="anchor"></a>qualpalr 0.4.2<small> 2017-08-28 </small>
+</h1>
 <div id="major-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#major-changes" class="anchor"></a>Major changes</h2>
@@ -110,9 +139,9 @@
 <li>Palettes are no longer generated randomly. <strong>qualpalr</strong> previuosly started with a random sample of colors before running the optimization scheme but now instead picks a starting set of linearly spaced colors.</li>
 </ul>
 </div>
-<div id="minor-changes" class="section level2">
+<div id="minor-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes" class="anchor"></a>Minor changes</h2>
+<a href="#minor-changes-1" class="anchor"></a>Minor changes</h2>
 <ul>
 <li>C++ functions are registered via Rcpp.</li>
 </ul>
@@ -127,8 +156,9 @@
 </div>
 </div>
     <div id="qualpalr-0-4-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#qualpalr-0-4-1" class="anchor"></a>qualpalr 0.4.1</h1>
+<h1 class="page-header">
+<a href="#qualpalr-0-4-1" class="anchor"></a>qualpalr 0.4.1<small> 2017-05-15 </small>
+</h1>
 <div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
@@ -136,17 +166,18 @@
 <li>Fixed <code><a href="../reference/autopal.html">autopal()</a></code> which was broken since the minimum color difference returned was always 0 due to a bug in <code><a href="../reference/qualpal.html">qualpal()</a></code>.</li>
 </ul>
 </div>
-<div id="minor-changes-1" class="section level2">
+<div id="minor-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-1" class="anchor"></a>Minor changes</h2>
+<a href="#minor-changes-2" class="anchor"></a>Minor changes</h2>
 <ul>
 <li>Now registers compiled functions.</li>
 </ul>
 </div>
 </div>
     <div id="qualpalr-0-4-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#qualpalr-0-4-0" class="anchor"></a>qualpalr 0.4.0</h1>
+<h1 class="page-header">
+<a href="#qualpalr-0-4-0" class="anchor"></a>qualpalr 0.4.0<small> 2017-03-16 </small>
+</h1>
 <div id="major-changes-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#major-changes-1" class="anchor"></a>Major changes</h2>
@@ -157,9 +188,9 @@
 <code><a href="../reference/qualpal.html">qualpal()</a></code> argument <code>colorspace</code> now also accepts a <code>matrix</code> or <code>data.frame</code> of RGB colors.</li>
 </ul>
 </div>
-<div id="minor-changes-2" class="section level2">
+<div id="minor-changes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-changes-2" class="anchor"></a>Minor changes</h2>
+<a href="#minor-changes-3" class="anchor"></a>Minor changes</h2>
 <ul>
 <li>
 <code><a href="../reference/qualpal.html">qualpal()</a></code> sorts palettes in order of increasing color distinctness.</li>
@@ -171,8 +202,9 @@
 </div>
 </div>
     <div id="qualpalr-0-3-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#qualpalr-0-3-1" class="anchor"></a>qualpalr 0.3.1</h1>
+<h1 class="page-header">
+<a href="#qualpalr-0-3-1" class="anchor"></a>qualpalr 0.3.1<small> 2016-12-22 </small>
+</h1>
 <div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
@@ -183,13 +215,14 @@
 </div>
 </div>
     <div id="qualpalr-0-3-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#qualpalr-0-3-0" class="anchor"></a>qualpalr 0.3.0</h1>
+<h1 class="page-header">
+<a href="#qualpalr-0-3-0" class="anchor"></a>qualpalr 0.3.0<small> 2016-12-20 </small>
+</h1>
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New features</h2>
 <ul>
-<li>Improved algorithm for finding distinct colors. (For details <a href="http://larssonjohan.com/r/farthest-points/">see this</a>.)</li>
+<li>Improved algorithm for finding distinct colors. (For details <a href="https://larssonjohan.com/post/2016-10-30-farthest-points/">see this</a>.)</li>
 <li>Revamped the color deficiency handling to include almost all cases of color deficiency using the methods described in <a href="https://www.lume.ufrgs.br/bitstream/handle/10183/26950/000761444.pdf">Machado 2010</a>, now including tritanopia as well as anomalous trichromacies (deuteranomaly, tritanomaly, and protanomaly). This is controlled via the <code>cvd_severity</code> argument to <code><a href="../reference/qualpal.html">qualpal()</a></code> that allows the user to set the severity of color deficiency to adapt to – <code>0</code> for normal vision and <code>1</code> for dichromatic vision (protanopia, deuteranopia, or tritanopia).</li>
 </ul>
 </div>
@@ -212,8 +245,9 @@
 </div>
 </div>
     <div id="qualpalr-0-2-1" class="section level1">
-<h1 class="hasAnchor">
-<a href="#qualpalr-0-2-1" class="anchor"></a>qualpalr 0.2.1</h1>
+<h1 class="page-header">
+<a href="#qualpalr-0-2-1" class="anchor"></a>qualpalr 0.2.1<small> 2016-10-09 </small>
+</h1>
 <div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-1" class="anchor"></a>New features</h2>
@@ -233,8 +267,9 @@
 </div>
 </div>
     <div id="qualpalr-0-2-0" class="section level1">
-<h1 class="hasAnchor">
-<a href="#qualpalr-0-2-0" class="anchor"></a>qualpalr 0.2.0</h1>
+<h1 class="page-header">
+<a href="#qualpalr-0-2-0" class="anchor"></a>qualpalr 0.2.0<small> Unreleased </small>
+</h1>
 <div id="new-features-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-2" class="anchor"></a>New features</h2>
@@ -253,13 +288,13 @@
 </ul>
 </div>
 </div>
-    </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#qualpalr-0-4-3">0.4.3</a></li>
         <li><a href="#qualpalr-0-4-2">0.4.2</a></li>
         <li><a href="#qualpalr-0-4-1">0.4.1</a></li>
         <li><a href="#qualpalr-0-4-0">0.4.0</a></li>
@@ -279,11 +314,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
