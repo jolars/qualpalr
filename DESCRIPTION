@@ -25,7 +25,8 @@ Suggests:
     maps,
     rmarkdown,
     rgl,
-    spelling
+    spelling,
+    covr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
