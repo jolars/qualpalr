@@ -16,10 +16,6 @@ matrix:
       r_check_args: '--as-cran --use-valgrind'
       env:
         - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
-
-    - os: linux
-      compiler: clang
-      r: release
       after_success:
         - Rscript -e 'covr::codecov()'
 
