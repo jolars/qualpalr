@@ -9,7 +9,7 @@ test_that("autopal() throws errors when it should", {
 })
 
 test_that("autopal() works as expected", {
-  expect_error(autopal(3), NA)
+  expect_silent(autopal(3))
   pal <- autopal(3, target = 14)
   expect_s3_class(pal, "qualpal")
 })

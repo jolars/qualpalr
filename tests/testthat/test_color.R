@@ -2,8 +2,6 @@ library(qualpalr)
 context("color formula tests")
 
 test_that("color formula conversions work properly", {
-  # Data retrieved from https://en.wikipedia.org/wiki/HSL_and_HSV
-  dat <- readRDS("rgb_hsl.RData")
   expect_true(all(HSL_RGB(cbind(dat$H, dat$SHSL, dat$L)) -
                   cbind(dat$R, dat$G, dat$B) <
                   1e-2))

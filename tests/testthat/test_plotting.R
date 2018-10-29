@@ -4,19 +4,13 @@ context("plotting tests")
 test_that("plotting checks for errors", {
   f <- qualpal(5)
 
-  expect_error(pairs(f, colorspace = "f"))
+  expect_error(dont_plot(f, pairs, colorspace = "f"))
 })
 
 test_that("plotting functions work as expected", {
   f <- qualpal(4)
 
-  ff <- tempfile()
-  png(ff)
-
-  expect_error(plot(f), NA)
-  expect_error(pairs(f), NA)
-  expect_error(pairs(f, colorspace = "DIN99d"), NA)
-
-  dev.off()
-  unlink(ff)
+  expect_silent(dont_plot(f))
+  expect_silent(dont_plot(f, pairs))
+  expect_silent(dont_plot(f, pairs, colorspace = "DIN99d"))
 })
