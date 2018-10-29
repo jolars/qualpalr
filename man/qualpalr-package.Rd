@@ -7,7 +7,7 @@
 \title{qualpalr: Automatic Generation of Qualitative Color Palettes}
 \description{
 Automatic generation of distinct qualitative color palettes,
-    optionally adapted to color blindness. It takes a subspace of the HSL color
+    optionally adapted to color deficiency. It takes a subspace of the HSL color
     space as input and projects it to the DIN99d color space where it selects
     and return colors that are maximally distinct.
 }

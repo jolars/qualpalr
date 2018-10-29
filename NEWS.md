@@ -4,7 +4,8 @@
 * `qualpal()` gains an argument, `n_threads`, for specifying the number
 of threads to use when computing the distance matrix between colors.
 * C++ functions call namespaces explicitly using `::`.
-* Documentation for hue and saturation in `qualpal()` has been fixed. (#2)
+* Documentation for hue and saturation in `qualpal()` has been fixed. 
+  (Closes #2, thanks @jflycn).
 
 # qualpalr 0.4.2
 
