@@ -19,7 +19,6 @@ knitr::opts_chunk$set(
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jolars/qualpalr?branch=master&svg=true)](https://ci.appveyor.com/project/jolars/qualpalr)
 [![Coverage Status](https://codecov.io/github/jolars/qualpalr/coverage.svg?branch=master)](https://codecov.io/github/jolars/qualpalr?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
-[![Research software impact](http://depsy.org/api/package/cran/qualpalr/badge.svg)](http://depsy.org/package/r/qualpalr)
 
 `qualpalr` generates distinct qualitative color palettes, primarily for use in
 R graphics. Given `n` (the number of colors to generate), along with a subset in
