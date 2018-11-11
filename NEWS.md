@@ -1,5 +1,8 @@
 # qualpalr 0.4.3.9000
 
+## Bug fixes
+* `CITATION` is fixed so that the correct year is displayed.
+
 # qualpalr 0.4.3
 
 ## Minor changes
