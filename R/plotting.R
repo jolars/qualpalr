@@ -18,6 +18,7 @@
 plot.qualpal <- function(x, ...) {
   args <- list(
     x = stats::cmdscale(x$de_DIN99d, k = if (length(x$hex) == 2) 1 else 2),
+    asp = 1,
     col = x$hex,
     cex = 3,
     pch = 19,
