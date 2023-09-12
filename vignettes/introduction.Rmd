@@ -61,7 +61,6 @@ plot(pal)
 
 # Pairs plot in the Lab color space
 pairs(pal, colorspace = "DIN99d")
-
 ```
 
 The colors are most easily used in R by accessing `pal$hex`
@@ -84,9 +83,9 @@ options(rgl.useNULL = TRUE)
 library(rgl)
 
 # Set up color subspace as in qualpal()
-h = c(-200, 120)
-s = c(0.3, 0.8)
-l = c(0.4, 0.9)
+h <- c(-200, 120)
+s <- c(0.3, 0.8)
+l <- c(0.4, 0.9)
 
 # Generate a quasi-random tour sequence
 rnd <- randtoolbox::sobol(1000, dim = 3, scrambling = 2)
@@ -100,7 +99,7 @@ rnd[, 2] <- sqrt(rnd[, 2])
 H <- scale_runif(rnd[, 1], min(h), max(h))
 S <- scale_runif(rnd[, 2], min(s), max(s))
 L <- scale_runif(rnd[, 3], min(l), max(l))
-#S <- sqrt(S) # adjust to the fact that we're sampling from a cylinder
+# S <- sqrt(S) # adjust to the fact that we're sampling from a cylinder
 
 HSL <- cbind(H, S, L)
 HSL[HSL[, 1] < 0, 1] <- HSL[HSL[, 1] < 0, 1] + 360
@@ -127,7 +126,7 @@ It then continues projecting the colors, first into the XYZ space, then CIELab
 (not shown here), and then finally the DIN99d space.
 
 ```{r DIN_space, echo=FALSE}
-XYZ    <- qualpalr:::sRGB_XYZ(RGB)
+XYZ <- qualpalr:::sRGB_XYZ(RGB)
 DIN99d <- qualpalr:::XYZ_DIN99d(XYZ)
 
 plot3d(DIN99d, col = rgb(RGB), main = "DIN99d")

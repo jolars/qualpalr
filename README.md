@@ -9,7 +9,7 @@ Status](https://travis-ci.org/jolars/qualpalr.svg?branch=master)](https://travis
 Status](https://ci.appveyor.com/api/projects/status/github/jolars/qualpalr?branch=master&svg=true)](https://ci.appveyor.com/project/jolars/qualpalr)
 [![Coverage
 Status](https://codecov.io/github/jolars/qualpalr/coverage.svg?branch=master)](https://codecov.io/github/jolars/qualpalr?branch=master)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
 
 `qualpalr` generates distinct qualitative color palettes, primarily for
 use in R graphics. Given `n` (the number of colors to generate), along
@@ -48,8 +48,12 @@ subspaces and, optionally, adapt it to color deficiency (here
 *deuteranomaly*).
 
 ``` r
-pal2 <- qualpal(n = 4, colorspace = "pretty", cvd = "deutan",
-                cvd_severity = 0.5)
+pal2 <- qualpal(
+  n = 4,
+  colorspace = "pretty",
+  cvd = "deutan",
+  cvd_severity = 0.5
+)
 ```
 
 We can look at a distance matrix of the pairwise color differences from

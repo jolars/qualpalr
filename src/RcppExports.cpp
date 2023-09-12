@@ -12,23 +12,23 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // edist
-Rcpp::NumericMatrix edist(const Rcpp::NumericMatrix mat);
-RcppExport SEXP _qualpalr_edist(SEXP matSEXP) {
+arma::mat edist(const arma::mat& x);
+RcppExport SEXP _qualpalr_edist(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix >::type mat(matSEXP);
-    rcpp_result_gen = Rcpp::wrap(edist(mat));
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(edist(x));
     return rcpp_result_gen;
 END_RCPP
 }
 // farthest_points
-arma::uvec farthest_points(const Rcpp::NumericMatrix& data, const arma::uword n);
+arma::uvec farthest_points(const arma::mat& data, const arma::uword n);
 RcppExport SEXP _qualpalr_farthest_points(SEXP dataSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< const arma::uword >::type n(nSEXP);
     rcpp_result_gen = Rcpp::wrap(farthest_points(data, n));
     return rcpp_result_gen;

@@ -17,8 +17,7 @@ Imports:
     grDevices,
     utils,
     assertthat,
-    Rcpp,
-    RcppParallel
+    Rcpp
 Suggests:
     testthat,
     knitr,
@@ -36,7 +35,5 @@ BugReports: https://github.com/jolars/qualpalr/issues
 VignetteBuilder: knitr
 LinkingTo:
     Rcpp (>= 0.12.9),
-    RcppParallel (>= 4.3.20),
     RcppArmadillo (>= 0.7.600.1.0)
-SystemRequirements: GNU make
 Language: en-US

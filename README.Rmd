@@ -54,8 +54,12 @@ Altneratively, we can create a palette using one of the predefined color
 subspaces and, optionally, adapt it to color deficiency (here *deuteranomaly*).
 
 ```{r pal2}
-pal2 <- qualpal(n = 4, colorspace = "pretty", cvd = "deutan",
-                cvd_severity = 0.5)
+pal2 <- qualpal(
+  n = 4,
+  colorspace = "pretty",
+  cvd = "deutan",
+  cvd_severity = 0.5
+)
 ```
 
 We can look at a distance matrix of the pairwise color differences from the 
