@@ -4,8 +4,13 @@
 \alias{qualpal}
 \title{Generate qualitative color palettes}
 \usage{
-qualpal(n, colorspace = "pretty", cvd = c("protan", "deutan",
-  "tritan"), cvd_severity = 0, n_threads = NULL)
+qualpal(
+  n,
+  colorspace = "pretty",
+  cvd = c("protan", "deutan", "tritan"),
+  cvd_severity = 0,
+  n_threads = NULL
+)
 }
 \arguments{
 \item{n}{The number of colors to generate.}

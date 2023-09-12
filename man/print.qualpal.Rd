@@ -4,8 +4,7 @@
 \alias{print.qualpal}
 \title{Print qualpal palette}
 \usage{
-\method{print}{qualpal}(x, colorspace = c("HSL", "DIN99d", "RGB"),
-  digits = 2, ...)
+\method{print}{qualpal}(x, colorspace = c("HSL", "DIN99d", "RGB"), digits = 2, ...)
 }
 \arguments{
 \item{x}{An object of class \code{"qualpal"}.}

@@ -4,8 +4,12 @@
 \alias{autopal}
 \title{Optimize color palette for color vision deficiency}
 \usage{
-autopal(n, colorspace = "pretty", cvd = c("protan", "deutan",
-  "tritan"), target = 20)
+autopal(
+  n,
+  colorspace = "pretty",
+  cvd = c("protan", "deutan", "tritan"),
+  target = 20
+)
 }
 \arguments{
 \item{n}{Number of colors to generate.}
