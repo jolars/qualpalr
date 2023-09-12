@@ -106,9 +106,10 @@ Versioning is based on [semantic versioning](https://semver.org/).
 ## Code of conduct
 
 Please note that this project is released with a [Contributor Code of
-Conduct](CONDUCT.md). By participating in this project you agree to
-abide by its terms.
+Conduct](https://github.com/jolars/qualpalr/blob/master/CONDUCT.md). By
+participating in this project you agree to abide by its terms.
 
 ## License
 
-`qualpalr` is open source software, licensed under [GPL-3](LICENSE).
+`qualpalr` is open source software, licensed under
+[GPL-3](https://github.com/jolars/qualpalr/blob/master/LICENSE).
