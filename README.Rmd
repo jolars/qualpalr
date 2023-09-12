@@ -51,7 +51,7 @@ We can retrieve the generated colors in hex format
 pal$hex
 ```
 
-Altneratively, we can create a palette using one of the predefined color
+Alternatively, we can create a palette using one of the predefined color
 subspaces and, optionally, adapt it to color deficiency (here *deuteranomaly*).
 
 ```{r pal2}

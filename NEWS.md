@@ -19,7 +19,7 @@ of threads to use when computing the distance matrix between colors.
 
 ## Major changes
 
-* Palettes are no longer generated randomly. **qualpalr** previuosly started
+* Palettes are no longer generated randomly. **qualpalr** previously started
 with a random sample of colors before running the optimization scheme but now
 instead picks a starting set of linearly spaced colors.
 
@@ -47,7 +47,7 @@ returned was always 0 due to a bug in `qualpal()`.
 ## Major changes
 
 * `autopal()` is a new function that tweaks the amount of color vision
-deficiency adapation to match a target color difference.
+deficiency adaptation to match a target color difference.
 * `qualpal()` argument `colorspace` now also accepts a `matrix` or
 `data.frame` of RGB colors.
 
@@ -65,7 +65,7 @@ deficiency adapation to match a target color difference.
 
 * Dropped a C++ header that caused the package build to fail
 on some platforms.
-* Fixed issues with unitialized variables in the internal farthest points
+* Fixed issues with uninitialized variables in the internal farthest points
 optimizer.
 
 # qualpalr 0.3.0

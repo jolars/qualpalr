@@ -43,7 +43,7 @@ pal$hex
 #> [1] "#74C970" "#766AC9" "#C86D6A" "#DCCFE0"
 ```
 
-Altneratively, we can create a palette using one of the predefined color
+Alternatively, we can create a palette using one of the predefined color
 subspaces and, optionally, adapt it to color deficiency (here
 *deuteranomaly*).
 
