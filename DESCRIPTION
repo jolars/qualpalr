@@ -4,10 +4,10 @@ Version: 0.4.4
 Authors@R: person("Johan", "Larsson", email = "johanlarsson@outlook.com",
                   role = c("aut", "cre"),
                   comment = c(ORCID = "0000-0002-4029-5945"))
-Description: Automatic generation of distinct qualitative color palettes,
-    optionally adapted to color deficiency. It takes a color
-    space as input and projects it to the DIN99d color space where it selects
-    and return colors that are maximally distinct.
+Description: Automatic generation of maximally distinct qualitative color palettes,
+    optionally tailored to color deficiency. A list of colors or a subspace
+    of a color space is used as input and then projected to the DIN99d color space,
+    where colors that are maximally distinct are chosen algorithmically.
 Depends:
     R (>= 3.3.0)
 Imports:
