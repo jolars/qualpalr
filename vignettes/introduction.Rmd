@@ -14,6 +14,11 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml/badge.svg)](ht
+tps://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 ## Overview
 
 `qualpalr` generates distinct qualitative color palettes, primarily for use in

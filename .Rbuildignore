@@ -15,3 +15,4 @@
 ^data-raw$
 ^docs$
 Makefile$
+^\.github$
