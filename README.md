@@ -23,7 +23,7 @@ perceptually uniform, that is, the euclidean distance between two colors
 in the space is proportional to their perceived difference.
 
 `qualpalr` was inspired by [i want
-hue](http://tools.medialab.sciences-po.fr/iwanthue/).
+hue](http://medialab.github.io/iwanthue/).
 
 ## Usage
 
@@ -101,7 +101,7 @@ devtools::install_github("jolars/qualpalr")
 
 ## Versioning
 
-Versioning is based on [semantic versioning](http://semver.org/).
+Versioning is based on [semantic versioning](https://semver.org/).
 
 ## Code of conduct
 
