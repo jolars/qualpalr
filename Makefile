@@ -36,7 +36,8 @@ test: compile-attributes
 	Rscript -e 'devtools::test()'
 
 readme: 
-	Rscript -e 'knitr::knit("README.Rmd")'
+	Rscript -e 'rmarkdown::render("README.Rmd")';\
+		$(DELETE) README.html
 
 vignettes:
 	Rscript -e 'devtools::build_vignettes()'
