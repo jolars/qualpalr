@@ -79,8 +79,8 @@
 #' @param cvd_severity Severity of color vision deficiency to adapt to. Can take
 #'   any value from 0, for normal vision (the default), and 1, for dichromatic
 #'   vision.
-#' @param n_threads The number of threads to use, provided to
-#' \link[RcppParallel]{setThreadOptions} if non-null.
+#' @param n_threads Previously the number of threads to use, but this argument
+#'   is now deprecated.
 #'
 #' @return A list of class \code{qualpal} with the following
 #'   components.
@@ -125,7 +125,13 @@ qualpal <- function(n,
                     colorspace = "pretty",
                     cvd = c("protan", "deutan", "tritan"),
                     cvd_severity = 0,
-                    n_threads = NULL) {
+                    n_threads) {
+  if (!missing(n_threads)) {
+    warning(
+      "`n_threads` is deprecated and no longer has any effet. It will be",
+      "made defunct in the next major release."
+    )
+  }
   UseMethod("qualpal", colorspace)
 }
 
@@ -134,7 +140,7 @@ qualpal.matrix <- function(n,
                            colorspace,
                            cvd = c("protan", "deutan", "tritan"),
                            cvd_severity = 0,
-                           n_threads = NULL) {
+                           n_threads) {
   assertthat::assert_that(
     assertthat::is.count(n),
     is.character(cvd),
@@ -192,7 +198,7 @@ qualpal.matrix <- function(n,
 qualpal.data.frame <- function(n, colorspace,
                                cvd = c("protan", "deutan", "tritan"),
                                cvd_severity = 0,
-                               n_threads = NULL) {
+                               n_threads) {
   mat <- data.matrix(colorspace)
   qualpal(n = n, colorspace = mat, cvd = cvd, cvd_severity = cvd_severity)
 }
@@ -201,7 +207,7 @@ qualpal.data.frame <- function(n, colorspace,
 qualpal.character <- function(n, colorspace = "pretty",
                               cvd = c("protan", "deutan", "tritan"),
                               cvd_severity = 0,
-                              n_threads = NULL) {
+                              n_threads) {
   assertthat::assert_that(
     assertthat::is.string(colorspace)
   )
@@ -217,7 +223,7 @@ qualpal.character <- function(n, colorspace = "pretty",
 qualpal.list <- function(n, colorspace,
                          cvd = c("protan", "deutan", "tritan"),
                          cvd_severity = 0,
-                         n_threads = NULL) {
+                         n_threads) {
   assertthat::assert_that(
     assertthat::has_attr(colorspace, "names"),
     "h" %in% names(colorspace),

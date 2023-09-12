@@ -9,7 +9,7 @@ qualpal(
   colorspace = "pretty",
   cvd = c("protan", "deutan", "tritan"),
   cvd_severity = 0,
-  n_threads = NULL
+  n_threads
 )
 }
 \arguments{
@@ -62,8 +62,8 @@ values are \code{"protan", "deutan",} and \code{"tritan"}.}
 any value from 0, for normal vision (the default), and 1, for dichromatic
 vision.}
 
-\item{n_threads}{The number of threads to use, provided to
-\link[RcppParallel]{setThreadOptions} if non-null.}
+\item{n_threads}{Previously the number of threads to use, but this argument
+is now deprecated.}
 }
 \value{
 A list of class \code{qualpal} with the following
