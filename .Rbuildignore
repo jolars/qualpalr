@@ -18,3 +18,5 @@ Makefile$
 ^\.github$
 ^doc$
 ^Meta$
+^pkgdown$
+^_pkgdown\.yml$

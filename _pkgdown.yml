@@ -1,0 +1,8 @@
+url: ~
+template:
+  bootstrap: 5
+destination: docs
+development:
+  mode: auto
+
+
