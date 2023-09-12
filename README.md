@@ -8,10 +8,12 @@ output: github_document
 
 # qualpalr
 
-[![Travis-CI Build Status](https://travis-ci.org/jolars/qualpalr.svg?branch=master)](https://travis-ci.org/jolars/qualpalr)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jolars/qualpalr?branch=master&svg=true)](https://ci.appveyor.com/project/jolars/qualpalr)
-[![Coverage Status](https://codecov.io/github/jolars/qualpalr/coverage.svg?branch=master)](https://codecov.io/github/jolars/qualpalr?branch=master)
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/jolars/qualpalr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/jolars/qualpalr?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
+<!-- badges: end -->
 
 `qualpalr` generates distinct qualitative color palettes, primarily for use in
 R graphics. Given `n` (the number of colors to generate), along with a subset in
