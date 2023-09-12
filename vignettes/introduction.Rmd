@@ -162,7 +162,7 @@ the *CIE Standard Illuminant D65* reference white.
 
 [Bruce Lindbloom's webpage](http://www.brucelindbloom.com/) has
 been instrumental in making qualpalr. Thanks also to
-[i want hue](https://medialab.github.io/iwanthue), which inspired me
+[i want hue](https://medialab.github.io/iwanthue/), which inspired me
 to make qualpalr.
 
 ## References
