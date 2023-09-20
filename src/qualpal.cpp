@@ -1,63 +1,24 @@
-// The distance matrix algorithm has been adopted from
-// http://gallery.rcpp.org/articles/parallel-distance-matrix/ and is copyrighted
-// to JJ Allaire and Jim Bullard 2014 under GPL-2. The code has been altered
-// from its original form.
-
-#include <RcppArmadillo.h>
-// #include <armadillo>
-
-// template<typename InputIterator1, typename InputIterator2>
-// inline double
-// euclid(InputIterator1 begin1,
-//        InputIterator1 end1,
-//        InputIterator2 begin2,
-//        InputIterator2 end2)
-// {
-//   double out = 0;
-//
-//   InputIterator1 it1 = begin1;
-//   InputIterator2 it2 = begin2;
-//
-//   while (it1 != end1)
-//     out += std::pow(*it1++ - *it2++, 2);
-//
-//   return std::pow(std::sqrt(out), 0.74) * 1.28;
-// }
-//
-// struct dist_worker : public RcppParallel::Worker
-// {
-//   const RcppParallel::RMatrix<double> mat;
-//   RcppParallel::RMatrix<double> rmat;
-//   dist_worker(const Rcpp::NumericMatrix mat, Rcpp::NumericMatrix rmat)
-//     : mat(mat)
-//     , rmat(rmat)
-//   {
-//   }
-//
-//   void operator()(std::size_t begin, std::size_t end)
-//   {
-//     for (std::size_t i = begin; i < end; i++) {
-//       for (std::size_t j = 0; j < i; j++) {
-//         RcppParallel::RMatrix<double>::Row row1 = mat.row(i);
-//         RcppParallel::RMatrix<double>::Row row2 = mat.row(j);
-//         double d = euclid(row1.begin(), row1.end(), row2.begin(),
-//         row2.end()); rmat(i, j) = d; rmat(j, i) = d;
-//       }
-//     }
-//   }
-// };
+#include <RcppEigen.h>
+#include <cmath>
+#include <limits>
+#include <numeric>
+#include <unordered_set>
+#include <vector>
+#include <algorithm>
 
 // [[Rcpp::export]]
-arma::mat
-edist(const arma::mat& x)
+Eigen::MatrixXd
+edist(const Eigen::MatrixXd& x)
 {
-  const int n = x.n_rows;
-  const arma::mat x_t = x.t();
-  arma::mat result(n, n);
+  using namespace Eigen;
 
-  for (int i = 0; i < n; ++i) {
-    for (int j = i; j < n; ++j) {
-      double d = arma::norm(x_t.col(i) - x_t.col(j), 2);
+  const int N = x.rows();
+  const MatrixXd x_t = x.transpose();
+  MatrixXd result(N, N);
+
+  for (int i = 0; i < N; ++i) {
+    for (int j = i; j < N; ++j) {
+      double d = (x_t.col(i) - x_t.col(j)).norm();
       d = std::pow(d, 0.74) * 1.28;
       result(i, j) = d;
       result(j, i) = d;
@@ -67,65 +28,83 @@ edist(const arma::mat& x)
   return result;
 }
 
-arma::uvec
-std_setdiff(const arma::uvec& x, const arma::uvec& y)
-{
-  std::vector<int> a = arma::conv_to<std::vector<int>>::from(arma::sort(x));
-  std::vector<int> b = arma::conv_to<std::vector<int>>::from(arma::sort(y));
-  std::vector<int> out;
-
-  std::set_difference(
-    a.begin(), a.end(), b.begin(), b.end(), std::inserter(out, out.end()));
-
-  return arma::conv_to<arma::uvec>::from(out);
-}
-
-// Farthest point optimization
-
 // [[Rcpp::export]]
-arma::uvec
-farthest_points(const arma::mat& data, const arma::uword n)
+std::vector<int>
+farthest_points(const Eigen::MatrixXd& data, const int n)
 {
-  arma::mat dm = edist(data);
-  arma::uword N = dm.n_cols;
+  Eigen::MatrixXd dist_mat = edist(data);
+  const int N = dist_mat.cols();
 
-  arma::uvec full_range = arma::linspace<arma::uvec>(0, N - 1, N);
-  arma::uvec r = arma::linspace<arma::uvec>(0, N - 1, n);
-  arma::uvec r_old(n);
+  // Begin with the first n points.
+  std::vector<int> r(n);
+  std::iota(r.begin(), r.end(), 0);
 
-  do {
-    r_old = r;
-    for (arma::uword i = 0; i < n; ++i) {
-      arma::uvec::fixed<1> ri;
+  // Store the complement to r.
+  std::vector<int> r_c(N - n);
+  std::iota(r_c.begin(), r_c.end(), n);
 
-      ri.fill(r(i));
+  bool set_changed = true;
 
-      arma::uvec incl = std_setdiff(r, ri);
-      arma::uvec excl = std_setdiff(full_range, incl);
-      arma::uvec indices = full_range(excl);
-      arma::rowvec mins = arma::min(dm.submat(incl, excl), 0);
-      r(i) = indices(mins.index_max());
+  while (set_changed) {
+    set_changed = false;
+
+    for (int i = 0; i < n; ++i) {
+      int ind_new = i;
+
+      double min_dist_old = std::numeric_limits<double>::max();
+
+      // Find the distance between the current point and the others in the
+      // currently selected set (r).
+      for (int j = 0; j < n; ++j) {
+        if (j != i) {
+          min_dist_old = std::min(min_dist_old, dist_mat(r[j], r[i]));
+        }
+      }
+
+      // Check if any point in the complement set (r_c) has a greater minimum
+      // distance to the points currently selected (r).
+      for (int k = 0; k < N - n; ++k) {
+        double min_dist_k = std::numeric_limits<double>::max();
+
+        for (int j = 0; j < n; ++j) {
+          if (j != i) {
+            double d = dist_mat(r[j], r_c[k]);
+            min_dist_k = std::min(min_dist_k, d);
+          }
+        }
+
+        if (min_dist_k > min_dist_old) {
+          min_dist_old = min_dist_k;
+          ind_new = k;
+        }
+      }
+
+      // If we have found a better point in r_c, swap places with the current
+      // point.
+      if (ind_new != i) {
+        std::swap(r[i], r_c[ind_new]);
+        set_changed = true;
+      }
     }
-  } while (!all(r_old == r));
+  }
 
   // Arrange the colors in the palette according to how distinct they are from
   // one another.
-  arma::mat subdat = dm(r, r);
+  std::sort(r.begin(), r.end(), [&dist_mat, &r](int a, int b) {
+    double min_dist_a = std::numeric_limits<double>::max();
+    double min_dist_b = std::numeric_limits<double>::max();
 
-  // Start by finding the two most distant points in our subset
-  arma::uvec sorted = arma::ind2sub(size(subdat), subdat.index_max());
+    for (size_t i = 0; i < r.size(); ++i) {
+      if (r[i] != a) {
+        min_dist_a = std::min(min_dist_a, dist_mat(r[i], a));
+      }
+      if (r[i] != b) {
+        min_dist_b = std::min(min_dist_b, dist_mat(r[i], b));
+      }
+    }
 
-  // Now pick colors from the matrix in order of their color difference
-  // to the previously picked colors
-  arma::uvec sub_range = arma::linspace<arma::uvec>(0, n - 1, n);
+    return min_dist_a > min_dist_b;
+  });
 
-  while (sorted.n_elem < n) {
-    arma::uvec excl = std_setdiff(sub_range, sorted);
-    arma::rowvec mincols = arma::min(subdat.submat(sorted, excl), 0);
-    arma::uvec::fixed<1> newrow;
-    newrow.fill(excl(mincols.index_max()));
-    sorted.insert_rows(sorted.n_elem, newrow);
-  }
-
-  return r(sorted) + 1;
+  return r;
 }

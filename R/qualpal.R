@@ -166,7 +166,7 @@ qualpal.matrix <- function(n,
   XYZ <- sRGB_XYZ(RGB)
   DIN99d <- XYZ_DIN99d(XYZ)
 
-  col_ind <- farthest_points(DIN99d, n)
+  col_ind <- farthest_points(DIN99d, n) + 1
 
   RGB <- RGB[col_ind, ]
   HSL <- HSL[col_ind, ]

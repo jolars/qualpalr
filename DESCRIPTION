@@ -34,5 +34,5 @@ BugReports: https://github.com/jolars/qualpalr/issues
 VignetteBuilder: knitr
 LinkingTo:
     Rcpp (>= 0.12.9),
-    RcppArmadillo (>= 0.7.600.1.0)
+    RcppEigen (>= 0.3.3.9.3)
 Language: en-US
