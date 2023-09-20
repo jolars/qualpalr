@@ -40,7 +40,7 @@ We can retrieve the generated colors in hex format
 
 ``` r
 pal$hex
-#> [1] "#74C970" "#766AC9" "#C86D6A" "#DCCFE0"
+#> [1] "#74C970" "#97B9DB" "#CD9675" "#C96AC1"
 ```
 
 Alternatively, we can create a palette using one of the predefined color
@@ -61,10 +61,10 @@ the palette we have generated.
 
 ``` r
 pal2$de_DIN99d
-#>          #D4C76F  #616FC8  #D0E0E8
-#> #616FC8 29.14409                  
-#> #D0E0E8 18.78602 21.76547         
-#> #A08587 18.59491 18.38472 18.34490
+#>          #A07D68  #E6E1B5  #616FC8
+#> #E6E1B5 17.90368                  
+#> #616FC8 22.32321 27.55999         
+#> #CEC9E8 19.65706 18.00590 17.82840
 ```
 
 The palette may also be plotted with in a multidimensional scaling plot
@@ -74,7 +74,7 @@ generated from the distance matrix of the colors in the palette.
 plot(pal2)
 ```
 
-![](tools/README-plot-1.png)<!-- -->
+![](man/figures/README-plot-1.png)<!-- -->
 
 Or it might be plotted in one of the provided color spaces as a
 scatterplot matrix.
@@ -83,7 +83,7 @@ scatterplot matrix.
 pairs(pal2, colorspace = "HSL")
 ```
 
-![](tools/README-pairs-1.png)<!-- -->
+![](man/figures/README-pairs-1.png)<!-- -->
 
 ## Installation
 

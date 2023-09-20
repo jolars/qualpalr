@@ -4,12 +4,11 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo = FALSE, include=FALSE}
+```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = file.path("tools", "README-"),
-  dev = if (require("Cairo")) "CairoPNG" else "png"
+  fig.path = "man/figures/README-"
 )
 ```
 
