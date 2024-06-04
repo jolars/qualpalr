@@ -31,7 +31,7 @@ jobs:
       - name: Download and extract new release
         if: steps.check_release.outputs.update_needed == 'true'
         run: |
-          mkir -p tmp
+          mkdir -p tmp
           curl -L "${{ steps.check_release.outputs.release_url }}" | tar -xz --strip-components=1 -C tmp
           rm -rf src/slope
           cp -ri tmp/src/slope src/
