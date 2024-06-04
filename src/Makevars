@@ -1,0 +1,16 @@
+SOURCES = \
+  RcppExports.cpp \
+  qualpalr.cpp \
+  qualpal/color_grid.cpp \
+  qualpal/colors.cpp \
+  qualpal/cvd_simulation.cpp \
+  qualpal/distance_matrix.cpp \
+  qualpal/farthest_points.cpp \
+  qualpal/qualpal.cpp
+
+OBJECTS = $(SOURCES:.cpp=.o)
+
+all: $(SHLIB)
+
+clean:
+  @rm -f $(OBJECTS)

@@ -1,39 +1,18 @@
-#include <RcppEigen.h>
+#include "farthest_points.h"
+#include "distance_matrix.h"
+#include <algorithm>
 #include <cmath>
 #include <limits>
 #include <numeric>
-#include <unordered_set>
 #include <vector>
-#include <algorithm>
 
-// [[Rcpp::export]]
-Eigen::MatrixXd
-edist(const Eigen::MatrixXd& x)
-{
-  using namespace Eigen;
+namespace qualpal {
 
-  const int N = x.rows();
-  const MatrixXd x_t = x.transpose();
-  MatrixXd result(N, N);
-
-  for (int i = 0; i < N; ++i) {
-    for (int j = i; j < N; ++j) {
-      double d = (x_t.col(i) - x_t.col(j)).norm();
-      d = std::pow(d, 0.74) * 1.28;
-      result(i, j) = d;
-      result(j, i) = d;
-    }
-  }
-
-  return result;
-}
-
-// [[Rcpp::export]]
 std::vector<int>
-farthest_points(const Eigen::MatrixXd& data, const int n)
+farthestPoints(const int n, const std::vector<DIN99d>& colors)
 {
-  Eigen::MatrixXd dist_mat = edist(data);
-  const int N = dist_mat.cols();
+  Matrix<double> dist_mat = distanceMatrix(colors);
+  const int N = colors.size();
 
   // Begin with the first n points.
   std::vector<int> r(n);
@@ -108,3 +87,5 @@ farthest_points(const Eigen::MatrixXd& data, const int n)
 
   return r;
 }
+
+} // namespace qualpal

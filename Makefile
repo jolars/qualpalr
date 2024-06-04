@@ -3,7 +3,12 @@ PKGNAME := $(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
 PKGVERS := $(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
 PKGSRC  := $(shell basename `pwd`)
 
+CPPLIB_API_URL := https://api.github.com/repos/jolars/qualpal/releases/latest
+CPPLIB_RELEASE := $(shell curl -s $(CPPLIB_API_URL) | grep "tarball_url" | cut -d '"' -f 4)
+
 all: install
+
+.PHONE: clean, document, compile-attributes, build, build-cran, install, clean-install, check, test, readme, vignettes, update-cpplib
 
 clean:
 	$(DELETE) src/*.o src/*.so
@@ -42,4 +47,9 @@ readme:
 vignettes:
 	Rscript -e 'devtools::build_vignettes()'
 
-
+update-cpplib:
+	@mkdir -p tmp
+	@curl -L $(CPPLIB_RELEASE) | tar -xz --strip-components=1 -C tmp
+	@rm -rf src/qualpal
+	@cp -ri tmp/src/qualpal src/
+	@rm -rf tmp

@@ -40,9 +40,9 @@
 #'     \item{A \code{\link{list}} with the following \emph{named} vectors,
 #'       each of length two, giving a range for each item.}{
 #'       \describe{
-#'         \item{\code{h}}{Hue, in the range [-360, 360]}
-#'         \item{\code{s}}{Saturation, in the range [0, 1]}
-#'         \item{\code{l}}{Lightness, in the range [0, 1]}
+#'         \item{\code{h}}{Hue, in range from -360 to 360]}
+#'         \item{\code{s}}{Saturation, in the range from 0 to 1}
+#'         \item{\code{l}}{Lightness, in the range from 0 to 1}
 #'       }
 #'     }
 #'     \item{A \code{\link{character}} vector of length one specifying one of
@@ -156,30 +156,30 @@ qualpal.matrix <- function(n,
   )
 
   RGB <- colorspace
-  HSL <- RGB_HSL(RGB)
 
-  # Simulate color deficiency if required
-  if (cvd_severity > 0) {
-    RGB <- sRGB_CVD(RGB, cvd = match.arg(cvd), cvd_severity = cvd_severity)
-  }
+  cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
+  cvd_list[[match.arg(cvd)]] <- cvd_severity
 
-  XYZ <- sRGB_XYZ(RGB)
-  DIN99d <- XYZ_DIN99d(XYZ)
+  res <- qualpal_cpp(
+    n,
+    RGB[, 1],
+    RGB[, 2],
+    RGB[, 3],
+    cvd_list$protan,
+    cvd_list$deutan,
+    cvd_list$tritan
+  )
 
-  col_ind <- farthest_points(DIN99d, n) + 1
-
-  RGB <- RGB[col_ind, ]
-  HSL <- HSL[col_ind, ]
-  DIN99d <- DIN99d[col_ind, ]
-  hex <- grDevices::rgb(RGB)
+  RGB <- cbind(res$r, res$g, res$b)
+  HSL <- cbind(res$h, res$s, res$l)
+  DIN99d <- cbind(res$l99d, res$a99d, res$b99d)
+  hex <- res$hex
 
   dimnames(HSL) <- list(hex, c("Hue", "Saturation", "Lightness"))
   dimnames(DIN99d) <- list(hex, c("L(99d)", "a(99d)", "b(99d)"))
   dimnames(RGB) <- list(hex, c("Red", "Green", "Blue"))
 
-  col_diff <- edist(DIN99d)
-  dimnames(col_diff) <- list(hex, hex)
-  de_DIN99d <- stats::as.dist(col_diff)
+  de_DIN99d <- stats::as.dist(res$de_DIN99d)
 
   structure(
     list(

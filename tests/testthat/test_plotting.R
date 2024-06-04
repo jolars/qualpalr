@@ -1,5 +1,4 @@
 library(qualpalr)
-context("plotting tests")
 
 test_that("plotting checks for errors", {
   f <- qualpal(5)
