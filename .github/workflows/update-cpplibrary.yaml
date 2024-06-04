@@ -21,10 +21,10 @@ jobs:
           CURRENT_VERSION=$(cat src/qualpal/version.txt)
           if [[ "$NEW_VERSION" > "$CURRENT_VERSION" ]]; then
             RELEASE_URL=$(curl -s $API_URL | grep "tarball_url" | cut -d '"' -f 4)
-            echo "release_url=$RELEASE_URL" >> $GITHUB_STATE
-            echo "update_needed=true" >> $GITHUB_STATE
+            echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
+            echo "update_needed=true" >> $GITHUB_OUTPUT
           else
-            echo "update_needed=false" >> $GITHUB_STATE
+            echo "update_needed=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Download and extract new release
@@ -46,7 +46,6 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Update C++ library
-          title: Update C++ library
-          body: This PR updates the C++ library to the latest release.
-          branch: update-cpp-library
+          commit-message: "chore(deps): update qualpal c++ library to ${{ steps.check_release.outputs.new_version }}"
+          title: "Update qualpal C++ library to ${{ steps.check_release.outputs.new_version }}"
+          body: This PR updates the qualpal C++ library to the latest release.
