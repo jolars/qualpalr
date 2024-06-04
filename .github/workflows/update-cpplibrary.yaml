@@ -21,10 +21,10 @@ jobs:
           CURRENT_VERSION=$(cat src/qualpal/version.txt)
           if [[ "$NEW_VERSION" > "$CURRENT_VERSION" ]]; then
             RELEASE_URL=$(curl -s $API_URL | grep "tarball_url" | cut -d '"' -f 4)
-            echo "::set-output name=release_url::$RELEASE_URL"
-            echo "::set-output name=update_needed::true"
+            echo "release_url=$RELEASE_URL" >> $GITHUB_STATE
+            echo "update_needed=true" >> $GITHUB_STATE
           else
-            echo "::set-output name=update_needed::false"
+            echo "update_needed=false" >> $GITHUB_STATE
           fi
 
       - name: Download and extract new release
