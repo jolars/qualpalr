@@ -2,19 +2,19 @@ library(qualpalr)
 context("color formula tests")
 
 test_that("color formula conversions work properly", {
-  expect_true(all(HSL_RGB(cbind(dat$H, dat$SHSL, dat$L)) -
-                  cbind(dat$R, dat$G, dat$B) <
-                  1e-2))
-  expect_true(all(RGB_HSL(cbind(dat$R, dat$G, dat$B)) -
-                  cbind(dat$H, dat$SHSL, dat$L) <
-                  1e-1))
+  expect_true(all(
+    HSL_RGB(cbind(dat$H, dat$SHSL, dat$L)) - cbind(dat$R, dat$G, dat$B) < 1e-2
+  ))
+  expect_true(all(
+    RGB_HSL(cbind(dat$R, dat$G, dat$B)) - cbind(dat$H, dat$SHSL, dat$L) < 1e-1
+  ))
 })
 
 test_that("color conversions work back and forth", {
   test_rgb <- matrix(runif(9), ncol = 3)
-  expect_true(all(HSL_RGB(RGB_HSL(test_rgb)) -
-                    test_rgb <
-                    .Machine$double.eps ^ 0.5))
+  expect_true(all(
+    HSL_RGB(RGB_HSL(test_rgb)) - test_rgb < .Machine$double.eps^0.5
+  ))
 
   test_xyz <- matrix(runif(9), ncol = 3)
   expect_equal(sum(test_xyz), sum(Lab_XYZ(XYZ_Lab(test_xyz))))

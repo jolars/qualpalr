@@ -1,0 +1,52 @@
+name: Update C++ Library Component
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout R package repo
+        uses: actions/checkout@v2
+
+      - name: Check for new release
+        id: check_release
+        run: |
+          API_URL="https://api.github.com/repos/jolars/qualpal/releases/latest"
+          NEW_VERSION=$(curl -s $API_URL | jq -r '.tag_name')
+          CURRENT_VERSION=$(cat src/qualpal/version.txt)
+          if [[ "$NEW_VERSION" > "$CURRENT_VERSION" ]]; then
+            RELEASE_URL=$(curl -s $API_URL | grep "tarball_url" | cut -d '"' -f 4)
+            echo "::set-output name=release_url::$RELEASE_URL"
+            echo "::set-output name=update_needed::true"
+          else
+            echo "::set-output name=update_needed::false"
+          fi
+
+      - name: Download and extract new release
+        if: steps.check_release.outputs.update_needed == 'true'
+        run: |
+          mkir -p tmp
+          curl -L "${{ steps.check_release.outputs.release_url }}" | tar -xz --strip-components=1 -C tmp
+          rm -rf src/slope
+          cp -ri tmp/src/slope src/
+          rm -rf tmp
+
+      - name: Write new version number
+        if: steps.check_release.outputs.update_needed == 'true'
+        run: |
+          echo "${{ steps.check_release.outputs.new_version }}" > src/qualpal/version.txt
+
+      - name: Create PR
+        if: steps.check_release.outputs.update_needed == 'true'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update C++ library
+          title: Update C++ library
+          body: This PR updates the C++ library to the latest release.
+          branch: update-cpp-library
