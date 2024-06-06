@@ -158,37 +158,16 @@ qualpal.matrix <- function(n,
     is_integer(n)
   )
 
-  RGB <- colorspace
+  rgb_mat <- colorspace
 
   cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
   cvd_list[[match.arg(cvd)]] <- cvd_severity
 
-  res <- qualpal_cpp_rgb(n, RGB, cvd_list)
+  res <- qualpal_cpp_rgb(n, rgb_mat, cvd_list)
+
+  res$de_DIN99d <- stats::as.dist(res$de_DIN99d)
 
   res
-
-  # RGB <- cbind(res$r, res$g, res$b)
-  # HSL <- cbind(res$h, res$s, res$l)
-  # DIN99d <- cbind(res$l99d, res$a99d, res$b99d)
-  # hex <- res$hex
-  #
-  # dimnames(HSL) <- list(hex, c("Hue", "Saturation", "Lightness"))
-  # dimnames(DIN99d) <- list(hex, c("L(99d)", "a(99d)", "b(99d)"))
-  # dimnames(RGB) <- list(hex, c("Red", "Green", "Blue"))
-  #
-  # de_DIN99d <- stats::as.dist(res$de_DIN99d)
-  #
-  # structure(
-  #   list(
-  #     HSL           = HSL,
-  #     RGB           = RGB,
-  #     DIN99d        = DIN99d,
-  #     hex           = hex,
-  #     de_DIN99d     = de_DIN99d,
-  #     min_de_DIN99d = min(de_DIN99d)
-  #   ),
-  #   class = c("qualpal", "list")
-  # )
 }
 
 #' @export
@@ -266,6 +245,8 @@ qualpal.list <- function(n,
   cvd_list[[match.arg(cvd)]] <- cvd_severity
 
   res <- qualpal_cpp_colorspace(n, colorspace, n_points, cvd_list)
+
+  res$de_DIN99d <- stats::as.dist(res$de_DIN99d)
 
   res
 }
