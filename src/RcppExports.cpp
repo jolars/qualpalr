@@ -11,33 +11,37 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// edist
-Eigen::MatrixXd edist(const Eigen::MatrixXd& x);
-RcppExport SEXP _qualpalr_edist(SEXP xSEXP) {
+// qualpal_cpp_rgb
+Rcpp::List qualpal_cpp_rgb(int n, const Rcpp::NumericMatrix& rgb_in, const Rcpp::List& cvd_list);
+RcppExport SEXP _qualpalr_qualpal_cpp_rgb(SEXP nSEXP, SEXP rgb_inSEXP, SEXP cvd_listSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(edist(x));
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type rgb_in(rgb_inSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type cvd_list(cvd_listSEXP);
+    rcpp_result_gen = Rcpp::wrap(qualpal_cpp_rgb(n, rgb_in, cvd_list));
     return rcpp_result_gen;
 END_RCPP
 }
-// farthest_points
-std::vector<int> farthest_points(const Eigen::MatrixXd& data, const int n);
-RcppExport SEXP _qualpalr_farthest_points(SEXP dataSEXP, SEXP nSEXP) {
+// qualpal_cpp_colorspace
+Rcpp::List qualpal_cpp_colorspace(int n, const Rcpp::List& hsl_colorspace, const int n_points, const Rcpp::List& cvd_list);
+RcppExport SEXP _qualpalr_qualpal_cpp_colorspace(SEXP nSEXP, SEXP hsl_colorspaceSEXP, SEXP n_pointsSEXP, SEXP cvd_listSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::MatrixXd& >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< const int >::type n(nSEXP);
-    rcpp_result_gen = Rcpp::wrap(farthest_points(data, n));
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type hsl_colorspace(hsl_colorspaceSEXP);
+    Rcpp::traits::input_parameter< const int >::type n_points(n_pointsSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type cvd_list(cvd_listSEXP);
+    rcpp_result_gen = Rcpp::wrap(qualpal_cpp_colorspace(n, hsl_colorspace, n_points, cvd_list));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_qualpalr_edist", (DL_FUNC) &_qualpalr_edist, 1},
-    {"_qualpalr_farthest_points", (DL_FUNC) &_qualpalr_farthest_points, 2},
+    {"_qualpalr_qualpal_cpp_rgb", (DL_FUNC) &_qualpalr_qualpal_cpp_rgb, 3},
+    {"_qualpalr_qualpal_cpp_colorspace", (DL_FUNC) &_qualpalr_qualpal_cpp_colorspace, 4},
     {NULL, NULL, 0}
 };
 

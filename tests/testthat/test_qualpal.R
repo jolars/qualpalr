@@ -10,13 +10,12 @@ test_that("qualpal() returns the proper list object", {
 
 test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal("cvd"))
-  expect_error(qualpal(2, cvd_severity = 1.5))
+  expect_error(qualpal(2, cvd_severity = 1.1))
   expect_error(qualpal(3, cvd_severity = -5))
   expect_error(qualpal(5, cvd = "normal", cvd_severity = 0.2))
-  expect_error(qualpal(1))
   expect_error(qualpal(n = 0))
   expect_error(qualpal(n = 2, cvd = "deutrenop", cvd_severity = 0.4))
-  expect_error(qualpal(n = 10^3))
+  expect_error(qualpal(n = 10^4))
   expect_error(qualpal(n = 2, "prety"))
   expect_error(qualpal(n = 3, colorspace = c(0, 200)))
   expect_error(qualpal(n = 1.4))
@@ -24,7 +23,6 @@ test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal(n = 2, list(h = c(-200, 200), s = c(0, 1), l = c(0, 1))))
   expect_error(qualpal(n = 2, list(h = c(0, 200), s = c(0, 1))))
   expect_error(qualpal(n = 2, list(h = 2, s = c(0, 1), l = c(0, 1))))
-  expect_error(qualpal(n = 500))
   expect_error(qualpal(3, matrix(1:9, ncol = 3)))
   expect_error(qualpal(3, matrix(runif(10), ncol = 5)))
 })
