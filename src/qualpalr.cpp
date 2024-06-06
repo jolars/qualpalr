@@ -54,6 +54,17 @@ organize_output(const std::vector<qualpal::RGB> colors)
     }
   }
 
+  hsl_out.attr("dimnames") = Rcpp::List::create(
+    hex_out, Rcpp::CharacterVector::create("Hue", "Saturation", "Lightness"));
+
+  rgb_out.attr("dimnames") = Rcpp::List::create(
+    hex_out, Rcpp::CharacterVector::create("Red", "Green", "Blue"));
+
+  din99d_out.attr("dimnames") = Rcpp::List::create(
+    hex_out, Rcpp::CharacterVector::create("L(99d)", "a(99d)", "b(99d)"));
+
+  de_DIN99d.attr("dimnames") = Rcpp::List::create(hex_out, hex_out);
+
   Rcpp::List out =
     Rcpp::List::create(Rcpp::Named("HSL") = hsl_out,
                        Rcpp::Named("RGB") = rgb_out,
