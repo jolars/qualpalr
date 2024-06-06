@@ -152,7 +152,10 @@ qualpal.matrix <- function(n,
     n > 1,
     cvd_severity >= 0,
     cvd_severity <= 1,
-    ncol(colorspace) == 3
+    ncol(colorspace) == 3,
+    length(cvd_severity) == 1,
+    n > 0,
+    is_integer(n)
   )
 
   RGB <- colorspace
@@ -160,38 +163,32 @@ qualpal.matrix <- function(n,
   cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
   cvd_list[[match.arg(cvd)]] <- cvd_severity
 
-  res <- qualpal_cpp(
-    n,
-    RGB[, 1],
-    RGB[, 2],
-    RGB[, 3],
-    cvd_list$protan,
-    cvd_list$deutan,
-    cvd_list$tritan
-  )
+  res <- qualpal_cpp_rgb(n, RGB, cvd_list)
 
-  RGB <- cbind(res$r, res$g, res$b)
-  HSL <- cbind(res$h, res$s, res$l)
-  DIN99d <- cbind(res$l99d, res$a99d, res$b99d)
-  hex <- res$hex
+  res
 
-  dimnames(HSL) <- list(hex, c("Hue", "Saturation", "Lightness"))
-  dimnames(DIN99d) <- list(hex, c("L(99d)", "a(99d)", "b(99d)"))
-  dimnames(RGB) <- list(hex, c("Red", "Green", "Blue"))
-
-  de_DIN99d <- stats::as.dist(res$de_DIN99d)
-
-  structure(
-    list(
-      HSL           = HSL,
-      RGB           = RGB,
-      DIN99d        = DIN99d,
-      hex           = hex,
-      de_DIN99d     = de_DIN99d,
-      min_de_DIN99d = min(de_DIN99d)
-    ),
-    class = c("qualpal", "list")
-  )
+  # RGB <- cbind(res$r, res$g, res$b)
+  # HSL <- cbind(res$h, res$s, res$l)
+  # DIN99d <- cbind(res$l99d, res$a99d, res$b99d)
+  # hex <- res$hex
+  #
+  # dimnames(HSL) <- list(hex, c("Hue", "Saturation", "Lightness"))
+  # dimnames(DIN99d) <- list(hex, c("L(99d)", "a(99d)", "b(99d)"))
+  # dimnames(RGB) <- list(hex, c("Red", "Green", "Blue"))
+  #
+  # de_DIN99d <- stats::as.dist(res$de_DIN99d)
+  #
+  # structure(
+  #   list(
+  #     HSL           = HSL,
+  #     RGB           = RGB,
+  #     DIN99d        = DIN99d,
+  #     hex           = hex,
+  #     de_DIN99d     = de_DIN99d,
+  #     min_de_DIN99d = min(de_DIN99d)
+  #   ),
+  #   class = c("qualpal", "list")
+  # )
 }
 
 #' @export
@@ -209,18 +206,25 @@ qualpal.character <- function(n, colorspace = "pretty",
                               cvd_severity = 0,
                               n_threads) {
   assertthat::assert_that(
-    assertthat::is.string(colorspace)
+    assertthat::is.string(colorspace),
+    cvd_severity >= 0,
+    cvd_severity <= 1
   )
+
   colorspace <- predefined_colorspaces(colorspace)
+
   qualpal(
-    n = n, colorspace = colorspace, cvd = cvd,
+    n = n,
+    colorspace = colorspace,
+    cvd = match.arg(cvd),
     cvd_severity = cvd_severity
   )
 }
 
 
 #' @export
-qualpal.list <- function(n, colorspace,
+qualpal.list <- function(n,
+                         colorspace,
                          cvd = c("protan", "deutan", "tritan"),
                          cvd_severity = 0,
                          n_threads) {
@@ -235,6 +239,8 @@ qualpal.list <- function(n, colorspace,
   s <- colorspace[["s"]]
   l <- colorspace[["l"]]
 
+  n_points <- 1000
+
   assertthat::assert_that(
     diff(range(h)) <= 360,
     min(h) >= -360,
@@ -248,21 +254,20 @@ qualpal.list <- function(n, colorspace,
     length(l) == 2,
     is.numeric(h),
     is.numeric(s),
-    is.numeric(l)
+    is.numeric(l),
+    cvd_severity >= 0,
+    cvd_severity <= 1,
+    n > 0,
+    n <= n_points,
+    is_integer(n)
   )
 
-  rnd <- randtoolbox::torus(1000, dim = 3)
+  cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
+  cvd_list[[match.arg(cvd)]] <- cvd_severity
 
-  H <- scale_runif(rnd[, 1], min(h), max(h))
-  S <- scale_runif(sqrt(rnd[, 2]), min(s), max(s))
-  L <- scale_runif(rnd[, 3], min(l), max(l))
+  res <- qualpal_cpp_colorspace(n, colorspace, n_points, cvd_list)
 
-  HSL <- cbind(H, S, L)
-
-  HSL[HSL[, 1] < 0, 1] <- HSL[HSL[, 1] < 0, 1] + 360
-  RGB <- HSL_RGB(HSL)
-
-  qualpal(n = n, colorspace = RGB, cvd = cvd, cvd_severity = cvd_severity)
+  res
 }
 
 

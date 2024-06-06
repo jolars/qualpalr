@@ -21,7 +21,7 @@ qualpal(const int n,
         const std::array<double, 2>& h_lim = { 0, 360 },
         const std::array<double, 2>& s_lim = { 0, 1 },
         const std::array<double, 2>& l_lim = { 0, 1 },
-        const int n_points = 100,
+        const int n_points = 1000,
         const std::map<std::string, double>& cvd = {});
 
 } // namespace qualpal
