@@ -111,6 +111,21 @@ RGB::RGB(const HSL& hsl)
   b_value = rgb_prime[2] + m;
 }
 
+RGB::RGB(const Lab& lab)
+  : RGB(XYZ(lab))
+{
+}
+
+HSL::HSL(const XYZ& xyz)
+  : HSL(RGB(xyz))
+{
+}
+
+HSL::HSL(const Lab& lab)
+  : HSL(XYZ(lab))
+{
+}
+
 XYZ::XYZ(const double x, const double y, const double z)
   : x_value(x)
   , y_value(y)
@@ -158,6 +173,11 @@ XYZ::XYZ(const Lab& lab, const std::array<double, 3>& white_point)
   x_value = xr * white_point[0];
   y_value = yr * white_point[1];
   z_value = zr * white_point[2];
+}
+
+XYZ::XYZ(const HSL& hsl)
+  : XYZ(RGB(hsl))
+{
 }
 
 RGB::RGB(const XYZ& xyz)
@@ -232,6 +252,16 @@ DIN99d::DIN99d(const RGB& rgb)
 {
 }
 
+DIN99d::DIN99d(const HSL& hsl)
+  : DIN99d(XYZ(hsl))
+{
+}
+
+DIN99d::DIN99d(const Lab& lab)
+  : DIN99d(XYZ(lab))
+{
+}
+
 HSL::HSL(const double h, const double s, const double l)
   : h_value(h)
   , s_value(s)
@@ -295,5 +325,15 @@ Lab::Lab(const XYZ& xyz, const std::array<double, 3>& white_point)
   a_value = 500.0 * (fx - fy);
   b_value = 200.0 * (fy - fz);
 };
+
+Lab::Lab(const RGB& rgb)
+  : Lab(XYZ(rgb))
+{
+}
+
+Lab::Lab(const HSL& hsl)
+  : Lab(XYZ(hsl))
+{
+}
 
 } // namespace qualpal
