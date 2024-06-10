@@ -80,28 +80,22 @@ RGB::RGB(const HSL& hsl)
 {
   double c = (1 - std::abs(2 * hsl.l() - 1)) * hsl.s();
   double h_prime = hsl.h() >= 0 ? hsl.h() / 60.0 : (hsl.h() - 360) / 60.0;
-  double x = c * (1 - std::abs(std::fmod(h_prime, 2) - 1));
+  double x = c * (1 - std::abs(mod(h_prime, 2) - 1));
 
-  double rgb_prime[3] = { 0, 0, 0 };
+  std::array<double, 3> rgb_prime = { 0, 0, 0 };
 
   if (h_prime >= 0 && h_prime < 1) {
-    rgb_prime[0] = c;
-    rgb_prime[1] = x;
+    rgb_prime = { c, x, 0 };
   } else if (h_prime >= 1 && h_prime < 2) {
-    rgb_prime[0] = x;
-    rgb_prime[1] = c;
+    rgb_prime = { x, c, 0 };
   } else if (h_prime >= 2 && h_prime < 3) {
-    rgb_prime[1] = c;
-    rgb_prime[2] = x;
+    rgb_prime = { 0, c, x };
   } else if (h_prime >= 3 && h_prime < 4) {
-    rgb_prime[1] = x;
-    rgb_prime[2] = c;
+    rgb_prime = { 0, x, c };
   } else if (h_prime >= 4 && h_prime < 5) {
-    rgb_prime[0] = x;
-    rgb_prime[2] = c;
+    rgb_prime = { x, 0, c };
   } else if (h_prime >= 5 && h_prime < 6) {
-    rgb_prime[0] = c;
-    rgb_prime[2] = x;
+    rgb_prime = { c, 0, x };
   }
 
   double m = hsl.l() - c / 2.0;
@@ -114,6 +108,28 @@ RGB::RGB(const HSL& hsl)
 RGB::RGB(const Lab& lab)
   : RGB(XYZ(lab))
 {
+}
+
+RGB::RGB(const XYZ& xyz)
+{
+  FixedMatrix<double, 3, 3> m = { { 3.2404542, -1.5371385, -0.4985314 },
+                                  { -0.9692660, 1.8760108, 0.0415560 },
+                                  { 0.0556434, -0.2040259, 1.0572252 } };
+  std::array<double, 3> xyz_vec = { xyz.x(), xyz.y(), xyz.z() };
+
+  auto rgb = m * xyz_vec;
+
+  for (auto& val : rgb) {
+    if (val > 0.0031308) {
+      val = 1.055 * std::pow(val, 1 / 2.4) - 0.055;
+    } else {
+      val = 12.92 * val;
+    }
+  }
+
+  r_value = rgb[0];
+  g_value = rgb[1];
+  b_value = rgb[2];
 }
 
 HSL::HSL(const XYZ& xyz)
@@ -178,28 +194,6 @@ XYZ::XYZ(const Lab& lab, const std::array<double, 3>& white_point)
 XYZ::XYZ(const HSL& hsl)
   : XYZ(RGB(hsl))
 {
-}
-
-RGB::RGB(const XYZ& xyz)
-{
-  FixedMatrix<double, 3, 3> m = { { 3.2404542, -1.5371385, -0.4985314 },
-                                  { -0.9692660, 1.8760108, 0.0415560 },
-                                  { 0.0556434, -0.2040259, 1.0572252 } };
-  std::array<double, 3> xyz_vec = { xyz.x(), xyz.y(), xyz.z() };
-
-  auto rgb = m * xyz_vec;
-
-  for (auto& val : rgb) {
-    if (val > 0.0031308) {
-      val = 1.055 * std::pow(val, 1 / 2.4) - 0.055;
-    } else {
-      val = 12.92 * val;
-    }
-  }
-
-  r_value = rgb[0];
-  g_value = rgb[1];
-  b_value = rgb[2];
 }
 
 std::string
