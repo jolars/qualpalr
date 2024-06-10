@@ -275,26 +275,28 @@ HSL::HSL(const RGB& rgb)
   const double g = rgb.g();
   const double b = rgb.b();
 
-  const double M = std::max({ r, g, b });
-  const double m = std::min({ r, g, b });
-  const double C = M - m;
+  const double x_max = std::max({ r, g, b });
+  const double x_min = std::min({ r, g, b });
+  const double v = x_max;
+  const double c = x_max - x_min;
+
+  this->l_value = 0.5 * (x_max + x_min);
 
   double h_prime = 0;
 
-  if (C == 0) {
-    h_prime = std::nan("");
-  } else if (M == r) {
-    h_prime = mod((g - b) / C, 6.0);
-  } else if (M == g) {
-    h_prime = (b - r) / C + 2;
-  } else if (M == b) {
-    h_prime = (r - g) / C + 4;
+  if (c == 0) {
+    h_prime = 0.0;
+  } else if (v == r) {
+    h_prime = mod((g - b) / c, 6.0);
+  } else if (v == g) {
+    h_prime = (b - r) / c + 2;
+  } else if (v == b) {
+    h_prime = (r - g) / c + 4;
   }
 
-  h_value = h_prime * 60;
-  l_value = 0.5 * (M + m);
-  s_value =
-    (l_value == 1 || l_value == 0) ? 0 : C / (1.0 - std::abs(2 * l_value - 1));
+  this->h_value = h_prime * 60;
+  this->s_value =
+    (l_value == 1 || l_value == 0) ? 0 : c / (1.0 - std::abs(2 * v - c - 1));
 }
 
 Lab::Lab(const double l, const double a, const double b)
