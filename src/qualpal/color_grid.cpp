@@ -47,11 +47,11 @@ colorGrid(const std::array<double, 2>& h_lim,
       for (const auto& l : l_vec) {
         // We allow negative hues to wrap around the color wheel, but here we
         // need to make sure that the hue is in the range [0, 360)
-        if (h < 0) {
+        if (h < 0.0) {
           colors.emplace_back(h + 360, s, l);
+        } else {
+          colors.emplace_back(h, s, l);
         }
-
-        colors.emplace_back(h, s, l);
       }
     }
   }
