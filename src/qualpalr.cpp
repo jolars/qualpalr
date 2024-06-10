@@ -1,8 +1,10 @@
+#include "convert.h"
 #include "qualpal/colors.h"
 #include "qualpal/distance_matrix.h"
 #include "qualpal/matrix.h"
 #include "qualpal/qualpal.h"
 #include <Rcpp.h>
+#include <array>
 
 Rcpp::List
 organize_output(const std::vector<qualpal::RGB> colors)
@@ -132,4 +134,42 @@ qualpal_cpp_colorspace(int n,
     qualpal::qualpal(n, h_lim, s_lim, l_lim, n_points, cvd);
 
   return organize_output(selected_colors);
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericMatrix
+convert_colors(const Rcpp::NumericMatrix& colors,
+               const std::string& from,
+               const std::string& to)
+{
+  int N = colors.nrow();
+
+  Rcpp::NumericMatrix out(N, 3);
+
+  for (int i = 0; i < N; i++) {
+    std::array<double, 3> color_converted;
+    if (from == "rgb") {
+      qualpal::RGB rgb(colors(i, 0), colors(i, 1), colors(i, 2));
+      color_converted = convert(rgb, to);
+    } else if (from == "hsl") {
+      qualpal::HSL hsl(colors(i, 0), colors(i, 1), colors(i, 2));
+      color_converted = convert(hsl, to);
+    } else if (from == "din99d") {
+      Rcpp::stop("Cannot convert from din99d");
+    } else if (from == "lab") {
+      qualpal::Lab lab(colors(i, 0), colors(i, 1), colors(i, 2));
+      color_converted = convert(lab, to);
+    } else if (from == "xyz") {
+      qualpal::XYZ xyz(colors(i, 0), colors(i, 1), colors(i, 2));
+      color_converted = convert(xyz, to);
+    } else {
+      Rcpp::stop("Unknown colorspace");
+    }
+
+    out(i, 0) = color_converted[0];
+    out(i, 1) = color_converted[1];
+    out(i, 2) = color_converted[2];
+  }
+
+  return out;
 }

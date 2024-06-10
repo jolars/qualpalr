@@ -38,10 +38,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// convert_colors
+Rcpp::NumericMatrix convert_colors(const Rcpp::NumericMatrix& colors, const std::string& from, const std::string& to);
+RcppExport SEXP _qualpalr_convert_colors(SEXP colorsSEXP, SEXP fromSEXP, SEXP toSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type colors(colorsSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type from(fromSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type to(toSEXP);
+    rcpp_result_gen = Rcpp::wrap(convert_colors(colors, from, to));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_qualpalr_qualpal_cpp_rgb", (DL_FUNC) &_qualpalr_qualpal_cpp_rgb, 3},
     {"_qualpalr_qualpal_cpp_colorspace", (DL_FUNC) &_qualpalr_qualpal_cpp_colorspace, 4},
+    {"_qualpalr_convert_colors", (DL_FUNC) &_qualpalr_convert_colors, 3},
     {NULL, NULL, 0}
 };
 

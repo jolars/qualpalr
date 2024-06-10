@@ -9,3 +9,7 @@ qualpal_cpp_colorspace <- function(n, hsl_colorspace, n_points, cvd_list) {
     .Call(`_qualpalr_qualpal_cpp_colorspace`, n, hsl_colorspace, n_points, cvd_list)
 }
 
+convert_colors <- function(colors, from, to) {
+    .Call(`_qualpalr_convert_colors`, colors, from, to)
+}
+
