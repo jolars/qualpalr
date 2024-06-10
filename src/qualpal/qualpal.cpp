@@ -82,8 +82,12 @@ qualpal(const int n,
                                 "than the number of points in the color grid");
   }
 
-  if (h_lim[0] < 0 || h_lim[1] > 360) {
-    throw std::invalid_argument("Hue must be between 0 and 360");
+  if (h_lim[0] < -360 || h_lim[1] > 360) {
+    throw std::invalid_argument("Hue must be between -360 and 360");
+  }
+
+  if (h_lim[1] - h_lim[0] > 360) {
+    throw std::invalid_argument("Hue range must be less than 360");
   }
 
   if (s_lim[0] < 0 || s_lim[1] > 1) {
