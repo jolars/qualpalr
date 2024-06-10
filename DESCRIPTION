@@ -11,7 +11,6 @@ Description: Automatic generation of maximally distinct qualitative color palett
 Depends:
     R (>= 3.3.0)
 Imports:
-    randtoolbox (>= 1.17),
     graphics,
     stats,
     grDevices,
@@ -19,6 +18,7 @@ Imports:
     assertthat,
     Rcpp
 Suggests:
+    randtoolbox,
     testthat,
     knitr,
     maps,

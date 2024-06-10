@@ -39,7 +39,7 @@ the time of writing are *pretty*, *pretty_dark*, *rainbow*, and *pastels*.
 
 ```{r basic_usage}
 library(qualpalr)
-pal <- qualpal(n = 5, list(h = c(0, 360), s = c(0.4, 0.6), l = c(0.5, 0.85)))
+pal <- qualpal(n = 5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
 
 # Adapt the color space to deuteranomaly of severity 0.7
 pal <- qualpal(n = 5, colorspace = "pretty", cvd = "deutan", cvd_severity = 0.7)
@@ -73,9 +73,8 @@ map("france", fill = TRUE, col = pal$hex, mar = c(0, 0, 0, 0))
 ## Details
 
 `qualpal` begins by generating a point cloud out of the HSL color subspace
-provided by the user, using a quasi-random sobol sequence from
-[randtoolbox](https://cran.r-project.org/package=randtoolbox). Here is the color
-subset in HSL with settings
+provided by the user, using a quasi-random Halton sequence. Here is the color
+subscape in HSL with settings
 `h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)`.
 
 ```{r details_input, echo=FALSE}
@@ -87,8 +86,8 @@ h <- c(-200, 120)
 s <- c(0.3, 0.8)
 l <- c(0.4, 0.9)
 
-# Generate a quasi-random tour sequence
-rnd <- randtoolbox::sobol(1000, dim = 3)
+# Generate a quasi-random Halton sequence
+rnd <- randtoolbox::halton(1000, dim = 3)
 
 # Convert random sequence to specified color space
 scale_runif <- function(x, new_min, new_max) {
@@ -151,7 +150,7 @@ plot3d(pal$DIN99d, col = pal$hex, main = "DIN99d", add = TRUE, size = 5)
 rglwidget()
 ```
 
-### Color specifications
+### Color Specifications
 
 At the time of writing, qualpalr works only in the sRGB color space with
 the *CIE Standard Illuminant D65* reference white. 
