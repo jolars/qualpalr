@@ -30,7 +30,6 @@
 #' @examples
 #' pal <- autopal(3, cvd = "protan", target = 15)
 #' plot(pal)
-#'
 autopal <- function(n,
                     colorspace = "pretty",
                     cvd = c("protan", "deutan", "tritan"),
@@ -42,13 +41,18 @@ autopal <- function(n,
   )
 
   # Run the optimizer
-  fit <- stats::optimize(costfun, target = target, n = n,
-                         colorspace = colorspace,
-                         cvd = match.arg(cvd), lower = 0, upper  = 1)
+  fit <- stats::optimize(
+    costfun,
+    target = target, n = n,
+    colorspace = colorspace,
+    cvd = match.arg(cvd), lower = 0, upper = 1
+  )
 
   # Generate a new qualpal with the optimized cvd_severity value
-  qualpal(n = n, colorspace = colorspace, cvd = match.arg(cvd),
-          cvd_severity = fit$minimum)
+  qualpal(
+    n = n, colorspace = colorspace, cvd = match.arg(cvd),
+    cvd_severity = fit$minimum
+  )
 }
 
 
@@ -58,5 +62,5 @@ costfun <- function(x, target, n, colorspace, cvd) {
   fit <- qualpal(n, colorspace = colorspace, cvd = cvd, cvd_severity = x)
 
   # Return cost
-  (fit$min_de_DIN99d - target) ^ 2
+  (fit$min_de_DIN99d - target)^2
 }

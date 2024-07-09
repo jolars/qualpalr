@@ -52,9 +52,10 @@ plot.qualpal <- function(x, ...) {
 pairs.qualpal <- function(x, colorspace = c("DIN99d", "HSL", "RGB"), ...) {
   args <- list(
     x = switch(match.arg(colorspace),
-               DIN99d = x$DIN99d,
-               HSL = x$HSL,
-               RGB = x$RGB),
+      DIN99d = x$DIN99d,
+      HSL = x$HSL,
+      RGB = x$RGB
+    ),
     col = x$hex,
     cex = 3,
     pch = 19
