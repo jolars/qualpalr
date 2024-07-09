@@ -2,15 +2,15 @@
 title: "An introduction to qualpalr"
 author: "Johan Larsson"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
 bibliography: qualpal.bib
 vignette: >
   %\VignetteIndexEntry{An introduction to qualpalr}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r echo = FALSE}
+```{r}
+#| echo: false
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
@@ -37,7 +37,8 @@ max.
 * a character vector specifying one of the predefined color subspaces, which at
 the time of writing are *pretty*, *pretty_dark*, *rainbow*, and *pastels*.
 
-```{r basic_usage}
+```{r}
+#| label: basic-usage
 library(qualpalr)
 pal <- qualpal(n = 5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
 
@@ -48,14 +49,16 @@ pal <- qualpal(n = 5, colorspace = "pretty", cvd = "deutan", cvd_severity = 0.7)
 The resulting object, `pal`, is a list with several color tables and a distance
 matrix based on the DIN99d color difference formula.
 
-```{r qualpal_list}
+```{r}
+#| label: qualpal-list
 pal
 ```
 
 Methods for `pairs` and `plot` have been written for `qualpal` objects to help
 visualize the results.
 
-```{r fig.show='hold'}
+```{r}
+#| fig-show: hold
 # Multidimensional scaling plot
 plot(pal)
 
@@ -66,6 +69,8 @@ pairs(pal, colorspace = "DIN99d")
 The colors are most easily used in R by accessing `pal$hex`
 
 ```{r map, fig.width=5, fig.height=5}
+#| fig-width: 5
+#| fig-height: 5
 library(maps)
 map("france", fill = TRUE, col = pal$hex, mar = c(0, 0, 0, 0))
 ```
@@ -77,7 +82,10 @@ provided by the user, using a quasi-random Halton sequence. Here is the color
 subscape in HSL with settings
 `h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)`.
 
-```{r details_input, echo=FALSE}
+```{r}
+#| label: details-input
+#| message: false
+#| echo: false
 options(rgl.useNULL = TRUE)
 library(rgl)
 
@@ -115,7 +123,9 @@ rglwidget()
 
 The program then proceeds by projecting these colors into the sRGB space.
 
-```{r RGB_space, echo=FALSE}
+```{r}
+#| label: rgb-space
+#| echo: false
 plot3d(RGB, col = rgb(RGB), main = "RGB")
 rglwidget()
 ```
@@ -123,7 +133,9 @@ rglwidget()
 It then continues projecting the colors, first into the XYZ space, then CIELab
 (not shown here), and then finally the DIN99d space.
 
-```{r DIN_space, echo=FALSE}
+```{r}
+#| label: din-space
+#| echo: false
 DIN99d <- qualpalr:::convert_colors(RGB, "rgb", "din99d")
 
 plot3d(DIN99d, col = rgb(RGB), main = "DIN99d")
@@ -143,7 +155,9 @@ the minimum distance to the previously selected points. This is repeated until
 `n` points are selected. These points are then returned to the user; below is an
 example using `n = 5`.
 
-```{r selected_points, echo=FALSE}
+```{r}
+#| label: selected-points
+#| echo: false
 pal <- qualpal(5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
 plot3d(DIN99d, col = rgb(RGB), main = "DIN99d", alpha = 0.1)
 plot3d(pal$DIN99d, col = pal$hex, main = "DIN99d", add = TRUE, size = 5)
