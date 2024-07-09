@@ -8,8 +8,7 @@ qualpal(
   n,
   colorspace = "pretty",
   cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0,
-  n_threads
+  cvd_severity = 0
 )
 }
 \arguments{
@@ -18,40 +17,38 @@ qualpal(
 \item{colorspace}{A color space to generate colors from. Can be any of the
 following:
 \itemize{
-  \item{A \code{\link{list}} with the following \emph{named} vectors,
-    each of length two, giving a range for each item.}{
-    \describe{
-      \item{\code{h}}{Hue, in the range [-360, 360]}
-      \item{\code{s}}{Saturation, in the range [0, 1]}
-      \item{\code{l}}{Lightness, in the range [0, 1]}
-    }
-  }
-  \item{A \code{\link{character}} vector of length one specifying one of
-    these predefined color spaces:}{
-    \describe{
-      \item{\code{pretty}}{
-        Tries to provide aesthetically pleasing,
-        but still distinct color palettes. Hue ranges from 0 to 360,
-        saturation from 0.1 to 0.5, and lightness from 0.5 to 0.85. This
-        palette is not suitable for high \code{n}}
-      \item{\code{pretty_dark}}{
-        Like \code{pretty} but darker. Hue ranges from 0 to 360, saturation
-        from 0.1 to 0.5, and lightness from 0.2 to 0.4.
-      }
-      \item{\code{rainbow}}{
-        Uses all hues, chromas, and most of the lightness range. Provides
-        distinct but not aesthetically pleasing colors.
-      }
-      \item{\code{pastels}}{
-        Pastel colors from the complete range of hues (0-360), with
-        saturation between 0.2 and 0.4, and lightness between 0.8 and 0.9.
-      }
-    }
-  }
-  \item{A \code{\link{matrix}} of colors from the sRGB color space, each
-    row representing a unique color.}
-  \item{A \code{\link{data.frame}} that can be converted to a matrix via
-    \link{data.matrix}}
+\item A \code{\link{list}} with the following \emph{named} vectors,
+each of length two, giving a range for each item.
+\describe{
+\item{\code{h}}{Hue, in range from -360 to 360}
+\item{\code{s}}{Saturation, in the range from 0 to 1}
+\item{\code{l}}{Lightness, in the range from 0 to 1}
+}
+\item A \code{\link{character}} vector of length one specifying one of
+these predefined color spaces:
+\describe{
+\item{\code{pretty}}{
+Tries to provide aesthetically pleasing,
+but still distinct color palettes. Hue ranges from 0 to 360,
+saturation from 0.1 to 0.5, and lightness from 0.5 to 0.85. This
+palette is not suitable for high \code{n}}
+\item{\code{pretty_dark}}{
+Like \code{pretty} but darker. Hue ranges from 0 to 360, saturation
+from 0.1 to 0.5, and lightness from 0.2 to 0.4.
+}
+\item{\code{rainbow}}{
+Uses all hues, chromas, and most of the lightness range. Provides
+distinct but not aesthetically pleasing colors.
+}
+\item{\code{pastels}}{
+Pastel colors from the complete range of hues (0-360), with
+saturation between 0.2 and 0.4, and lightness between 0.8 and 0.9.
+}
+}
+\item A \code{\link{matrix}} of colors from the sRGB color space, each
+row representing a unique color.
+\item A \code{\link{data.frame}} that can be converted to a matrix via
+\link{data.matrix}
 }}
 
 \item{cvd}{Color vision deficiency adaptation. Use \code{cvd_severity}
@@ -61,28 +58,25 @@ values are \code{"protan", "deutan",} and \code{"tritan"}.}
 \item{cvd_severity}{Severity of color vision deficiency to adapt to. Can take
 any value from 0, for normal vision (the default), and 1, for dichromatic
 vision.}
-
-\item{n_threads}{Previously the number of threads to use, but this argument
-is now deprecated.}
 }
 \value{
 A list of class \code{qualpal} with the following
-  components.
-  \item{HSL}{
-    A matrix of the colors in the HSL color space.
-  }
-  \item{DIN99d}{
-    A matrix of the colors in the DIN99d color space (after power
-    transformations).
-  }
-  \item{RGB}{
-    A matrix of the colors in the sRGB color space.} \item{hex}{A
-    character vector of the colors in hex notation.} \item{de_DIN99d}{A
-    distance matrix of color differences according to delta E DIN99d.
-  }
-  \item{min_de_DIN99d}{
-    The smallest pairwise DIN99d color difference.
-  }
+components.
+\item{HSL}{
+A matrix of the colors in the HSL color space.
+}
+\item{DIN99d}{
+A matrix of the colors in the DIN99d color space (after power
+transformations).
+}
+\item{RGB}{
+A matrix of the colors in the sRGB color space.} \item{hex}{A
+character vector of the colors in hex notation.} \item{de_DIN99d}{A
+distance matrix of color differences according to delta E DIN99d.
+}
+\item{min_de_DIN99d}{
+The smallest pairwise DIN99d color difference.
+}
 }
 \description{
 Given a color space or collection of colors, \code{qualpal()} projects

@@ -26,6 +26,6 @@ pairs(col_pal, colorspace = "HSL")
 }
 \seealso{
 \code{\link{qualpal}},
-  \code{\link{plot.qualpal}},
-  \code{\link[graphics]{pairs}}
+\code{\link{plot.qualpal}},
+\code{\link[graphics]{pairs}}
 }

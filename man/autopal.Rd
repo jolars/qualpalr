@@ -27,22 +27,22 @@ range -360 to 360 for \code{h}, and 0 to 1 for \code{s} and \code{l} 2), or
 }
 \value{
 A list of class \code{qualpal} with the following
-  components.
-  \item{HSL}{
-    A matrix of the colors in the HSL color space.
-  }
-  \item{DIN99d}{
-    A matrix of the colors in the DIN99d color space (after power
-    transformations).
-  }
-  \item{RGB}{
-    A matrix of the colors in the sRGB color space.} \item{hex}{A
-    character vector of the colors in hex notation.} \item{de_DIN99d}{A
-    distance matrix of color differences according to delta E DIN99d.
-  }
-  \item{min_de_DIN99d}{
-    The smallest pairwise DIN99d color difference.
-  }
+components.
+\item{HSL}{
+A matrix of the colors in the HSL color space.
+}
+\item{DIN99d}{
+A matrix of the colors in the DIN99d color space (after power
+transformations).
+}
+\item{RGB}{
+A matrix of the colors in the sRGB color space.} \item{hex}{A
+character vector of the colors in hex notation.} \item{de_DIN99d}{A
+distance matrix of color differences according to delta E DIN99d.
+}
+\item{min_de_DIN99d}{
+The smallest pairwise DIN99d color difference.
+}
 }
 \description{
 This function adapts color palettes to color vision deficiency (CVD) by
@@ -63,5 +63,4 @@ by lowering the severity of CVD to simulate to before picking colors (the
 \examples{
 pal <- autopal(3, cvd = "protan", target = 15)
 plot(pal)
-
 }

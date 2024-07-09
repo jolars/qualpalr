@@ -19,7 +19,7 @@
 }
 \value{
 Prints the colors as a matrix in the specified color space as well
-  as a distance matrix of the color differences. Invisibly returns x.
+as a distance matrix of the color differences. Invisibly returns x.
 }
 \description{
 Print the result from a call to \code{\link{qualpal}}.

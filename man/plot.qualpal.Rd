@@ -23,5 +23,5 @@ plot(col_pal)
 }
 \seealso{
 \code{\link{qualpal}}, \code{\link{pairs.qualpal}},
-  \code{\link[graphics]{plot}}
+\code{\link[graphics]{plot}}
 }
