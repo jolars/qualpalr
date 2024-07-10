@@ -15,7 +15,8 @@
 ^experimental$
 ^data-raw$
 ^docs$
-Makefile$
+^Makefile$
+^Taskfile.yml$
 ^\.github$
 ^doc$
 ^Meta$

@@ -1,0 +1,70 @@
+version: "3"
+
+vars:
+  PKGNAME: qualpalr
+  PKGSRC: .
+
+tasks:
+  clean:
+    cmds:
+      - rm -rf src/*.o src/*.so
+
+  document:
+    cmds:
+      - Rscript -e 'devtools::document(roclets = c("rd", "collate", "namespace"))'
+
+  compile-attributes:
+    cmds:
+      - Rscript -e 'Rcpp::compileAttributes()'
+
+  build:
+    deps: [document, compile-attributes]
+    cmds:
+      - R CMD build --no-manual .
+
+  build-cran:
+    deps: [document, compile-attributes]
+    cmds:
+      - R CMD build .
+
+  install:
+    deps: [compile-attributes]
+    cmds:
+      - R CMD INSTALL --no-multiarch --with-keep.source .
+
+  clean-install:
+    deps: [document, compile-attributes]
+    cmds:
+      - R CMD INSTALL --preclean --no-multiarch --with-keep.source .
+
+  check:
+    deps: [document, compile-attributes]
+    cmds:
+      - Rscript -e 'devtools::check()'
+
+  test:
+    deps: [install]
+    cmds:
+      - Rscript -e 'devtools::test()'
+
+  readme:
+    cmds:
+      - Rscript -e 'rmarkdown::render("README.qmd")'
+      - rm -rf README.html
+
+  vignettes:
+    cmds:
+      - Rscript -e 'devtools::build_vignettes()'
+
+  update-lib:
+    desc: Fetch current release of c++ library component
+    vars:
+      API_URL: https://api.github.com/repos/jolars/qualpal/releases/latest
+      RELEASE:
+        sh: curl -s {{.API_URL}} | grep "tarball_url" | cut -d '"' -f 4
+    cmds:
+      - mkdir -p tmp
+      - curl -L {{.RELEASE}} | tar -xz --strip-components=1 -C tmp
+      - rm -rf src/qualpal
+      - cp -ri tmp/src/qualpal src/
+      - rm -rf tmp
