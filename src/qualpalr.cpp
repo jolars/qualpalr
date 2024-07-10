@@ -1,7 +1,6 @@
 #include "convert.h"
 #include "qualpal/colors.h"
 #include "qualpal/distance_matrix.h"
-#include "qualpal/matrix.h"
 #include "qualpal/qualpal.h"
 #include <Rcpp.h>
 #include <array>
@@ -136,6 +135,15 @@ qualpal_cpp_colorspace(int n,
   return organize_output(selected_colors);
 }
 
+//' Convert colors between colorspaces
+//'
+//' @param colors A matrix of colors
+//' @param from The colorspace of the input colors, one of "rgb", "hsl",
+//'   "din99d", "lab", "xyz"
+//' @param to The colorspace of the output colors,
+//'   one of "rgb", "hsl", "lab", "xyz"
+//'
+//' @return The colors converted to the new colorspace
 // [[Rcpp::export]]
 Rcpp::NumericMatrix
 convert_colors(const Rcpp::NumericMatrix& colors,
@@ -145,6 +153,7 @@ convert_colors(const Rcpp::NumericMatrix& colors,
   int N = colors.nrow();
 
   Rcpp::NumericMatrix out(N, 3);
+  Rcpp::CharacterVector col_names(3);
 
   for (int i = 0; i < N; i++) {
     std::array<double, 3> color_converted;
@@ -170,6 +179,22 @@ convert_colors(const Rcpp::NumericMatrix& colors,
     out(i, 1) = color_converted[1];
     out(i, 2) = color_converted[2];
   }
+
+  if (to == "rgb") {
+    col_names = Rcpp::CharacterVector::create("R", "G", "B");
+  } else if (to == "hsl") {
+    col_names = Rcpp::CharacterVector::create("H", "S", "L");
+  } else if (to == "din99d") {
+    col_names = Rcpp::CharacterVector::create("L(99d)", "a(99d)", "b(99d)");
+  } else if (to == "lab") {
+    col_names = Rcpp::CharacterVector::create("L", "a", "b");
+  } else if (to == "xyz") {
+    col_names = Rcpp::CharacterVector::create("X", "Y", "Z");
+  } else {
+    Rcpp::stop("Unknown colorspace");
+  }
+
+  colnames(out) = col_names;
 
   return out;
 }
