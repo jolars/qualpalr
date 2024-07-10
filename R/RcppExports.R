@@ -9,6 +9,15 @@ qualpal_cpp_colorspace <- function(n, hsl_colorspace, n_points, cvd_list) {
     .Call(`_qualpalr_qualpal_cpp_colorspace`, n, hsl_colorspace, n_points, cvd_list)
 }
 
+#' Convert colors between colorspaces
+#'
+#' @param colors A matrix of colors
+#' @param from The colorspace of the input colors, one of "rgb", "hsl",
+#'   "din99d", "lab", "xyz"
+#' @param to The colorspace of the output colors,
+#'   one of "rgb", "hsl", "lab", "xyz"
+#'
+#' @return The colors converted to the new colorspace
 convert_colors <- function(colors, from, to) {
     .Call(`_qualpalr_convert_colors`, colors, from, to)
 }
