@@ -37,16 +37,15 @@
 #' @param colorspace A color space to generate colors from. Can be any of the
 #'   following:
 #'   \itemize{
-#'     \item{A \code{\link{list}} with the following \emph{named} vectors,
-#'       each of length two, giving a range for each item.}{
+#'     \item A \code{\link{list}} with the following \emph{named} vectors,
+#'       each of length two, giving a range for each item.
 #'       \describe{
-#'         \item{\code{h}}{Hue, in range from -360 to 360]}
+#'         \item{\code{h}}{Hue, in range from -360 to 360}
 #'         \item{\code{s}}{Saturation, in the range from 0 to 1}
 #'         \item{\code{l}}{Lightness, in the range from 0 to 1}
 #'       }
-#'     }
-#'     \item{A \code{\link{character}} vector of length one specifying one of
-#'       these predefined color spaces:}{
+#'     \item A \code{\link{character}} vector of length one specifying one of
+#'       these predefined color spaces:
 #'       \describe{
 #'         \item{\code{pretty}}{
 #'           Tries to provide aesthetically pleasing,
@@ -66,11 +65,10 @@
 #'           saturation between 0.2 and 0.4, and lightness between 0.8 and 0.9.
 #'         }
 #'       }
-#'     }
-#'     \item{A \code{\link{matrix}} of colors from the sRGB color space, each
-#'       row representing a unique color.}
-#'     \item{A \code{\link{data.frame}} that can be converted to a matrix via
-#'       \link{data.matrix}}
+#'     \item A \code{\link{matrix}} of colors from the sRGB color space, each
+#'       row representing a unique color.
+#'     \item A \code{\link{data.frame}} that can be converted to a matrix via
+#'       \link{data.matrix}
 #'   }
 #'
 #' @param cvd Color vision deficiency adaptation. Use \code{cvd_severity}
