@@ -3,7 +3,7 @@ pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   introduction: introduction.html
-last_built: 2024-07-10T14:34Z
+last_built: 2024-07-10T14:46Z
 urls:
   reference: https://jolars.github.io/qualpalr/reference
   article: https://jolars.github.io/qualpalr/articles
