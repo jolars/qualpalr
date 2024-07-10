@@ -18,7 +18,7 @@ BugReports: https://github.com/jolars/qualpalr/issues
 URL: https://jolars.github.io/qualpalr/
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 VignetteBuilder: quarto
 Depends:
     R (>= 4.0.0)
