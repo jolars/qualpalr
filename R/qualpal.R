@@ -167,7 +167,8 @@ qualpal.data.frame <- function(n, colorspace,
 }
 
 #' @export
-qualpal.character <- function(n, colorspace = "pretty",
+qualpal.character <- function(n,
+                              colorspace = "pretty",
                               cvd = c("protan", "deutan", "tritan"),
                               cvd_severity = 0) {
   assertthat::assert_that(
