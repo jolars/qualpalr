@@ -145,7 +145,7 @@ differences. We then apply a power transformation [@huang_power_2015] to fine
 tune these differences.
 
 To select the `n` colors that the user wanted, we proceed greedily: first, we
-find the two most distant points, then we find the third point that maximizes 
+find the two most distant points, then we find the third point that maximizes
 the minimum distance to the previously selected points. This is repeated until
 `n` points are selected. These points are then returned to the user; below is an
 example using `n = 5`.
@@ -162,7 +162,7 @@ rglwidget()
 ### Color Specifications
 
 At the time of writing, qualpalr works only in the sRGB color space with
-the *CIE Standard Illuminant D65* reference white. 
+the *CIE Standard Illuminant D65* reference white.
 
 ## Thanks
 

@@ -117,18 +117,22 @@
 #' }
 #'
 #' @export
-qualpal <- function(n,
-                    colorspace = "pretty",
-                    cvd = c("protan", "deutan", "tritan"),
-                    cvd_severity = 0) {
+qualpal <- function(
+  n,
+  colorspace = "pretty",
+  cvd = c("protan", "deutan", "tritan"),
+  cvd_severity = 0
+) {
   UseMethod("qualpal", colorspace)
 }
 
 #' @export
-qualpal.matrix <- function(n,
-                           colorspace,
-                           cvd = c("protan", "deutan", "tritan"),
-                           cvd_severity = 0) {
+qualpal.matrix <- function(
+  n,
+  colorspace,
+  cvd = c("protan", "deutan", "tritan"),
+  cvd_severity = 0
+) {
   assertthat::assert_that(
     assertthat::is.count(n),
     is.character(cvd),
@@ -159,18 +163,23 @@ qualpal.matrix <- function(n,
 }
 
 #' @export
-qualpal.data.frame <- function(n, colorspace,
-                               cvd = c("protan", "deutan", "tritan"),
-                               cvd_severity = 0) {
+qualpal.data.frame <- function(
+  n,
+  colorspace,
+  cvd = c("protan", "deutan", "tritan"),
+  cvd_severity = 0
+) {
   mat <- data.matrix(colorspace)
   qualpal(n = n, colorspace = mat, cvd = cvd, cvd_severity = cvd_severity)
 }
 
 #' @export
-qualpal.character <- function(n,
-                              colorspace = "pretty",
-                              cvd = c("protan", "deutan", "tritan"),
-                              cvd_severity = 0) {
+qualpal.character <- function(
+  n,
+  colorspace = "pretty",
+  cvd = c("protan", "deutan", "tritan"),
+  cvd_severity = 0
+) {
   assertthat::assert_that(
     assertthat::is.string(colorspace),
     cvd_severity >= 0,
@@ -189,10 +198,12 @@ qualpal.character <- function(n,
 
 
 #' @export
-qualpal.list <- function(n,
-                         colorspace,
-                         cvd = c("protan", "deutan", "tritan"),
-                         cvd_severity = 0) {
+qualpal.list <- function(
+  n,
+  colorspace,
+  cvd = c("protan", "deutan", "tritan"),
+  cvd_severity = 0
+) {
   assertthat::assert_that(
     assertthat::has_attr(colorspace, "names"),
     "h" %in% names(colorspace),
@@ -256,10 +267,12 @@ qualpal.list <- function(n,
 #' @examples
 #' f <- qualpal(3)
 #' print(f, colorspace = "DIN99d", digits = 3)
-print.qualpal <- function(x,
-                          colorspace = c("HSL", "DIN99d", "RGB"),
-                          digits = 2,
-                          ...) {
+print.qualpal <- function(
+  x,
+  colorspace = c("HSL", "DIN99d", "RGB"),
+  digits = 2,
+  ...
+) {
   vsep <- strrep("-", 0.5 * getOption("width"))
 
   cat(vsep, "\n")
@@ -277,10 +290,10 @@ print.qualpal <- function(x,
 
 predefined_colorspaces <- function(colorspace) {
   spaces <- list(
-    pretty      = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
+    pretty = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
     pretty_dark = list(h = c(0, 360), s = c(0.1, 0.5), l = c(0.2, 0.4)),
-    rainbow     = list(h = c(0, 360), s = c(0, 1), l = c(0, 1)),
-    pastels     = list(h = c(0, 360), s = c(0.2, 0.4), l = c(0.8, 0.9))
+    rainbow = list(h = c(0, 360), s = c(0, 1), l = c(0, 1)),
+    pastels = list(h = c(0, 360), s = c(0.2, 0.4), l = c(0.8, 0.9))
   )
 
   assertthat::assert_that(colorspace %in% names(spaces))
