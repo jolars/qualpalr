@@ -162,11 +162,6 @@ plot3d(pal$DIN99d, col = pal$hex, main = "DIN99d", add = TRUE, size = 5)
 rglwidget()
 ```
 
-### Color Specifications
-
-At the time of writing, qualpalr works only in the sRGB color space with
-the *CIE Standard Illuminant D65* reference white.
-
 ## Thanks
 
 [Bruce Lindbloom's webpage](http://www.brucelindbloom.com/) has
