@@ -3,7 +3,7 @@
 
 [![R-CMD-check](https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/jolars/qualpalr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/jolars/qualpalr?branch=master)
+coverage](https://codecov.io/gh/jolars/qualpalr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jolars/qualpalr?branch=main)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
 <!-- badges: end -->
 
