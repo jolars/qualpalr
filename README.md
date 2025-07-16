@@ -1,8 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# qualpalr
-
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml)
@@ -10,6 +6,8 @@
 coverage](https://codecov.io/gh/jolars/qualpalr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/jolars/qualpalr?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
 <!-- badges: end -->
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 `qualpalr` generates distinct qualitative color palettes, primarily for
 use in R graphics. Given `n` (the number of colors to generate), along
@@ -40,7 +38,7 @@ We can retrieve the generated colors in hex format
 
 ``` r
 pal$hex
-#> [1] "#74C970" "#97B9DB" "#CD9675" "#C96AC1"
+#> [1] "#c86d75" "#6e6dc8" "#80c76d" "#d1d5df"
 ```
 
 Alternatively, we can create a palette using one of the predefined color
@@ -50,7 +48,6 @@ subspaces and, optionally, adapt it to color deficiency (here
 ``` r
 pal2 <- qualpal(
   n = 4,
-  colorspace = "pretty",
   cvd = "deutan",
   cvd_severity = 0.5
 )
@@ -61,10 +58,10 @@ the palette we have generated.
 
 ``` r
 pal2$de_DIN99d
-#>          #A07D68  #E6E1B5  #616FC8
-#> #E6E1B5 17.90368                  
-#> #616FC8 22.32321 27.55999         
-#> #CEC9E8 19.65706 18.00590 17.82840
+#>          #c96c74  #e5e4b3  #6d6cc9
+#> #e5e4b3 22.12508                  
+#> #6d6cc9 21.60194 28.00911         
+#> #b8d0e7 23.03117 17.84409 19.07144
 ```
 
 The palette may also be plotted with in a multidimensional scaling plot
