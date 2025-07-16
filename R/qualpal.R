@@ -186,7 +186,15 @@ qualpal.character <- function(
     cvd_severity <= 1
   )
 
-  colorspace <- predefined_colorspaces(colorspace)
+  if (colorspace %in% c("pretty", "pretty_dark", "rainbow", "pastels")) {
+    warning(
+      "The use of predefined colorspaces is deprecated. This method now ",
+      "expects the name of a color palette. Please use the list method and ",
+      "provide the color space explicitly instead.",
+    )
+
+    colorspace <- predefined_colorspaces(colorspace)
+  }
 
   qualpal(
     n = n,
