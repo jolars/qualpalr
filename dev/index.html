@@ -53,11 +53,8 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="qualpalr">qualpalr<a class="anchor" aria-label="anchor" href="#qualpalr"></a>
-</h1></div>
-<!-- badges: start -->
-
+  <main id="main" class="col-md-9">
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 <p><code>qualpalr</code> generates distinct qualitative color palettes, primarily for use in R graphics. Given <code>n</code> (the number of colors to generate), along with a subset in the <a href="https://en.wikipedia.org/wiki/HSL_and_HSV" class="external-link">hsl color space</a> (a cylindrical representation of the RGB color space) <code>qualpalr</code> attempts to find the <code>n</code> colors in the provided color subspace that <em>maximize the smallest pairwise color difference</em>. This is done by projecting the color subset from the HSL color space to the DIN99d space. DIN99d is (approximately) perceptually uniform, that is, the euclidean distance between two colors in the space is proportional to their perceived difference.</p>
 <p><code>qualpalr</code> was inspired by <a href="http://medialab.github.io/iwanthue/" class="external-link">i want hue</a>.</p>
 <div class="section level2">
@@ -71,22 +68,21 @@
 <p>We can retrieve the generated colors in hex format</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pal</span><span class="op">$</span><span class="va">hex</span></span>
-<span><span class="co">#&gt; [1] "#74C970" "#97B9DB" "#CD9675" "#C96AC1"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "#c86d75" "#6e6dc8" "#80c76d" "#d1d5df"</span></span></code></pre></div>
 <p>Alternatively, we can create a palette using one of the predefined color subspaces and, optionally, adapt it to color deficiency (here <em>deuteranomaly</em>).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pal2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/qualpal.html">qualpal</a></span><span class="op">(</span></span>
 <span>  n <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>  colorspace <span class="op">=</span> <span class="st">"pretty"</span>,</span>
 <span>  cvd <span class="op">=</span> <span class="st">"deutan"</span>,</span>
 <span>  cvd_severity <span class="op">=</span> <span class="fl">0.5</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We can look at a distance matrix of the pairwise color differences from the palette we have generated.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pal2</span><span class="op">$</span><span class="va">de_DIN99d</span></span>
-<span><span class="co">#&gt;          #A07D68  #E6E1B5  #616FC8</span></span>
-<span><span class="co">#&gt; #E6E1B5 17.90368                  </span></span>
-<span><span class="co">#&gt; #616FC8 22.32321 27.55999         </span></span>
-<span><span class="co">#&gt; #CEC9E8 19.65706 18.00590 17.82840</span></span></code></pre></div>
+<span><span class="co">#&gt;          #c96c74  #e5e4b3  #6d6cc9</span></span>
+<span><span class="co">#&gt; #e5e4b3 22.12508                  </span></span>
+<span><span class="co">#&gt; #6d6cc9 21.60194 28.00911         </span></span>
+<span><span class="co">#&gt; #b8d0e7 23.03117 17.84409 19.07144</span></span></code></pre></div>
 <p>The palette may also be plotted with in a multidimensional scaling plot generated from the distance matrix of the colors in the palette.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pal2</span><span class="op">)</span></span></code></pre></div>
@@ -121,7 +117,7 @@
 </h2>
 <p><code>qualpalr</code> is open source software, licensed under <a href="https://github.com/jolars/qualpalr/blob/master/LICENSE" class="external-link">GPL-3</a>.</p>
 </div>
-</div>
+
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
