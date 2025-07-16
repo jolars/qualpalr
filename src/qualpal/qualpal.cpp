@@ -1,87 +1,52 @@
-#include "qualpal.h"
 #include "color_grid.h"
-#include "cvd_simulation.h"
+#include "cvd.h"
 #include "farthest_points.h"
+#include "palettes.h"
+#include "palettes_data.h"
+#include "validation.h"
 #include <cassert>
-#include <map>
-#include <regex>
-#include <vector>
+#include <qualpal/colors.h>
+#include <qualpal/qualpal.h>
+#include <stdexcept>
 
 namespace qualpal {
 
-// Check if the input is a valid HTML hex color representation
-bool
-isValidHexColor(const std::string& color)
+Qualpal&
+Qualpal::setInputRGB(const std::vector<colors::RGB>& colors)
 {
-  std::regex color_regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
-  return std::regex_match(color, color_regex);
+  this->rgb_colors = colors;
+  this->mode = Mode::RGB;
+  return *this;
 }
 
-std::vector<RGB>
-qualpal(const int n,
-        std::vector<RGB> rgb_colors,
-        const std::map<std::string, double>& cvd)
+Qualpal&
+Qualpal::setInputHex(const std::vector<std::string>& hex_colors)
 {
-  int N = rgb_colors.size();
-
-  const std::vector<RGB> rgb_colors_original = rgb_colors;
-
-  for (const auto& [cvd_type, cvd_severity] : cvd) {
-    if (cvd_severity > 1.0 || cvd_severity < 0.0) {
-      throw std::invalid_argument("cvd_severity must be between 0 and 1");
-    }
-    if (cvd_severity > 0) {
-      rgb_colors = simulate_cvd(rgb_colors, cvd_type, cvd_severity);
+  for (const auto& color : hex_colors) {
+    if (!isValidHexColor(color)) {
+      throw std::invalid_argument("Invalid hex color: " + color +
+                                  ". Expected format: #RRGGBB or #RGB");
     }
   }
-
-  std::vector<DIN99d> din99d_colors;
-  din99d_colors.reserve(N);
-
-  for (const auto& rgb : rgb_colors) {
-    din99d_colors.emplace_back(rgb);
-  }
-
-  auto ind = farthestPoints(n, din99d_colors);
-
-  std::vector<RGB> rgb_out;
-  rgb_out.reserve(n);
-
-  for (const auto& i : ind) {
-    rgb_out.emplace_back(rgb_colors_original[i]);
-  }
-
-  return rgb_out;
+  this->hex_colors = hex_colors;
+  this->mode = Mode::HEX;
+  return *this;
 }
 
-std::vector<RGB>
-qualpal(const int n,
-        const std::vector<std::string>& hex_colors,
-        const std::map<std::string, double>& cvd)
+Qualpal&
+Qualpal::setInputPalette(const std::string& palette)
 {
-  std::vector<qualpal::RGB> rgb_colors;
-
-  for (auto color : hex_colors) {
-    assert(isValidHexColor(color) && "Values are hex colors");
-    rgb_colors.emplace_back(color);
-  }
-
-  return qualpal(n, rgb_colors, cvd);
+  validatePalette(palette);
+  this->palette = palette;
+  this->mode = Mode::PALETTE;
+  return *this;
 }
 
-std::vector<RGB>
-qualpal(const int n,
-        const std::array<double, 2>& h_lim,
-        const std::array<double, 2>& s_lim,
-        const std::array<double, 2>& l_lim,
-        const int n_points,
-        const std::map<std::string, double>& cvd)
+Qualpal&
+Qualpal::setInputColorspace(const std::array<double, 2>& h_lim,
+                            const std::array<double, 2>& s_lim,
+                            const std::array<double, 2>& l_lim)
 {
-  if (n > n_points) {
-    throw std::invalid_argument("Number of colors to generate must be lower "
-                                "than the number of points in the color grid");
-  }
-
   if (h_lim[0] < -360 || h_lim[1] > 360) {
     throw std::invalid_argument("Hue must be between -360 and 360");
   }
@@ -98,15 +63,134 @@ qualpal(const int n,
     throw std::invalid_argument("Lightness must be between 0 and 1");
   }
 
-  auto hsl_colors = colorGrid(h_lim, s_lim, l_lim, n_points);
-
-  std::vector<qualpal::RGB> rgb_colors;
-
-  for (auto color : hsl_colors) {
-    rgb_colors.emplace_back(color);
-  }
-
-  return qualpal(n, rgb_colors, cvd);
+  this->h_lim = h_lim;
+  this->s_lim = s_lim;
+  this->l_lim = l_lim;
+  this->mode = Mode::COLORSPACE;
+  return *this;
 }
 
+Qualpal&
+Qualpal::setCvd(const std::map<std::string, double>& cvd_params)
+{
+  this->cvd = cvd_params;
+  return *this;
+}
+
+Qualpal&
+Qualpal::setBackground(const colors::RGB& bg_color)
+{
+  this->bg = bg_color;
+  return *this;
+}
+
+Qualpal&
+Qualpal::setMetric(metrics::MetricType metric)
+{
+  this->metric = metric;
+  return *this;
+}
+
+Qualpal&
+Qualpal::setMemoryLimit(double gb)
+{
+  if (gb <= 0) {
+    throw std::invalid_argument("Memory limit must be greater than 0");
+  }
+  this->max_memory = gb;
+  return *this;
+}
+
+Qualpal&
+Qualpal::setColorspaceSize(int n_points)
+{
+  if (n_points <= 0) {
+    throw std::invalid_argument("Number of points must be greater than 0");
+  }
+  this->n_points = n_points;
+  return *this;
+}
+
+std::vector<colors::RGB>
+Qualpal::generate(int n)
+{
+  switch (mode) {
+    case Mode::RGB:
+      break;
+    case Mode::HEX:
+      rgb_colors.clear();
+      rgb_colors.reserve(n_points);
+      for (const auto& hex : hex_colors) {
+        rgb_colors.emplace_back(hex);
+      }
+      break;
+    case Mode::PALETTE:
+      rgb_colors.clear();
+      rgb_colors.reserve(n_points);
+      for (const auto& hex : getPalette(palette)) {
+        rgb_colors.emplace_back(hex);
+      }
+      break;
+    case Mode::COLORSPACE:
+      rgb_colors.clear();
+      rgb_colors.reserve(n_points);
+      for (const auto& hsl : colorGrid(h_lim, s_lim, l_lim, n_points)) {
+        rgb_colors.emplace_back(hsl);
+      }
+      break;
+    default:
+      throw std::runtime_error("No input source configured.");
+  }
+
+  if (rgb_colors.empty()) {
+    throw std::runtime_error("No input colors provided.");
+  }
+
+  if (n <= 0) {
+    throw std::invalid_argument(
+      "Number of colors to generate must be greater than 0");
+  }
+
+  if (n > static_cast<int>(rgb_colors.size())) {
+    throw std::invalid_argument(
+      "Requested number of colors exceeds input size");
+  }
+
+  std::vector<colors::RGB> rgb_colors_mod = rgb_colors;
+  std::optional<colors::RGB> bg_mod = bg;
+
+  for (const auto& [cvd_type, cvd_severity] : cvd) {
+    if (cvd_severity > 1.0 || cvd_severity < 0.0) {
+      throw std::invalid_argument("cvd_severity must be between 0 and 1");
+    }
+
+    if (cvd_severity > 0) {
+      for (auto& rgb : rgb_colors_mod) {
+        rgb = simulateCvd(rgb, cvd_type, cvd_severity);
+      }
+
+      if (bg_mod.has_value()) {
+        bg_mod = simulateCvd(*bg_mod, cvd_type, cvd_severity);
+      }
+    }
+  }
+
+  std::vector<colors::XYZ> xyz_colors;
+  xyz_colors.reserve(rgb_colors_mod.size());
+
+  for (const auto& rgb : rgb_colors_mod) {
+    xyz_colors.emplace_back(rgb);
+  }
+
+  auto ind = farthestPoints(n, xyz_colors, metric, bg_mod, max_memory);
+
+  std::vector<colors::RGB> rgb_out;
+  rgb_out.reserve(n);
+
+  for (const auto& i : ind) {
+    rgb_out.emplace_back(rgb_colors[i]);
+  }
+
+  return rgb_out;
+}
 } // namespace qualpal

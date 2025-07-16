@@ -1,4 +1,8 @@
+#pragma once
+
 #include <cmath>
+
+namespace qualpal {
 
 inline double
 mod(double a, double b)
@@ -8,3 +12,5 @@ mod(double a, double b)
     rem += b;
   return rem;
 }
+
+} // namespace qualpal

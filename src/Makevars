@@ -1,12 +1,16 @@
+PKG_CPPFLAGS =	-I../inst/include/
+
 SOURCES = \
 	RcppExports.cpp \
 	qualpalr.cpp \
+	qualpal/color_difference.cpp \
 	qualpal/color_grid.cpp \
 	qualpal/colors.cpp \
-	qualpal/cvd_simulation.cpp \
-	qualpal/distance_matrix.cpp \
+	qualpal/cvd.cpp \
 	qualpal/farthest_points.cpp \
-	qualpal/qualpal.cpp
+	qualpal/palettes.cpp \
+	qualpal/qualpal.cpp \
+	qualpal/validation.cpp
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

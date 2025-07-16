@@ -1,13 +1,14 @@
-#include "colors.h"
 #include "math.h"
-#include "matrix.h"
 #include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <iomanip>
+#include <qualpal/colors.h>
+#include <qualpal/matrix.h>
 #include <sstream>
 
 namespace qualpal {
+namespace colors {
 
 inline double
 inverseCompanding(const double v)
@@ -20,6 +21,9 @@ RGB::RGB(const double r, const double g, const double b)
   , g_value(g)
   , b_value(b)
 {
+  assert(r >= 0 && r <= 1 && "Red component must be in [0, 1]");
+  assert(g >= 0 && g <= 1 && "Green component must be in [0, 1]");
+  assert(b >= 0 && b <= 1 && "Blue component must be in [0, 1]");
 }
 
 RGB::RGB(const std::string& hex)
@@ -79,7 +83,7 @@ RGB::RGB(const std::string& hex)
 RGB::RGB(const HSL& hsl)
 {
   double c = (1 - std::abs(2 * hsl.l() - 1)) * hsl.s();
-  double h_prime = hsl.h() >= 0 ? hsl.h() / 60.0 : (hsl.h() - 360) / 60.0;
+  double h_prime = mod(hsl.h(), 360.0) / 60.0;
   double x = c * (1 - std::abs(mod(h_prime, 2) - 1));
 
   std::array<double, 3> rgb_prime = { 0, 0, 0 };
@@ -100,9 +104,9 @@ RGB::RGB(const HSL& hsl)
 
   double m = hsl.l() - c / 2.0;
 
-  r_value = rgb_prime[0] + m;
-  g_value = rgb_prime[1] + m;
-  b_value = rgb_prime[2] + m;
+  r_value = std::clamp(rgb_prime[0] + m, 0.0, 1.0);
+  g_value = std::clamp(rgb_prime[1] + m, 0.0, 1.0);
+  b_value = std::clamp(rgb_prime[2] + m, 0.0, 1.0);
 }
 
 RGB::RGB(const Lab& lab)
@@ -127,9 +131,9 @@ RGB::RGB(const XYZ& xyz)
     }
   }
 
-  r_value = rgb[0];
-  g_value = rgb[1];
-  b_value = rgb[2];
+  r_value = std::clamp(rgb[0], 0.0, 1.0);
+  g_value = std::clamp(rgb[1], 0.0, 1.0);
+  b_value = std::clamp(rgb[2], 0.0, 1.0);
 }
 
 HSL::HSL(const XYZ& xyz)
@@ -147,6 +151,9 @@ XYZ::XYZ(const double x, const double y, const double z)
   , y_value(y)
   , z_value(z)
 {
+  assert(x >= 0 && "X component must be non-negative");
+  assert(y >= 0 && "Y component must be non-negative");
+  assert(z >= 0 && "Z component must be non-negative");
 }
 
 XYZ::XYZ(const RGB& rgb)
@@ -165,6 +172,10 @@ XYZ::XYZ(const RGB& rgb)
   x_value = xyz[0];
   y_value = xyz[1];
   z_value = xyz[2];
+
+  assert(x_value >= 0 && "X component must be non-negative");
+  assert(y_value >= 0 && "Y component must be non-negative");
+  assert(z_value >= 0 && "Z component must be non-negative");
 }
 
 XYZ::XYZ(const Lab& lab, const std::array<double, 3>& white_point)
@@ -186,9 +197,9 @@ XYZ::XYZ(const Lab& lab, const std::array<double, 3>& white_point)
   double zr =
     std::pow(fz, 3) > epsilon ? std::pow(fz, 3) : (116.0 * fz - 16.0) / kappa;
 
-  x_value = xr * white_point[0];
-  y_value = yr * white_point[1];
-  z_value = zr * white_point[2];
+  x_value = std::max(xr * white_point[0], 0.0);
+  y_value = std::max(yr * white_point[1], 0.0);
+  z_value = std::max(zr * white_point[2], 0.0);
 }
 
 XYZ::XYZ(const HSL& hsl)
@@ -214,15 +225,23 @@ DIN99d::DIN99d(const double l, const double a, const double b)
   , a_value(a)
   , b_value(b)
 {
+  assert(l >= 0 && l <= 100 && "Lightness must be in [0, 100]");
+  assert(a >= -128 && a <= 127 && "Green-red component must be in [-128, 127]");
+  assert(b >= -128 && b <= 127 &&
+         "Blue-yellow component must be in [-128, 127]");
 }
 
-DIN99d::DIN99d(const XYZ& xyz)
+DIN99d::DIN99d(const XYZ& xyz, const std::array<double, 3>& white_point)
 {
-  double new_x = 1.12 * xyz.x() - 0.12 * xyz.z();
+  double x_prime = 1.12 * xyz.x() - 0.12 * xyz.z();
+  double xw_prime = 1.12 * white_point[0] - 0.12 * white_point[2];
 
-  XYZ xyz_prime(new_x, xyz.y(), xyz.z());
+  XYZ xyz_prime(x_prime, xyz.y(), xyz.z());
+  std::array<double, 3> white_prime = { xw_prime,
+                                        white_point[1],
+                                        white_point[2] };
 
-  Lab lab(xyz_prime, { 0.95047, 1.0, 1.08883 });
+  Lab lab(xyz_prime, white_prime);
 
   double l = lab.l();
   double a = lab.a();
@@ -231,14 +250,18 @@ DIN99d::DIN99d(const XYZ& xyz)
   double u = 50 * M_PI / 180.0;
   double e = a * std::cos(u) + b * std::sin(u);
   double f = 1.14 * (b * std::cos(u) - a * std::sin(u));
-  double g = std::sqrt(e * e + f * f);
+  double g = std::hypot(e, f);
 
-  double c99d = 22.5 * std::log(1.0 + 0.06 * g);
+  double c99d = 22.5 * std::log1p(0.06 * g);
   double h99d = std::atan2(f, e) + 50 * M_PI / 180.0;
 
-  l_value = 325.22 * std::log(1.0 + 0.0036 * l);
+  l_value = 325.22 * std::log1p(0.0036 * l);
   a_value = c99d * std::cos(h99d);
   b_value = c99d * std::sin(h99d);
+
+  l_value = std::clamp(l_value, 0.0, 100.0);
+  a_value = std::clamp(a_value, -128.0, 127.0);
+  b_value = std::clamp(b_value, -128.0, 127.0);
 }
 
 DIN99d::DIN99d(const RGB& rgb)
@@ -261,6 +284,9 @@ HSL::HSL(const double h, const double s, const double l)
   , s_value(s)
   , l_value(l)
 {
+  assert(h >= 0 && h < 360 && "Hue must be in [0, 360)");
+  assert(s >= 0 && s <= 1 && "Saturation must be in [0, 1]");
+  assert(l >= 0 && l <= 1 && "Lightness must be in [0, 1]");
 }
 
 HSL::HSL(const RGB& rgb)
@@ -291,6 +317,10 @@ HSL::HSL(const RGB& rgb)
   this->h_value = h_prime * 60;
   this->s_value =
     (l_value == 1 || l_value == 0) ? 0 : c / (1.0 - std::abs(2 * v - c - 1));
+
+  h_value = std::clamp(h_value, 0.0, 360.0);
+  s_value = std::clamp(s_value, 0.0, 1.0);
+  l_value = std::clamp(l_value, 0.0, 1.0);
 }
 
 Lab::Lab(const double l, const double a, const double b)
@@ -298,6 +328,10 @@ Lab::Lab(const double l, const double a, const double b)
   , a_value(a)
   , b_value(b)
 {
+  assert(l >= 0 && l <= 100 && "Lightness must be in [0, 100]");
+  assert(a >= -128 && a <= 127 && "Green-red component must be in [-128, 127]");
+  assert(b >= -128 && b <= 127 &&
+         "Blue-yellow component must be in [-128, 127]");
 }
 
 Lab::Lab(const XYZ& xyz, const std::array<double, 3>& white_point)
@@ -306,8 +340,9 @@ Lab::Lab(const XYZ& xyz, const std::array<double, 3>& white_point)
   double y = xyz.y();
   double z = xyz.z();
 
-  double epsilon = 216.0 / 24389.0;
-  double kappa = 24389.0 / 27.0;
+  // Actual CIE standard values
+  double epsilon = 0.008856;
+  double kappa = 903.3;
 
   double xr = x / white_point[0];
   double yr = y / white_point[1];
@@ -317,9 +352,9 @@ Lab::Lab(const XYZ& xyz, const std::array<double, 3>& white_point)
   double fy = yr > epsilon ? std::cbrt(yr) : (kappa * yr + 16.0) / 116.0;
   double fz = zr > epsilon ? std::cbrt(zr) : (kappa * zr + 16.0) / 116.0;
 
-  l_value = 116.0 * fy - 16.0;
-  a_value = 500.0 * (fx - fy);
-  b_value = 200.0 * (fy - fz);
+  l_value = std::clamp(116.0 * fy - 16.0, 0.0, 100.0);
+  a_value = std::clamp(500.0 * (fx - fy), -128.0, 127.0);
+  b_value = std::clamp(200.0 * (fy - fz), -128.0, 127.0);
 };
 
 Lab::Lab(const RGB& rgb)
@@ -332,4 +367,5 @@ Lab::Lab(const HSL& hsl)
 {
 }
 
+} // namespace colors
 } // namespace qualpal

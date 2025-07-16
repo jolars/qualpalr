@@ -1,13 +1,12 @@
 #include "convert.h"
-#include "qualpal/colors.h"
-#include "qualpal/distance_matrix.h"
-#include "qualpal/qualpal.h"
 #include <Rcpp.h>
 #include <array>
+#include <qualpal.h>
 
 Rcpp::List
-organize_output(const std::vector<qualpal::RGB> colors)
+organize_output(const std::vector<qualpal::colors::RGB> colors)
 {
+  using namespace qualpal::colors;
 
   int n = colors.size();
 
@@ -15,15 +14,15 @@ organize_output(const std::vector<qualpal::RGB> colors)
   Rcpp::NumericMatrix hsl_out(n, 3);
   Rcpp::NumericMatrix din99d_out(n, 3);
 
-  std::vector<qualpal::DIN99d> colors_din99d;
+  std::vector<DIN99d> colors_din99d;
 
   std::vector<std::string> hex_out;
 
   // for (const auto& rgb : selected_colors) {
   for (int i = 0; i < n; ++i) {
-    qualpal::RGB rgb = colors[i];
-    qualpal::DIN99d din99d(rgb);
-    qualpal::HSL hsl(rgb);
+    RGB rgb = colors[i];
+    DIN99d din99d(rgb);
+    HSL hsl(rgb);
     std::string hex = rgb.hex();
 
     colors_din99d.emplace_back(din99d);
@@ -43,7 +42,8 @@ organize_output(const std::vector<qualpal::RGB> colors)
     hex_out.emplace_back(hex);
   }
 
-  auto dist_mat = qualpal::distanceMatrix(colors_din99d);
+  auto dist_mat =
+    qualpal::colorDifferenceMatrix(colors_din99d, qualpal::metrics::DIN99d{});
 
   Rcpp::NumericMatrix de_DIN99d(n, n);
   double min_de_DIN99d = 1e9;
@@ -87,7 +87,7 @@ qualpal_cpp_rgb(int n,
 {
   int N = rgb_in.nrow();
 
-  std::vector<qualpal::RGB> rgb_colors;
+  std::vector<qualpal::colors::RGB> rgb_colors;
 
   for (int i = 0; i < N; ++i) {
     rgb_colors.emplace_back(rgb_in(i, 0), rgb_in(i, 1), rgb_in(i, 2));
@@ -99,8 +99,8 @@ qualpal_cpp_rgb(int n,
   cvd["deutan"] = Rcpp::as<double>(cvd_list["deutan"]);
   cvd["tritan"] = Rcpp::as<double>(cvd_list["tritan"]);
 
-  std::vector<qualpal::RGB> selected_colors =
-    qualpal::qualpal(n, rgb_colors, cvd);
+  auto selected_colors =
+    qualpal::Qualpal{}.setInputRGB(rgb_colors).setCvd(cvd).generate(n);
 
   return organize_output(selected_colors);
 }
@@ -129,8 +129,13 @@ qualpal_cpp_colorspace(int n,
   std::array<double, 2> s_lim = { s_lim_vec[0], s_lim_vec[1] };
   std::array<double, 2> l_lim = { l_lim_vec[0], l_lim_vec[1] };
 
-  std::vector<qualpal::RGB> selected_colors =
-    qualpal::qualpal(n, h_lim, s_lim, l_lim, n_points, cvd);
+  qualpal::Qualpal qp;
+
+  auto selected_colors = qualpal::Qualpal{}
+                           .setInputColorspace(h_lim, s_lim, l_lim)
+                           .setColorspaceSize(n_points)
+                           .setCvd(cvd)
+                           .generate(n);
 
   return organize_output(selected_colors);
 }
@@ -150,6 +155,9 @@ convert_colors(const Rcpp::NumericMatrix& colors,
                const std::string& from,
                const std::string& to)
 {
+  using namespace Rcpp;
+  using namespace qualpal::colors;
+
   int N = colors.nrow();
 
   Rcpp::NumericMatrix out(N, 3);
@@ -158,18 +166,18 @@ convert_colors(const Rcpp::NumericMatrix& colors,
   for (int i = 0; i < N; i++) {
     std::array<double, 3> color_converted;
     if (from == "rgb") {
-      qualpal::RGB rgb(colors(i, 0), colors(i, 1), colors(i, 2));
+      RGB rgb(colors(i, 0), colors(i, 1), colors(i, 2));
       color_converted = convert(rgb, to);
     } else if (from == "hsl") {
-      qualpal::HSL hsl(colors(i, 0), colors(i, 1), colors(i, 2));
+      HSL hsl(colors(i, 0), colors(i, 1), colors(i, 2));
       color_converted = convert(hsl, to);
     } else if (from == "din99d") {
       Rcpp::stop("Cannot convert from din99d");
     } else if (from == "lab") {
-      qualpal::Lab lab(colors(i, 0), colors(i, 1), colors(i, 2));
+      Lab lab(colors(i, 0), colors(i, 1), colors(i, 2));
       color_converted = convert(lab, to);
     } else if (from == "xyz") {
-      qualpal::XYZ xyz(colors(i, 0), colors(i, 1), colors(i, 2));
+      XYZ xyz(colors(i, 0), colors(i, 1), colors(i, 2));
       color_converted = convert(xyz, to);
     } else {
       Rcpp::stop("Unknown colorspace");
