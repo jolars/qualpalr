@@ -19,11 +19,11 @@ validatePalette(const std::string& palette)
   std::string pkg = palette.substr(0, pos);
   std::string pal = palette.substr(pos + delimiter.length());
 
-  if (color_palettes.find(pkg) == color_palettes.end()) {
+  if (COLOR_PALETTES.find(pkg) == COLOR_PALETTES.end()) {
     throw std::invalid_argument("Package '" + pkg + "' not found");
   }
 
-  if (color_palettes.at(pkg).find(pal) == color_palettes[pkg].end()) {
+  if (COLOR_PALETTES.at(pkg).find(pal) == COLOR_PALETTES[pkg].end()) {
     throw std::invalid_argument("Palette '" + pal + "' not found in package '" +
                                 pkg + "'");
   }
@@ -39,7 +39,23 @@ getPalette(const std::string& palette)
   std::string pkg = palette.substr(0, pos);
   std::string pal = palette.substr(pos + delimiter.length());
 
-  return color_palettes[pkg][pal];
+  return COLOR_PALETTES[pkg][pal];
+}
+
+std::map<std::string, std::vector<std::string>>
+listAvailablePalettes()
+{
+  std::map<std::string, std::vector<std::string>> result;
+  for (const auto& pkg_pair : COLOR_PALETTES) {
+    const auto& pkg = pkg_pair.first;
+    const auto& palettes = pkg_pair.second;
+    std::vector<std::string> pal_names;
+    for (const auto& pal_pair : palettes) {
+      pal_names.push_back(pal_pair.first);
+    }
+    result[pkg] = pal_names;
+  }
+  return result;
 }
 
 } // namespace qualpal
