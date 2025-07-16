@@ -29,8 +29,7 @@ proportional to their perceived difference.
 * a list of numeric vectors `h` (hue from -360 to 360), `s` (saturation from
 0 to 1), and `l` (lightness from 0 to 1), all of length 2, specifying a min and
 max.
-* a character vector specifying one of the predefined color subspaces, which at
-the time of writing are *pretty*, *pretty_dark*, *rainbow*, and *pastels*.
+* a character vector specifying a predefined color palette.
 
 ```{r}
 #| label: basic-usage
@@ -38,7 +37,11 @@ library(qualpalr)
 pal <- qualpal(n = 5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
 
 # Adapt the color space to deuteranomaly of severity 0.7
-pal <- qualpal(n = 5, colorspace = "pretty", cvd = "deutan", cvd_severity = 0.7)
+pal <- qualpal(
+  n = 5,
+  cvd = "deutan",
+  cvd_severity = 0.7
+)
 ```
 
 The resulting object, `pal`, is a list with several color tables and a distance
