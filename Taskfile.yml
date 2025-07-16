@@ -61,10 +61,14 @@ tasks:
     vars:
       API_URL: https://api.github.com/repos/jolars/qualpal/releases/latest
       RELEASE:
-        sh: curl -s {{.API_URL}} | grep "tarball_url" | cut -d '"' -f 4
+        sh: curl -s {{.API_URL}} | jq -r .tarball_url
     cmds:
       - mkdir -p tmp
+      - mkdir -p inst/include
       - curl -L {{.RELEASE}} | tar -xz --strip-components=1 -C tmp
       - rm -rf src/qualpal
       - cp -ri tmp/src/qualpal src/
+      - rm -rf inst/include/qualpal
+      - rm -rf inst/include/qualpal.h
+      - cp -ri tmp/include inst/
       - rm -rf tmp
