@@ -30,10 +30,12 @@
 #' @examples
 #' pal <- autopal(3, cvd = "protan", target = 15)
 #' plot(pal)
-autopal <- function(n,
-                    colorspace = "pretty",
-                    cvd = c("protan", "deutan", "tritan"),
-                    target = 20) {
+autopal <- function(
+  n,
+  colorspace = "pretty",
+  cvd = c("protan", "deutan", "tritan"),
+  target = 20
+) {
   assertthat::assert_that(
     assertthat::is.number(target),
     assertthat::is.count(n),
@@ -43,14 +45,19 @@ autopal <- function(n,
   # Run the optimizer
   fit <- stats::optimize(
     costfun,
-    target = target, n = n,
+    target = target,
+    n = n,
     colorspace = colorspace,
-    cvd = match.arg(cvd), lower = 0, upper = 1
+    cvd = match.arg(cvd),
+    lower = 0,
+    upper = 1
   )
 
   # Generate a new qualpal with the optimized cvd_severity value
   qualpal(
-    n = n, colorspace = colorspace, cvd = match.arg(cvd),
+    n = n,
+    colorspace = colorspace,
+    cvd = match.arg(cvd),
     cvd_severity = fit$minimum
   )
 }
