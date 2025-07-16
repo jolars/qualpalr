@@ -16,10 +16,12 @@
 ^data-raw$
 ^docs$
 ^Makefile$
-^Taskfile.yml$
+^Taskfile\.yml$
 ^\.github$
 ^doc$
 ^Meta$
 ^pkgdown$
 ^_pkgdown\.yml$
 ^CRAN-SUBMISSION$
+^\.direnv$
+^flake\.nix$
