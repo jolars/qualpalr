@@ -133,21 +133,20 @@ qualpal.matrix <- function(
   cvd = c("protan", "deutan", "tritan"),
   cvd_severity = 0
 ) {
-  assertthat::assert_that(
-    assertthat::is.count(n),
-    is.character(cvd),
-    assertthat::is.number(cvd_severity),
-    is.matrix(colorspace),
-    max(colorspace) <= 1,
-    min(colorspace) >= 0,
-    n < 100,
+  stopifnot(
+    is.numeric(n),
+    n %% 1 == 0,
     n > 1,
+    n < 100,
+    is.character(cvd),
+    is.numeric(cvd_severity),
+    length(cvd_severity) == 1,
     cvd_severity >= 0,
     cvd_severity <= 1,
+    is.matrix(colorspace),
     ncol(colorspace) == 3,
-    length(cvd_severity) == 1,
-    n > 0,
-    is_integer(n)
+    max(colorspace) <= 1,
+    min(colorspace) >= 0
   )
 
   rgb_mat <- colorspace
@@ -181,8 +180,8 @@ qualpal.character <- function(
   cvd_severity = 0
 ) {
   cvd <- match.arg(cvd)
-  assertthat::assert_that(
-    assertthat::is.string(colorspace),
+  stopifnot(
+    is.character(colorspace),
     cvd_severity >= 0,
     cvd_severity <= 1
   )
@@ -213,8 +212,8 @@ qualpal.list <- function(
   cvd_severity = 0
 ) {
   cvd <- match.arg(cvd)
-  assertthat::assert_that(
-    assertthat::has_attr(colorspace, "names"),
+  stopifnot(
+    !is.null(attr(colorspace, "names")),
     "h" %in% names(colorspace),
     "s" %in% names(colorspace),
     "l" %in% names(colorspace)
@@ -226,7 +225,7 @@ qualpal.list <- function(
 
   n_points <- 1000
 
-  assertthat::assert_that(
+  stopifnot(
     diff(range(h)) <= 360,
     min(h) >= -360,
     max(h) <= 360,
@@ -305,7 +304,7 @@ predefined_colorspaces <- function(colorspace) {
     pastels = list(h = c(0, 360), s = c(0.2, 0.4), l = c(0.8, 0.9))
   )
 
-  assertthat::assert_that(colorspace %in% names(spaces))
+  stopifnot(colorspace %in% names(spaces))
 
   spaces[[colorspace]]
 }

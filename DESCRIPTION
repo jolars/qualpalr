@@ -1,7 +1,7 @@
 Package: qualpalr
 Title: Automatic Generation of Qualitative Color Palettes
 Version: 0.4.4.9000
-Authors@R: 
+Authors@R:
     person(
       "Johan",
       "Larsson",
@@ -26,7 +26,6 @@ Imports:
     graphics,
     stats,
     utils,
-    assertthat,
     Rcpp
 Suggests:
     randtoolbox (>= 1.17),

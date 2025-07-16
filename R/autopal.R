@@ -38,9 +38,9 @@ autopal <- function(
 ) {
   cvd <- match.arg(cvd)
 
-  assertthat::assert_that(
-    assertthat::is.number(target),
-    assertthat::is.count(n),
+  stopifnot(
+    is.numeric(target) && length(target) == 1,
+    n > 0 && length(n) == 1 && is.finite(n),
     is.character(cvd)
   )
 

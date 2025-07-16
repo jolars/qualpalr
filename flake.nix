@@ -66,7 +66,6 @@
                   maps
                   rgl
                   randtoolbox
-                  assertthat
                   Rcpp
                 ];
               })
