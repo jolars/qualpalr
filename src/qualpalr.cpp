@@ -140,6 +140,26 @@ qualpal_cpp_colorspace(int n,
   return organize_output(selected_colors);
 }
 
+// [[Rcpp::export]]
+Rcpp::List
+qualpal_cpp_palette(int n,
+                    const std::string& palette,
+                    const Rcpp::List& cvd_list)
+{
+  std::map<std::string, double> cvd;
+
+  cvd["protan"] = Rcpp::as<double>(cvd_list["protan"]);
+  cvd["deutan"] = Rcpp::as<double>(cvd_list["deutan"]);
+  cvd["tritan"] = Rcpp::as<double>(cvd_list["tritan"]);
+
+  qualpal::Qualpal qp;
+
+  auto selected_colors =
+    qualpal::Qualpal{}.setInputPalette(palette).setCvd(cvd).generate(n);
+
+  return organize_output(selected_colors);
+}
+
 //' Convert colors between colorspaces
 //'
 //' @param colors A matrix of colors

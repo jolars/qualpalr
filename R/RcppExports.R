@@ -9,6 +9,10 @@ qualpal_cpp_colorspace <- function(n, hsl_colorspace, n_points, cvd_list) {
     .Call(`_qualpalr_qualpal_cpp_colorspace`, n, hsl_colorspace, n_points, cvd_list)
 }
 
+qualpal_cpp_palette <- function(n, palette, cvd_list) {
+    .Call(`_qualpalr_qualpal_cpp_palette`, n, palette, cvd_list)
+}
+
 #' Convert colors between colorspaces
 #'
 #' @param colors A matrix of colors

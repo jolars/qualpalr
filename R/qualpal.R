@@ -44,31 +44,15 @@
 #'         \item{\code{s}}{Saturation, in the range from 0 to 1}
 #'         \item{\code{l}}{Lightness, in the range from 0 to 1}
 #'       }
-#'     \item A \code{\link{character}} vector of length one specifying one of
-#'       these predefined color spaces:
-#'       \describe{
-#'         \item{\code{pretty}}{
-#'           Tries to provide aesthetically pleasing,
-#'           but still distinct color palettes. Hue ranges from 0 to 360,
-#'           saturation from 0.1 to 0.5, and lightness from 0.5 to 0.85. This
-#'           palette is not suitable for high \code{n}}
-#'         \item{\code{pretty_dark}}{
-#'           Like \code{pretty} but darker. Hue ranges from 0 to 360, saturation
-#'           from 0.1 to 0.5, and lightness from 0.2 to 0.4.
-#'         }
-#'         \item{\code{rainbow}}{
-#'           Uses all hues, chromas, and most of the lightness range. Provides
-#'           distinct but not aesthetically pleasing colors.
-#'         }
-#'         \item{\code{pastels}}{
-#'           Pastel colors from the complete range of hues (0-360), with
-#'           saturation between 0.2 and 0.4, and lightness between 0.8 and 0.9.
-#'         }
-#'       }
-#'     \item A \code{\link{matrix}} of colors from the sRGB color space, each
-#'       row representing a unique color.
-#'     \item A \code{\link{data.frame}} that can be converted to a matrix via
-#'       \link{data.matrix}
+#'     \item A \code{\link{character}} vector of length one in
+#'     the form of "Source:Palette", where \emph{Domain} is the name of a
+#'     source that provides a color palette, and \emph{Palette} is the name of
+#'     a color palette from that source. The following source are
+#'     currently
+#'     supported:
+#'     \itemize{
+#'         \item \code{"ColorBrewer"}
+#'     }
 #'   }
 #'
 #' @param cvd Color vision deficiency adaptation. Use \code{cvd_severity}
@@ -103,13 +87,13 @@
 #' # Provide a custom color space
 #' qualpal(n = 3, list(h = c(35, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
 #'
-#' qualpal(3, "pretty")
+#' qualpal(3, "ColorBrewer:Set2")
 #'
 #' # Adapt palette to deuteranopia
-#' qualpal(5, colorspace = "pretty_dark", cvd = "deutan", cvd_severity = 1)
+#' qualpal(5, "ColorBrewer:Dark2", cvd = "deutan", cvd_severity = 1)
 #'
 #' # Adapt palette to protanomaly with severity 0.4
-#' qualpal(8, colorspace = "pretty_dark", cvd = "protan", cvd_severity = 0.4)
+#' qualpal(8, cvd = "protan", cvd_severity = 0.4)
 #'
 #' \dontrun{
 #' # The range of hue cannot exceed 360
@@ -195,12 +179,14 @@ qualpal.character <- function(
     colorspace <- predefined_colorspaces(colorspace)
   }
 
-  qualpal(
-    n = n,
-    colorspace = colorspace,
-    cvd = match.arg(cvd),
-    cvd_severity = cvd_severity
-  )
+  cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
+  cvd_list[[cvd]] <- cvd_severity
+
+  res <- qualpal_cpp_palette(n, colorspace, cvd_list)
+
+  res$de_DIN99d <- stats::as.dist(res$de_DIN99d)
+
+  res
 }
 
 
