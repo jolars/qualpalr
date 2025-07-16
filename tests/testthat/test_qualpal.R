@@ -32,9 +32,12 @@ test_that("proper use of qualpal() works", {
   expect_silent(qualpal(3, cvd = "deutan", cvd_severity = 0.487))
   expect_silent(qualpal(3, list(h = c(0, 360), s = c(0, 1), l = c(0, 1))))
   expect_silent(qualpal(3, colorspace = matrix(runif(90), ncol = 3)))
-  expect_silent(qualpal(3, colorspace = data.frame(
-    r = runif(30),
-    g = runif(30),
-    b = runif(30)
-  )))
+  expect_silent(qualpal(
+    3,
+    colorspace = data.frame(
+      r = runif(30),
+      g = runif(30),
+      b = runif(30)
+    )
+  ))
 })
