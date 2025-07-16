@@ -75,10 +75,10 @@
 ## New features
 
 - Improved algorithm for finding distinct colors. (For details
-  [see this](https://larssonjohan.com/posts/farthest-points/).)
+  [see this](https://jolars.co/blog/2016-10-30-farthest-points/).)
 - Revamped the color deficiency handling to include almost all cases of color
   deficiency using the methods described in
-  [Machado 2010](https://www.lume.ufrgs.br/bitstream/handle/10183/26950/000761444.pdf),
+  [Machado 2009](https://doi.ieeecomputersociety.org/10.1109/TVCG.2009.113),
   now including tritanopia as well as anomalous trichromacies (deuteranomaly,
   tritanomaly, and protanomaly). This is controlled via the `cvd_severity`
   argument to `qualpal()` that allows the user to set the severity of color
