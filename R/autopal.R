@@ -32,10 +32,12 @@
 #' plot(pal)
 autopal <- function(
   n,
-  colorspace = "pretty",
+  colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
   cvd = c("protan", "deutan", "tritan"),
   target = 20
 ) {
+  cvd <- match.arg(cvd)
+
   assertthat::assert_that(
     assertthat::is.number(target),
     assertthat::is.count(n),

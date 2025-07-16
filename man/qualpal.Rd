@@ -6,7 +6,7 @@
 \usage{
 qualpal(
   n,
-  colorspace = "pretty",
+  colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
   cvd = c("protan", "deutan", "tritan"),
   cvd_severity = 0
 )

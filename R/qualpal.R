@@ -119,7 +119,7 @@
 #' @export
 qualpal <- function(
   n,
-  colorspace = "pretty",
+  colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
   cvd = c("protan", "deutan", "tritan"),
   cvd_severity = 0
 ) {
@@ -180,6 +180,7 @@ qualpal.character <- function(
   cvd = c("protan", "deutan", "tritan"),
   cvd_severity = 0
 ) {
+  cvd <- match.arg(cvd)
   assertthat::assert_that(
     assertthat::is.string(colorspace),
     cvd_severity >= 0,
@@ -190,9 +191,8 @@ qualpal.character <- function(
     warning(
       "The use of predefined colorspaces is deprecated. This method now ",
       "expects the name of a color palette. Please use the list method and ",
-      "provide the color space explicitly instead.",
+      "provide the color space explicitly instead."
     )
-
     colorspace <- predefined_colorspaces(colorspace)
   }
 
@@ -208,10 +208,11 @@ qualpal.character <- function(
 #' @export
 qualpal.list <- function(
   n,
-  colorspace,
+  colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
   cvd = c("protan", "deutan", "tritan"),
   cvd_severity = 0
 ) {
+  cvd <- match.arg(cvd)
   assertthat::assert_that(
     assertthat::has_attr(colorspace, "names"),
     "h" %in% names(colorspace),
@@ -247,7 +248,7 @@ qualpal.list <- function(
   )
 
   cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
-  cvd_list[[match.arg(cvd)]] <- cvd_severity
+  cvd_list[[cvd]] <- cvd_severity
 
   res <- qualpal_cpp_colorspace(n, colorspace, n_points, cvd_list)
 
