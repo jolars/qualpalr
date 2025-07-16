@@ -140,7 +140,7 @@ plot3d(DIN99d, col = rgb(RGB), main = "DIN99d")
 rglwidget()
 ```
 
-The DIN99d color space [@cui_uniform_2002] is a euclidean, perceptually uniform
+The DIN99d color space [@cui_uniform_2002] is a Euclidean, perceptually uniform
 color space. This means that the difference between two colors is equal to the
 euclidean distance between them. We take advantage of this by computing a
 distance matrix on all the colors in the subset, finding their pairwise color
