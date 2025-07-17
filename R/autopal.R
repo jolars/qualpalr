@@ -1,4 +1,7 @@
-#' Optimize color palette for color vision deficiency
+#' @title Optimize color palette for color vision deficiency
+#'
+#' **Deprecated**: This function is deprecated and will be removed in a future
+#' release. There is no direct replacement.
 #'
 #' This function adapts color palettes to color vision deficiency (CVD) by
 #' optimizing the CVD severity to try reach a target color difference (DIN99d
@@ -24,18 +27,25 @@
 #' @param cvd Color vision deficiency adaptation to adapt the color palette to.
 #' @param target Target color difference.
 #'
+#' @name autopal-deprecated
 #' @inherit qualpal return
+#' @keywords internal
+#' @seealso \code{\link{qualpal-deprecated}}
+NULL
+
+#' @rdname qualpal-deprecated
+#' @section \code{autopal}:
+#' This function is deprecated and will be removed in a future release.
+#' No direct replacement is available.
 #' @export
-#'
-#' @examples
-#' pal <- autopal(3, cvd = "protan", target = 15)
-#' plot(pal)
 autopal <- function(
   n,
   colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
   cvd = c("protan", "deutan", "tritan"),
   target = 20
 ) {
+  .Deprecated(new = NULL, old = "autopal")
+
   cvd <- match.arg(cvd)
 
   stopifnot(

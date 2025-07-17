@@ -10,6 +10,8 @@
 - `qualpal()` now accepts a background color through the `bg` argument,
   which is considered when generating the palette, but not included in the
   fina palette.
+- The `autopal()` function is now deprecated and will be removed int the next major
+  release. There is no direct replacement.
 
 ## Refactoring
 
