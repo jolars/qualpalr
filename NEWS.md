@@ -10,6 +10,9 @@
 - `qualpal()` now accepts a background color through the `bg` argument,
   which is considered when generating the palette, but not included in the
   fina palette.
+- The color difference metric in `qualpal()` can now be specified
+  using the `metric` argument, which accepts either `"din99d"` (the default),
+  `"ciede2000"`, or `"cie76"`. Expect slower performance for `"ciede2000"`.
 - The `autopal()` function is now deprecated and will be removed int the next major
   release. There is no direct replacement.
 

@@ -2,7 +2,24 @@
 % Please edit documentation in R/autopal.R
 \name{autopal-deprecated}
 \alias{autopal-deprecated}
-\title{Optimize color palette for color vision deficiency}
+\title{Optimize color palette for color vision deficiency
+
+\strong{Deprecated}: This function is deprecated and will be removed in a future
+release. There is no direct replacement.
+
+This function adapts color palettes to color vision deficiency (CVD) by
+optimizing the CVD severity to try reach a target color difference (DIN99d
+\eqn{\delta E}) of the user's choosing. Basically, it will choose a color
+palette that is as close as possible to the target \eqn{\delta E} by
+tweaking the CVD severity option in \code{\link{qualpal}}.
+
+The rationale for this function is that when there are few colors in a color
+palette, there is no cost involved in adapting colors to CVD -- the colors
+will still remain distinct. As more an more colors are added to the palette,
+however, adapting the color palette to CVD will eventually lead to colors
+that are too similar. This function gradually loosens the adaptation to CVDs
+by lowering the severity of CVD to simulate to before picking colors (the
+\code{cvd_severity} argument in \code{\link{qualpal}})}
 \arguments{
 \item{n}{Number of colors to generate.}
 
@@ -37,10 +54,11 @@ The smallest pairwise DIN99d color difference.
 }
 }
 \description{
+Optimize color palette for color vision deficiency
+
 \strong{Deprecated}: This function is deprecated and will be removed in a future
 release. There is no direct replacement.
-}
-\details{
+
 This function adapts color palettes to color vision deficiency (CVD) by
 optimizing the CVD severity to try reach a target color difference (DIN99d
 \eqn{\delta E}) of the user's choosing. Basically, it will choose a color

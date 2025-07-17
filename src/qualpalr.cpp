@@ -24,6 +24,7 @@ setup_palette(const Rcpp::List& options)
 
   auto bg_vec = as<Rcpp::NumericVector>(options["bg"]);
   auto cvd_list = as<Rcpp::List>(options["cvd"]);
+  auto metric = as<std::string>(options["metric"]);
 
   if (bg_vec.size() == 3) {
     qp.setBackground(qualpal::colors::RGB(bg_vec[0], bg_vec[1], bg_vec[2]));
@@ -40,6 +41,14 @@ setup_palette(const Rcpp::List& options)
     }
 
     qp.setCvd(cvd);
+  }
+
+  if (metric == "din99d") {
+    qp.setMetric(qualpal::metrics::MetricType::DIN99d);
+  } else if (metric == "ciede2000") {
+    qp.setMetric(qualpal::metrics::MetricType::CIEDE2000);
+  } else if (metric == "cie76") {
+    qp.setMetric(qualpal::metrics::MetricType::CIE76);
   }
 
   return qp;

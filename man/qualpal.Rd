@@ -9,7 +9,8 @@ qualpal(
   colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
   cvd = c("protan", "deutan", "tritan"),
   cvd_severity = 0,
-  bg = NULL
+  bg = NULL,
+  metric = c("din99d", "ciede2000", "cie76")
 )
 }
 \arguments{
@@ -48,7 +49,9 @@ vision.}
 generating the palette. This is useful to avoid colros that are too
 close to the background/canvas color. If \code{NULL} (the default), the
 background color is not considered at all. Any color that is convertable
-via \code{\link{col2rgb}} is acceptable, including hex colors.}
+via \code{\link{col2rgb}} is acceptable, including hex colors.
+@param metric The color metric to use for the color distance
+matrix.}
 }
 \value{
 A list of class \code{qualpal} with the following
