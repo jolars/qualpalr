@@ -65,9 +65,7 @@
 #'  generating the palette. This is useful to avoid colros that are too
 #'  close to the background/canvas color. If \code{NULL} (the default), the
 #'  background color is not considered at all. Any color that is convertable
-#'  via \code{\link{col2rgb}} is acceptable, including hex colors.
-#'  @param metric The color metric to use for the color distance
-#'    matrix.
+#'  via \code{\link[grDevices]{col2rgb}} is acceptable, including hex colors.
 #' @param metric The color metric to use for the color distance
 #'  matrix.
 #'
@@ -303,7 +301,7 @@ make_options <- function(
   cvd_list[[cvd]] <- cvd_severity
 
   if (!is.null(bg)) {
-    bg <- col2rgb(bg)
+    bg <- grDevices::col2rgb(bg)
     bg <- as.vector(bg) / 255
   } else {
     bg <- double(0)
