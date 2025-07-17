@@ -125,15 +125,13 @@ qualpal.matrix <- function(
   bg = NULL
 ) {
   stopifnot(
-    is.numeric(n),
-    n %% 1 == 0,
-    n > 1,
-    n < 100,
     is.matrix(colorspace),
     ncol(colorspace) == 3,
     max(colorspace) <= 1,
     min(colorspace) >= 0
   )
+
+  validate_args(n)
 
   opts <- make_options(cvd, cvd_severity, bg)
 
@@ -173,6 +171,7 @@ qualpal.character <- function(
   stopifnot(
     is.character(colorspace)
   )
+  validate_args(n)
 
   if (colorspace %in% c("pretty", "pretty_dark", "rainbow", "pastels")) {
     warning(
@@ -207,6 +206,7 @@ qualpal.list <- function(
     "s" %in% names(colorspace),
     "l" %in% names(colorspace)
   )
+  validate_args(n)
 
   h <- colorspace[["h"]]
   s <- colorspace[["s"]]
@@ -227,10 +227,7 @@ qualpal.list <- function(
     length(l) == 2,
     is.numeric(h),
     is.numeric(s),
-    is.numeric(l),
-    n > 0,
-    n <= n_points,
-    n %% 1 == 0
+    is.numeric(l)
   )
 
   opts <- make_options(cvd, cvd_severity, bg)
@@ -321,6 +318,13 @@ make_options <- function(
   } else {
     bg <- double(0)
   }
-
   list(cvd = cvd_list, bg = bg)
+}
+
+validate_args <- function(n) {
+  stopifnot(
+    is.numeric(n),
+    n %% 1 == 0,
+    n > 1
+  )
 }
