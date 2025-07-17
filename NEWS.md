@@ -1,4 +1,30 @@
-# qualpalr (development version)
+# qualpalr 1.0.0
+
+## New or Modified Features
+
+- The `character` method of the `qualpal()` function now accepts
+  a name for a predefined palette, such as `"ColorBrewer::Set1"` or
+  `"Tableau::10"`, which will use the corresponding palette's
+  colors as input. Passing one of the old colorspace names
+  now throws a warning and will be removed in the next major release.
+
+## Refactoring
+
+- The entire C++ backend for the package has been rewritten and
+  outsourced to a separate C++ library, [qualpal](https://github.com/jolars/qualpal).
+
+## Bug Fixes
+
+- An inconsistency in the conversion from Lab to DIN99d color space,
+  where the reference of the white point was not modified correctly,
+  has been fixed.
+
+## Performance Improvements
+
+- The color distance computation has been parallelized using
+  OpenMP.
+- All of the heavy lifting is now done in C++, which should
+  significantly improve performance, especially for larger palettes.
 
 # qualpalr 0.4.4
 
