@@ -7,6 +7,9 @@
   `"Tableau::10"`, which will use the corresponding palette's
   colors as input. Passing one of the old colorspace names
   now throws a warning and will be removed in the next major release.
+- `qualpal()` now accepts a background color through the `bg` argument,
+  which is considered when generating the palette, but not included in the
+  fina palette.
 
 ## Refactoring
 

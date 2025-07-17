@@ -8,7 +8,8 @@ qualpal(
   n,
   colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
   cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0
+  cvd_severity = 0,
+  bg = NULL
 )
 }
 \arguments{
@@ -42,6 +43,12 @@ values are \code{"protan", "deutan",} and \code{"tritan"}.}
 \item{cvd_severity}{Severity of color vision deficiency to adapt to. Can take
 any value from 0, for normal vision (the default), and 1, for dichromatic
 vision.}
+
+\item{bg}{Backgrouind color to consider (but not include) when
+generating the palette. This is useful to avoid colros that are too
+close to the background/canvas color. If \code{NULL} (the default), the
+background color is not considered at all. Any color that is convertable
+via \code{\link{col2rgb}} is acceptable, including hex colors.}
 }
 \value{
 A list of class \code{qualpal} with the following

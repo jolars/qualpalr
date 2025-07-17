@@ -61,6 +61,11 @@
 #' @param cvd_severity Severity of color vision deficiency to adapt to. Can take
 #'   any value from 0, for normal vision (the default), and 1, for dichromatic
 #'   vision.
+#' @param bg Backgrouind color to consider (but not include) when
+#'  generating the palette. This is useful to avoid colros that are too
+#'  close to the background/canvas color. If \code{NULL} (the default), the
+#'  background color is not considered at all. Any color that is convertable
+#'  via \code{\link{col2rgb}} is acceptable, including hex colors.
 #'
 #' @return A list of class \code{qualpal} with the following
 #'   components.
@@ -105,7 +110,8 @@ qualpal <- function(
   n,
   colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
   cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0
+  cvd_severity = 0,
+  bg = NULL
 ) {
   UseMethod("qualpal", colorspace)
 }
@@ -115,30 +121,23 @@ qualpal.matrix <- function(
   n,
   colorspace,
   cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0
+  cvd_severity = 0,
+  bg = NULL
 ) {
   stopifnot(
     is.numeric(n),
     n %% 1 == 0,
     n > 1,
     n < 100,
-    is.character(cvd),
-    is.numeric(cvd_severity),
-    length(cvd_severity) == 1,
-    cvd_severity >= 0,
-    cvd_severity <= 1,
     is.matrix(colorspace),
     ncol(colorspace) == 3,
     max(colorspace) <= 1,
     min(colorspace) >= 0
   )
 
-  rgb_mat <- colorspace
+  opts <- make_options(cvd, cvd_severity, bg)
 
-  cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
-  cvd_list[[match.arg(cvd)]] <- cvd_severity
-
-  res <- qualpal_cpp_rgb(n, rgb_mat, cvd_list)
+  res <- qualpal_cpp_rgb(n, colorspace, opts)
 
   res$de_DIN99d <- stats::as.dist(res$de_DIN99d)
 
@@ -150,10 +149,17 @@ qualpal.data.frame <- function(
   n,
   colorspace,
   cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0
+  cvd_severity = 0,
+  bg = NULL
 ) {
   mat <- data.matrix(colorspace)
-  qualpal(n = n, colorspace = mat, cvd = cvd, cvd_severity = cvd_severity)
+  qualpal(
+    n = n,
+    colorspace = mat,
+    cvd = cvd,
+    cvd_severity = cvd_severity,
+    bg = bg
+  )
 }
 
 #' @export
@@ -161,13 +167,11 @@ qualpal.character <- function(
   n,
   colorspace = "pretty",
   cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0
+  cvd_severity = 0,
+  bg = NULL
 ) {
-  cvd <- match.arg(cvd)
   stopifnot(
-    is.character(colorspace),
-    cvd_severity >= 0,
-    cvd_severity <= 1
+    is.character(colorspace)
   )
 
   if (colorspace %in% c("pretty", "pretty_dark", "rainbow", "pastels")) {
@@ -179,10 +183,9 @@ qualpal.character <- function(
     colorspace <- predefined_colorspaces(colorspace)
   }
 
-  cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
-  cvd_list[[cvd]] <- cvd_severity
+  opts <- make_options(cvd, cvd_severity, bg)
 
-  res <- qualpal_cpp_palette(n, colorspace, cvd_list)
+  res <- qualpal_cpp_palette(n, colorspace, opts)
 
   res$de_DIN99d <- stats::as.dist(res$de_DIN99d)
 
@@ -195,9 +198,9 @@ qualpal.list <- function(
   n,
   colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
   cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0
+  cvd_severity = 0,
+  bg = NULL
 ) {
-  cvd <- match.arg(cvd)
   stopifnot(
     !is.null(attr(colorspace, "names")),
     "h" %in% names(colorspace),
@@ -225,17 +228,14 @@ qualpal.list <- function(
     is.numeric(h),
     is.numeric(s),
     is.numeric(l),
-    cvd_severity >= 0,
-    cvd_severity <= 1,
     n > 0,
     n <= n_points,
-    is_integer(n)
+    n %% 1 == 0
   )
 
-  cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
-  cvd_list[[cvd]] <- cvd_severity
+  opts <- make_options(cvd, cvd_severity, bg)
 
-  res <- qualpal_cpp_colorspace(n, colorspace, n_points, cvd_list)
+  res <- qualpal_cpp_colorspace(n, colorspace, n_points, opts)
 
   res$de_DIN99d <- stats::as.dist(res$de_DIN99d)
 
@@ -293,4 +293,34 @@ predefined_colorspaces <- function(colorspace) {
   stopifnot(colorspace %in% names(spaces))
 
   spaces[[colorspace]]
+}
+
+make_options <- function(
+  cvd = c("protan", "deutan", "tritan"),
+  cvd_severity = 0,
+  bg = NULL
+) {
+  cvd <- match.arg(cvd)
+
+  stopifnot(
+    is.character(cvd),
+    length(cvd) == 1,
+    is.numeric(cvd_severity),
+    length(cvd_severity) == 1,
+    cvd_severity >= 0,
+    cvd_severity <= 1,
+    is.null(bg) || (is.character(bg) && length(bg) == 1)
+  )
+
+  cvd_list <- list(protan = 0, deutan = 0, tritan = 0)
+  cvd_list[[cvd]] <- cvd_severity
+
+  if (!is.null(bg)) {
+    bg <- col2rgb(bg)
+    bg <- as.vector(bg) / 255
+  } else {
+    bg <- double(0)
+  }
+
+  list(cvd = cvd_list, bg = bg)
 }

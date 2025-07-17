@@ -3,6 +3,48 @@
 #include <array>
 #include <qualpal.h>
 
+bool
+contains(const Rcpp::List& list, const std::string& s)
+{
+  Rcpp::CharacterVector list_names = list.names();
+  for (size_t i = 0; i < list_names.size(); i++) {
+    if (std::string(list_names[i]) == s) {
+      return true;
+    }
+  }
+  return false;
+}
+
+qualpal::Qualpal
+setup_palette(const Rcpp::List& options)
+{
+  using Rcpp::as;
+
+  qualpal::Qualpal qp;
+
+  auto bg_vec = as<Rcpp::NumericVector>(options["bg"]);
+  auto cvd_list = as<Rcpp::List>(options["cvd"]);
+
+  if (bg_vec.size() == 3) {
+    qp.setBackground(qualpal::colors::RGB(bg_vec[0], bg_vec[1], bg_vec[2]));
+  }
+
+  if (cvd_list.size() > 0) {
+    std::map<std::string, double> cvd;
+
+    const std::vector<std::string> cvd_types = { "protan", "deutan", "tritan" };
+    for (const auto& type : cvd_types) {
+      if (contains(cvd_list, type)) {
+        cvd[type] = as<double>(cvd_list[type]);
+      }
+    }
+
+    qp.setCvd(cvd);
+  }
+
+  return qp;
+}
+
 Rcpp::List
 organize_output(const std::vector<qualpal::colors::RGB> colors)
 {
@@ -83,7 +125,7 @@ organize_output(const std::vector<qualpal::colors::RGB> colors)
 Rcpp::List
 qualpal_cpp_rgb(int n,
                 const Rcpp::NumericMatrix& rgb_in,
-                const Rcpp::List& cvd_list)
+                const Rcpp::List& options)
 {
   int N = rgb_in.nrow();
 
@@ -93,14 +135,8 @@ qualpal_cpp_rgb(int n,
     rgb_colors.emplace_back(rgb_in(i, 0), rgb_in(i, 1), rgb_in(i, 2));
   }
 
-  std::map<std::string, double> cvd;
-
-  cvd["protan"] = Rcpp::as<double>(cvd_list["protan"]);
-  cvd["deutan"] = Rcpp::as<double>(cvd_list["deutan"]);
-  cvd["tritan"] = Rcpp::as<double>(cvd_list["tritan"]);
-
-  auto selected_colors =
-    qualpal::Qualpal{}.setInputRGB(rgb_colors).setCvd(cvd).generate(n);
+  auto qp = setup_palette(options);
+  auto selected_colors = qp.setInputRGB(rgb_colors).generate(n);
 
   return organize_output(selected_colors);
 }
@@ -110,13 +146,9 @@ Rcpp::List
 qualpal_cpp_colorspace(int n,
                        const Rcpp::List& hsl_colorspace,
                        const int n_points,
-                       const Rcpp::List& cvd_list)
+                       const Rcpp::List& options)
 {
-  std::map<std::string, double> cvd;
-
-  cvd["protan"] = Rcpp::as<double>(cvd_list["protan"]);
-  cvd["deutan"] = Rcpp::as<double>(cvd_list["deutan"]);
-  cvd["tritan"] = Rcpp::as<double>(cvd_list["tritan"]);
+  auto qp = setup_palette(options);
 
   std::vector<double> h_lim_vec =
     Rcpp::as<std::vector<double>>(hsl_colorspace["h"]);
@@ -129,12 +161,9 @@ qualpal_cpp_colorspace(int n,
   std::array<double, 2> s_lim = { s_lim_vec[0], s_lim_vec[1] };
   std::array<double, 2> l_lim = { l_lim_vec[0], l_lim_vec[1] };
 
-  qualpal::Qualpal qp;
-
   auto selected_colors = qualpal::Qualpal{}
                            .setInputColorspace(h_lim, s_lim, l_lim)
                            .setColorspaceSize(n_points)
-                           .setCvd(cvd)
                            .generate(n);
 
   return organize_output(selected_colors);
@@ -144,18 +173,10 @@ qualpal_cpp_colorspace(int n,
 Rcpp::List
 qualpal_cpp_palette(int n,
                     const std::string& palette,
-                    const Rcpp::List& cvd_list)
+                    const Rcpp::List& options)
 {
-  std::map<std::string, double> cvd;
-
-  cvd["protan"] = Rcpp::as<double>(cvd_list["protan"]);
-  cvd["deutan"] = Rcpp::as<double>(cvd_list["deutan"]);
-  cvd["tritan"] = Rcpp::as<double>(cvd_list["tritan"]);
-
-  qualpal::Qualpal qp;
-
-  auto selected_colors =
-    qualpal::Qualpal{}.setInputPalette(palette).setCvd(cvd).generate(n);
+  auto qp = setup_palette(options);
+  auto selected_colors = qp.setInputPalette(palette).generate(n);
 
   return organize_output(selected_colors);
 }

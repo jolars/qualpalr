@@ -25,6 +25,7 @@ test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal(n = 2, list(h = 2, s = c(0, 1), l = c(0, 1))))
   expect_error(qualpal(3, matrix(1:9, ncol = 3)))
   expect_error(qualpal(3, matrix(runif(10), ncol = 5)))
+  expect_error(qualpal(3, bg = "notacolor"))
 })
 
 test_that("proper use of qualpal() works", {
@@ -40,4 +41,6 @@ test_that("proper use of qualpal() works", {
       b = runif(30)
     )
   ))
+  expect_silent(qualpal(3, bg = "white"))
+  expect_silent(qualpal(9, bg = "#00ff00"))
 })
