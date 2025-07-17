@@ -43,6 +43,7 @@
 <ul><li>The <code>character</code> method of the <code><a href="../reference/qualpal.html">qualpal()</a></code> function now accepts a name for a predefined palette, such as <code>"ColorBrewer::Set1"</code> or <code>"Tableau::10"</code>, which will use the corresponding palette’s colors as input. Passing one of the old colorspace names now throws a warning and will be removed in the next major release.</li>
 <li>
 <code><a href="../reference/qualpal.html">qualpal()</a></code> now accepts a background color through the <code>bg</code> argument, which is considered when generating the palette, but not included in the fina palette.</li>
+<li>The <code><a href="../reference/qualpal-deprecated.html">autopal()</a></code> function is now deprecated and will be removed int the next major release. There is no direct replacement.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="refactoring-1-0-0">Refactoring<a class="anchor" aria-label="anchor" href="#refactoring-1-0-0"></a></h3>
@@ -88,14 +89,14 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-4-2">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-4-2"></a></h3>
 <ul><li>
-<code><a href="../reference/autopal.html">autopal()</a></code> erroneously required <code>colorspace</code> to be a string.</li>
+<code><a href="../reference/qualpal-deprecated.html">autopal()</a></code> erroneously required <code>colorspace</code> to be a string.</li>
 </ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.1" id="qualpalr-041">qualpalr 0.4.1<a class="anchor" aria-label="anchor" href="#qualpalr-041"></a></h2><p class="text-muted">CRAN release: 2017-05-15</p>
 <div class="section level3">
 <h3 id="bug-fixes-0-4-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-4-1"></a></h3>
-<ul><li>Fixed <code><a href="../reference/autopal.html">autopal()</a></code> which was broken since the minimum color difference returned was always 0 due to a bug in <code><a href="../reference/qualpal.html">qualpal()</a></code>.</li>
+<ul><li>Fixed <code><a href="../reference/qualpal-deprecated.html">autopal()</a></code> which was broken since the minimum color difference returned was always 0 due to a bug in <code><a href="../reference/qualpal.html">qualpal()</a></code>.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-changes-0-4-1">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-0-4-1"></a></h3>
@@ -107,7 +108,7 @@
 <div class="section level3">
 <h3 id="major-changes-0-4-0">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-0-4-0"></a></h3>
 <ul><li>
-<code><a href="../reference/autopal.html">autopal()</a></code> is a new function that tweaks the amount of color vision deficiency adaptation to match a target color difference.</li>
+<code><a href="../reference/qualpal-deprecated.html">autopal()</a></code> is a new function that tweaks the amount of color vision deficiency adaptation to match a target color difference.</li>
 <li>
 <code><a href="../reference/qualpal.html">qualpal()</a></code> argument <code>colorspace</code> now also accepts a <code>matrix</code> or <code>data.frame</code> of RGB colors.</li>
 </ul></div>
