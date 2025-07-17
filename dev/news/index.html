@@ -37,7 +37,26 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="qualpalr-development-version">qualpalr (development version)<a class="anchor" aria-label="anchor" href="#qualpalr-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="qualpalr-100">qualpalr 1.0.0<a class="anchor" aria-label="anchor" href="#qualpalr-100"></a></h2>
+<div class="section level3">
+<h3 id="new-or-modified-features-1-0-0">New or Modified Features<a class="anchor" aria-label="anchor" href="#new-or-modified-features-1-0-0"></a></h3>
+<ul><li>The <code>character</code> method of the <code><a href="../reference/qualpal.html">qualpal()</a></code> function now accepts a name for a predefined palette, such as <code>"ColorBrewer::Set1"</code> or <code>"Tableau::10"</code>, which will use the corresponding palette’s colors as input. Passing one of the old colorspace names now throws a warning and will be removed in the next major release.</li>
+<li>
+<code><a href="../reference/qualpal.html">qualpal()</a></code> now accepts a background color through the <code>bg</code> argument, which is considered when generating the palette, but not included in the fina palette.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="refactoring-1-0-0">Refactoring<a class="anchor" aria-label="anchor" href="#refactoring-1-0-0"></a></h3>
+<ul><li>The entire C++ backend for the package has been rewritten and outsourced to a separate C++ library, <a href="https://github.com/jolars/qualpal" class="external-link">qualpal</a>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-1-0-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-0"></a></h3>
+<ul><li>An inconsistency in the conversion from Lab to DIN99d color space, where the reference of the white point was not modified correctly, has been fixed.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="performance-improvements-1-0-0">Performance Improvements<a class="anchor" aria-label="anchor" href="#performance-improvements-1-0-0"></a></h3>
+<ul><li>The color distance computation has been parallelized using OpenMP.</li>
+<li>All of the heavy lifting is now done in C++, which should significantly improve performance, especially for larger palettes.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.4" id="qualpalr-044">qualpalr 0.4.4<a class="anchor" aria-label="anchor" href="#qualpalr-044"></a></h2><p class="text-muted">CRAN release: 2023-09-13</p>
