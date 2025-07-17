@@ -68,6 +68,8 @@
 #'  via \code{\link{col2rgb}} is acceptable, including hex colors.
 #'  @param metric The color metric to use for the color distance
 #'    matrix.
+#' @param metric The color metric to use for the color distance
+#'  matrix.
 #'
 #' @return A list of class \code{qualpal} with the following
 #'   components.

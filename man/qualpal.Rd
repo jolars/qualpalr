@@ -51,6 +51,8 @@ close to the background/canvas color. If \code{NULL} (the default), the
 background color is not considered at all. Any color that is convertable
 via \code{\link{col2rgb}} is acceptable, including hex colors.
 @param metric The color metric to use for the color distance
+
+\item{metric}{The color metric to use for the color distance
 matrix.}
 }
 \value{
