@@ -120,9 +120,7 @@ qualpal <- function(
 qualpal.matrix <- function(
   n,
   colorspace,
-  cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0,
-  bg = NULL
+  ...
 ) {
   stopifnot(
     is.matrix(colorspace),
@@ -132,11 +130,8 @@ qualpal.matrix <- function(
   )
 
   validate_args(n)
-
-  opts <- make_options(cvd, cvd_severity, bg)
-
+  opts <- make_options(...)
   res <- qualpal_cpp_rgb(n, colorspace, opts)
-
   res$de_DIN99d <- stats::as.dist(res$de_DIN99d)
 
   res
@@ -146,27 +141,21 @@ qualpal.matrix <- function(
 qualpal.data.frame <- function(
   n,
   colorspace,
-  cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0,
-  bg = NULL
+  ...
 ) {
   mat <- data.matrix(colorspace)
   qualpal(
     n = n,
     colorspace = mat,
-    cvd = cvd,
-    cvd_severity = cvd_severity,
-    bg = bg
+    ...
   )
 }
 
 #' @export
 qualpal.character <- function(
   n,
-  colorspace = "pretty",
-  cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0,
-  bg = NULL
+  colorspace = "ColorBrewer:Set2",
+  ...
 ) {
   stopifnot(
     is.character(colorspace)
@@ -182,10 +171,8 @@ qualpal.character <- function(
     colorspace <- predefined_colorspaces(colorspace)
   }
 
-  opts <- make_options(cvd, cvd_severity, bg)
-
+  opts <- make_options(...)
   res <- qualpal_cpp_palette(n, colorspace, opts)
-
   res$de_DIN99d <- stats::as.dist(res$de_DIN99d)
 
   res
@@ -196,9 +183,7 @@ qualpal.character <- function(
 qualpal.list <- function(
   n,
   colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
-  cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0,
-  bg = NULL
+  ...
 ) {
   stopifnot(
     !is.null(attr(colorspace, "names")),
@@ -230,10 +215,8 @@ qualpal.list <- function(
     is.numeric(l)
   )
 
-  opts <- make_options(cvd, cvd_severity, bg)
-
+  opts <- make_options(...)
   res <- qualpal_cpp_colorspace(n, colorspace, n_points, opts)
-
   res$de_DIN99d <- stats::as.dist(res$de_DIN99d)
 
   res
