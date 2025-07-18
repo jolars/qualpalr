@@ -58,10 +58,10 @@ the palette we have generated.
 
 ``` r
 pal2$de_DIN99d
-#>          #c96c74  #e5e4b3  #6d6cc9
-#> #e5e4b3 22.12508                  
-#> #6d6cc9 21.60194 28.00911         
-#> #b8d0e7 23.03117 17.84409 19.07144
+#>          #c96c74  #6d6cc9  #81cbd5
+#> #6d6cc9 21.60194                  
+#> #81cbd5 25.95410 21.45727         
+#> #c8cb70 22.29156 29.27338 20.55607
 ```
 
 The palette may also be plotted with in a multidimensional scaling plot
@@ -103,10 +103,10 @@ Versioning is based on [semantic versioning](https://semver.org/).
 ## Code of conduct
 
 Please note that this project is released with a [Contributor Code of
-Conduct](https://github.com/jolars/qualpalr/blob/master/CONDUCT.md). By
+Conduct](https://github.com/jolars/qualpalr/blob/main/CONDUCT.md). By
 participating in this project you agree to abide by its terms.
 
 ## License
 
 `qualpalr` is open source software, licensed under
-[GPL-3](https://github.com/jolars/qualpalr/blob/master/LICENSE).
+[GPL-3](https://github.com/jolars/qualpalr/blob/main/LICENSE).
