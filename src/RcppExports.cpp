@@ -63,12 +63,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// analyze_palette_cpp
+Rcpp::List analyze_palette_cpp(const Rcpp::NumericMatrix& rgb_in, const Rcpp::List& options);
+RcppExport SEXP _qualpalr_analyze_palette_cpp(SEXP rgb_inSEXP, SEXP optionsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type rgb_in(rgb_inSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type options(optionsSEXP);
+    rcpp_result_gen = Rcpp::wrap(analyze_palette_cpp(rgb_in, options));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_qualpalr_qualpal_cpp_rgb", (DL_FUNC) &_qualpalr_qualpal_cpp_rgb, 3},
     {"_qualpalr_qualpal_cpp_colorspace", (DL_FUNC) &_qualpalr_qualpal_cpp_colorspace, 4},
     {"_qualpalr_qualpal_cpp_palette", (DL_FUNC) &_qualpalr_qualpal_cpp_palette, 3},
     {"_qualpalr_convert_colors", (DL_FUNC) &_qualpalr_convert_colors, 3},
+    {"_qualpalr_analyze_palette_cpp", (DL_FUNC) &_qualpalr_analyze_palette_cpp, 2},
     {NULL, NULL, 0}
 };
 

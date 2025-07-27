@@ -3,3 +3,34 @@
 scale_runif <- function(x, new_min, new_max) {
   (new_max - new_min) * (x - 1) + new_max
 }
+
+make_options <- function(
+  cvd = c("protan", "deutan", "tritan"),
+  cvd_severity = 0,
+  bg = NULL,
+  metric = c("din99d", "ciede2000", "cie76")
+) {
+  cvd <- match.arg(cvd)
+  metric <- match.arg(metric)
+
+  stopifnot(
+    is.character(cvd),
+    length(cvd) == 1,
+    is.numeric(cvd_severity),
+    length(cvd_severity) == 1,
+    cvd_severity >= 0,
+    cvd_severity <= 1,
+    is.null(bg) || (is.character(bg) && length(bg) == 1)
+  )
+
+  cvd_list <- list()
+  cvd_list[[cvd]] <- cvd_severity
+
+  if (!is.null(bg)) {
+    bg <- grDevices::col2rgb(bg)
+    bg <- as.vector(bg) / 255
+  } else {
+    bg <- double(0)
+  }
+  list(cvd = cvd_list, bg = bg, metric = metric)
+}

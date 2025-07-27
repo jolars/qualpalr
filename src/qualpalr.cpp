@@ -3,6 +3,24 @@
 #include <array>
 #include <qualpal.h>
 
+template<typename T>
+Rcpp::NumericMatrix
+convert_matrix(const T& mat)
+{
+  int n = mat.nrow();
+  int m = mat.ncol();
+
+  Rcpp::NumericMatrix out(n, m);
+
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < m; ++j) {
+      out(i, j) = mat(i, j);
+    }
+  }
+
+  return out;
+}
+
 bool
 contains(const Rcpp::List& list, const std::string& s)
 {
@@ -253,6 +271,88 @@ convert_colors(const Rcpp::NumericMatrix& colors,
   }
 
   colnames(out) = col_names;
+
+  return out;
+}
+
+Rcpp::List
+wrap_analyzis_output(const qualpal::PaletteAnalysis& result,
+                     const std::vector<std::string>& hex_colors)
+{
+  Rcpp::List out;
+
+  Rcpp::NumericMatrix de_matrix = convert_matrix(result.difference_matrix);
+  Rcpp::NumericVector min_distances = Rcpp::wrap(result.min_distances);
+  double bg_min_distance = result.bg_min_distance;
+
+  de_matrix.attr("dimnames") = Rcpp::List::create(hex_colors, hex_colors);
+  min_distances.attr("names") = hex_colors;
+
+  return Rcpp::List::create(Rcpp::Named("difference_matrix") = de_matrix,
+                            Rcpp::Named("min_distances") = min_distances,
+                            Rcpp::Named("bg_min_distance") = bg_min_distance);
+}
+
+// [[Rcpp::export]]
+Rcpp::List
+analyze_palette_cpp(const Rcpp::NumericMatrix& rgb_in,
+                    const Rcpp::List& options)
+{
+  using Rcpp::as;
+
+  int n = rgb_in.nrow();
+
+  std::vector<qualpal::colors::RGB> rgb_colors;
+  std::vector<std::string> hex_colors;
+
+  for (int i = 0; i < n; ++i) {
+    qualpal::colors::RGB rgb(rgb_in(i, 0), rgb_in(i, 1), rgb_in(i, 2));
+    rgb_colors.emplace_back(rgb);
+    hex_colors.emplace_back(rgb.hex());
+  }
+
+  auto bg_vec = as<Rcpp::NumericVector>(options["bg"]);
+  auto cvd_list = as<Rcpp::List>(options["cvd"]);
+  auto metric = as<std::string>(options["metric"]);
+
+  std::optional<qualpal::colors::RGB> bg = std::nullopt;
+
+  if (bg_vec.size() == 3) {
+    bg = qualpal::colors::RGB(bg_vec[0], bg_vec[1], bg_vec[2]);
+  }
+
+  std::map<std::string, double> cvd;
+
+  if (cvd_list.size() > 0) {
+    const std::vector<std::string> cvd_types = { "protan", "deutan", "tritan" };
+    for (const auto& type : cvd_types) {
+      if (contains(cvd_list, type)) {
+        cvd[type] = as<double>(cvd_list[type]);
+      }
+    }
+  }
+  qualpal::PaletteAnalysisMap result;
+
+  if (metric == "din99d") {
+    result = qualpal::analyzePalette(
+      rgb_colors, qualpal::metrics::MetricType::DIN99d, cvd, bg);
+  } else if (metric == "ciede2000") {
+    result = qualpal::analyzePalette(
+      rgb_colors, qualpal::metrics::MetricType::CIEDE2000, cvd, bg);
+  } else if (metric == "cie76") {
+    result = qualpal::analyzePalette(
+      rgb_colors, qualpal::metrics::MetricType::CIE76, cvd, bg);
+  } else {
+    Rcpp::stop("Unknown metric type: " + metric);
+  }
+
+  Rcpp::List out;
+
+  for (const auto& [name, analysis] : result) {
+    out[name] = wrap_analyzis_output(analysis, hex_colors);
+  }
+
+  // out["hex"] = hex_colors;
 
   return out;
 }

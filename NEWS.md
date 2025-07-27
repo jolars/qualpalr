@@ -15,6 +15,8 @@
   `"ciede2000"`, or `"cie76"`. Expect slower performance for `"ciede2000"`.
 - The `autopal()` function is now deprecated and will be removed int the next major
   release. There is no direct replacement.
+- There's a new function, `analyze_palette()`, which analyzes a categorical
+  color palette.
 
 ## Refactoring
 
