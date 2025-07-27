@@ -49,7 +49,6 @@
               bashInteractive
               autoconf
               go-task
-              quartoMinimal
               jq
               llvmPackages.openmp
               (rWrapper.override {
@@ -59,7 +58,8 @@
                   glmnet
                   tidyverse
                   usethis
-                  quarto
+                  knitr
+                  rmarkdown
                   rhub
                   spelling
                   covr

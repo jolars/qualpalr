@@ -26,3 +26,7 @@ convert_colors <- function(colors, from, to) {
     .Call(`_qualpalr_convert_colors`, colors, from, to)
 }
 
+analyze_palette_cpp <- function(rgb_in, options) {
+    .Call(`_qualpalr_analyze_palette_cpp`, rgb_in, options)
+}
+
