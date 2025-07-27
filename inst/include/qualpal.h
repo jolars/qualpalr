@@ -1,5 +1,6 @@
 #pragma once
 
+#include <qualpal/analyze.h>
 #include <qualpal/color_difference.h>
 #include <qualpal/colors.h>
 #include <qualpal/matrix.h>

@@ -16,6 +16,13 @@ inverseCompanding(const double v)
   return v <= 0.04045 ? v / 12.92 : std::pow((v + 0.055) / 1.055, 2.4);
 }
 
+RGB::RGB()
+  : r_value(0.0)
+  , g_value(0.0)
+  , b_value(0.0)
+{
+}
+
 RGB::RGB(const double r, const double g, const double b)
   : r_value(r)
   , g_value(g)
@@ -136,6 +143,18 @@ RGB::RGB(const XYZ& xyz)
   b_value = std::clamp(rgb[2], 0.0, 1.0);
 }
 
+RGB::RGB(const LCHab& lch)
+  : RGB(Lab(lch))
+{
+}
+
+HSL::HSL()
+  : h_value(0.0)
+  , s_value(0.0)
+  , l_value(0.0)
+{
+}
+
 HSL::HSL(const XYZ& xyz)
   : HSL(RGB(xyz))
 {
@@ -143,6 +162,18 @@ HSL::HSL(const XYZ& xyz)
 
 HSL::HSL(const Lab& lab)
   : HSL(XYZ(lab))
+{
+}
+
+HSL::HSL(const LCHab& lch)
+  : HSL(Lab(lch))
+{
+}
+
+XYZ::XYZ()
+  : x_value(0.0)
+  , y_value(0.0)
+  , z_value(0.0)
 {
 }
 
@@ -207,6 +238,11 @@ XYZ::XYZ(const HSL& hsl)
 {
 }
 
+XYZ::XYZ(const LCHab& lch, const std::array<double, 3>& white_point)
+  : XYZ(Lab(lch), white_point)
+{
+}
+
 std::string
 RGB::hex() const
 {
@@ -218,6 +254,13 @@ RGB::hex() const
   ss << std::setw(2) << static_cast<int>(this->b() * 255);
 
   return ss.str();
+}
+
+DIN99d::DIN99d()
+  : l_value(0.0)
+  , a_value(0.0)
+  , b_value(0.0)
+{
 }
 
 DIN99d::DIN99d(const double l, const double a, const double b)
@@ -323,6 +366,13 @@ HSL::HSL(const RGB& rgb)
   l_value = std::clamp(l_value, 0.0, 1.0);
 }
 
+Lab::Lab()
+  : l_value(0.0)
+  , a_value(0.0)
+  , b_value(0.0)
+{
+}
+
 Lab::Lab(const double l, const double a, const double b)
   : l_value(l)
   , a_value(a)
@@ -364,6 +414,55 @@ Lab::Lab(const RGB& rgb)
 
 Lab::Lab(const HSL& hsl)
   : Lab(XYZ(hsl))
+{
+}
+
+Lab::Lab(const LCHab& lch)
+  : l_value(lch.l())
+  , a_value(lch.c() * std::cos(lch.h() * M_PI / 180.0))
+  , b_value(lch.c() * std::sin(lch.h() * M_PI / 180.0))
+{
+}
+
+LCHab::LCHab()
+  : l_value(0.0)
+  , c_value(0.0)
+  , h_value(0.0)
+{
+}
+
+LCHab::LCHab(const double l, const double c, const double h)
+  : l_value(l)
+  , c_value(c)
+  , h_value(h)
+{
+  assert(l >= 0 && l <= 100 && "Lightness must be in [0, 100]");
+  assert(c >= 0 && "Chroma must be non-negative");
+  assert(h >= 0 && h < 360 && "Hue must be in [0, 360)");
+}
+
+LCHab::LCHab(const Lab& lab)
+{
+  l_value = lab.l();
+  c_value = std::hypot(lab.a(), lab.b());
+
+  double angle = std::atan2(lab.b(), lab.a()) * 180.0 / M_PI;
+
+  h_value = angle >= 0 ? angle : angle + 360.0;
+}
+
+LCHab::LCHab(const RGB& rgb)
+  : LCHab(Lab(rgb))
+{
+}
+
+LCHab::LCHab(const HSL& hsl)
+  : LCHab(Lab(hsl))
+{
+}
+
+LCHab::LCHab(const XYZ& xyz, const std::array<double, 3>& white_point)
+  : LCHab(Lab(xyz, white_point))
 {
 }
 

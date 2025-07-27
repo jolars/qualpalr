@@ -35,6 +35,20 @@
 namespace qualpal {
 
 /**
+ * @enum ColorspaceType
+ * @brief Supported cylindrical color spaces for input colors
+ *
+ * This enum defines the available cylindrical color spaces that can be used
+ * for generating palettes. Currently, it supports HSL (Hue, Saturation,
+ * Lightness) and LCHab (Lightness, Chroma, Hue in CIE Lab).
+ */
+enum class ColorspaceType
+{
+  HSL,
+  LCHab
+};
+
+/**
  * @class Qualpal
  * @brief Builder for qualitative color palette generation
  *
@@ -80,12 +94,14 @@ public:
    * @param h_lim Hue range in degrees [-360, 360].
    * @param s_lim Saturation range [0, 1].
    * @param l_lim Lightness range [0, 1].
+   * @param space Colorspace type
    * @return Reference to this object for chaining.
    * @throws std::invalid_argument for invalid ranges.
    */
   Qualpal& setInputColorspace(const std::array<double, 2>& h_lim,
                               const std::array<double, 2>& s_lim,
-                              const std::array<double, 2>& l_lim);
+                              const std::array<double, 2>& l_lim,
+                              ColorspaceType space = ColorspaceType::HSL);
 
   /**
    * @brief Set color vision deficiency simulation parameters.
@@ -134,7 +150,21 @@ public:
    */
   std::vector<colors::RGB> generate(int n);
 
+  /**
+   * @brief Extend an existing palette by adding n new colors.
+   * @param palette Existing palette (RGB colors) to keep fixed.
+   * @param n Size of the new palette to generate, which includes
+   * the existing palette.
+   * @return Vector of palette + n new RGB colors.
+   */
+  std::vector<colors::RGB> extend(const std::vector<colors::RGB>& palette,
+                                  int n);
+
 private:
+  std::vector<colors::RGB> selectColors(
+    int n,
+    const std::vector<colors::RGB>& fixed_palette = {});
+
   std::vector<colors::RGB> rgb_colors;
 
   std::vector<std::string> hex_colors;
@@ -142,7 +172,7 @@ private:
   std::string palette;
 
   std::array<double, 2> h_lim = { 0, 360 };
-  std::array<double, 2> s_lim = { 0, 1 };
+  std::array<double, 2> s_or_c_lim = { 0, 1 };
   std::array<double, 2> l_lim = { 0, 1 };
   int n_points = 100;
 
@@ -162,6 +192,7 @@ private:
   std::optional<colors::RGB> bg;
   metrics::MetricType metric = metrics::MetricType::DIN99d;
   double max_memory = 1;
+  ColorspaceType colorspace_input = ColorspaceType::HSL;
 };
 
 } // namespace qualpal

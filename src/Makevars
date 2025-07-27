@@ -6,8 +6,8 @@ CXX_STD = CXX17
 SOURCES = \
 	RcppExports.cpp \
 	qualpalr.cpp \
+	qualpal/analyze.cpp \
 	qualpal/color_difference.cpp \
-	qualpal/color_grid.cpp \
 	qualpal/colors.cpp \
 	qualpal/cvd.cpp \
 	qualpal/farthest_points.cpp \
