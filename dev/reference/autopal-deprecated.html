@@ -116,10 +116,6 @@ components.</p>
 <dl><dt>HSL</dt>
 <dd><p>A matrix of the colors in the HSL color space.</p></dd>
 
-<dt>DIN99d</dt>
-<dd><p>A matrix of the colors in the DIN99d color space (after power
-transformations).</p></dd>
-
 <dt>RGB</dt>
 <dd><p>A matrix of the colors in the sRGB color space.</p></dd>
  <dt>hex</dt>
@@ -129,8 +125,20 @@ character vector of the colors in hex notation.</p></dd>
 <dd><p>A
 distance matrix of color differences according to delta E DIN99d.</p></dd>
 
+<dt>DIN99d</dt>
+<dd><p>A color difference matrix of the colors corrosponding to the
+<code>metric</code> used.</p></dd>
+
+<dt>de_DIN99d</dt>
+<dd><p>The minimum pairwise DIN99d color difference for each color in the
+palette.</p></dd>
+
+<dt>hex</dt>
+<dd><p>A character vector of the colors in hex notation.</p></dd>
+
 <dt>min_de_DIN99d</dt>
-<dd><p>The smallest pairwise DIN99d color difference.</p></dd>
+<dd><p>The minimum pairwise DIN99d color difference among all colors in the
+palette.</p></dd>
 
 </dl></div>
     <div class="section level2">
