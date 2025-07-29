@@ -46,6 +46,8 @@
 <li>The color difference metric in <code><a href="../reference/qualpal.html">qualpal()</a></code> can now be specified using the <code>metric</code> argument, which accepts either <code>"din99d"</code> (the default), <code>"ciede2000"</code>, or <code>"cie76"</code>. Expect slower performance for <code>"ciede2000"</code>.</li>
 <li>The <code><a href="../reference/qualpal-deprecated.html">autopal()</a></code> function is now deprecated and will be removed int the next major release. There is no direct replacement.</li>
 <li>There’s a new function, <code><a href="../reference/analyze_palette.html">analyze_palette()</a></code>, which analyzes a categorical color palette.</li>
+<li>
+<code><a href="../reference/qualpal.html">qualpal()</a></code> now has a <code>extend</code> method that allows the user to extend an existing palette by adding more colors to it. This is useful for expanding an existing palette to include more colors.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="refactoring-1-0-0">Refactoring<a class="anchor" aria-label="anchor" href="#refactoring-1-0-0"></a></h3>
