@@ -17,6 +17,9 @@
   release. There is no direct replacement.
 - There's a new function, `analyze_palette()`, which analyzes a categorical
   color palette.
+- `qualpal()` now has a `extend` method that allows the user to extend
+  an existing palette by adding more colors to it. This is useful for
+  expanding an existing palette to include more colors.
 
 ## Refactoring
 
