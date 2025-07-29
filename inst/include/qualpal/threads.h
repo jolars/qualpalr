@@ -27,7 +27,7 @@ namespace qualpal {
  * Usage:
  * @code
  * Threads::set(4);  // Set to use 4 threads
- * int n = Threads::get();  // Get current thread count
+ * std::size_t n = Threads::get();  // Get current thread count
  * @endcode
  */
 class Threads
@@ -38,7 +38,7 @@ public:
    *
    * @param n Number of threads. Must be positive.
    */
-  static void set(const int n)
+  static void set(const std::size_t n)
   {
     if (n > 0) {
       num_threads = n;
@@ -55,16 +55,17 @@ public:
    *
    * @return Current thread count
    */
-  static int get() { return num_threads; }
+  static std::size_t get() { return num_threads; }
 
 private:
 #ifdef _OPENMP
   /// Number of threads to use. Defaults to half of max threads,
   /// which is typically the number of physical CPU cores.
-  inline static int num_threads = std::max(1, omp_get_max_threads() / 2);
+  inline static std::size_t num_threads =
+    std::max(1, omp_get_max_threads() / 2);
 #else
   /// Default to single thread when OpenMP is not available
-  inline static int num_threads = 1;
+  inline static std::size_t num_threads = 1;
 #endif
 };
 

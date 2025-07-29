@@ -1,3 +1,11 @@
+/** @file
+ * @brief Functions for generating color difference matrices.
+ *
+ * This file provides functions to compute pairwise color differences between
+ * a set of colors using various color difference metrics. It supports parallel
+ * computation and memory management.
+ */
+
 #pragma once
 
 #include <cmath>
@@ -13,14 +21,14 @@
 namespace qualpal {
 namespace detail {
 
-inline size_t
-estimateMatrixMemory(size_t n)
+inline std::size_t
+estimateMatrixMemory(std::size_t n)
 {
   return n * n * sizeof(double);
 }
 
 inline bool
-checkMatrixSize(size_t n, double max_gb = 1.0)
+checkMatrixSize(std::size_t n, double max_gb = 1.0)
 {
   double estimated_gb = estimateMatrixMemory(n) / (1024.0 * 1024.0 * 1024.0);
   return estimated_gb <= max_gb;
@@ -45,7 +53,7 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
 {
   using namespace detail;
 
-  const int n_colors = colors.size();
+  const std::size_t n_colors = colors.size();
 
   if (n_colors < 1) {
     throw std::invalid_argument("At least one color is required to compute "
@@ -66,12 +74,12 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
 #ifdef _OPENMP
 #pragma omp parallel for num_threads(Threads::get())
 #endif
-  for (int i = 0; i < n_colors; ++i) {
+  for (std::size_t i = 0; i < n_colors; ++i) {
     result(i, i) = 0.0;
 #ifdef _OPENMP
 #pragma omp simd
 #endif
-    for (int j = i + 1; j < n_colors; ++j) {
+    for (std::size_t j = i + 1; j < n_colors; ++j) {
       double d = metric(colors[i], colors[j]);
       result(i, j) = d;
       result(j, i) = d;

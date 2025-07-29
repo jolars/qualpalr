@@ -41,10 +41,10 @@ analyzePalette(const std::vector<colors::RGB>& colors,
     std::vector<double> min_distances;
     min_distances.reserve(diff_matrix.nrow());
 
-    for (int i = 0; i < diff_matrix.nrow(); ++i) {
+    for (std::size_t i = 0; i < diff_matrix.nrow(); ++i) {
       double min_dist = std::numeric_limits<double>::max();
 
-      for (int j = 0; j < diff_matrix.ncol(); ++j) {
+      for (std::size_t j = 0; j < diff_matrix.ncol(); ++j) {
         if (i != j) {
           min_dist = std::min(min_dist, diff_matrix(i, j));
         }
