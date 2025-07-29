@@ -60,3 +60,33 @@ test_that("extending a palette", {
   expect_error(qualpal(5, extend = "notacolor"))
   expect_error(qualpal(2, extend = base_pal_hex))
 })
+
+test_that("colorspace input", {
+  expect_silent(qualpal(
+    5,
+    colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85))
+  ))
+  expect_silent(qualpal(
+    5,
+    colorspace = list(h = c(0, 360), c = c(0, 40), l = c(0, 85))
+  ))
+
+  expect_error(qualpal(
+    5,
+    colorspace = list(
+      h = c(0, 360),
+      c = c(-5, 25),
+      l = c(0.6, 0.85)
+    )
+  ))
+
+  expect_error(qualpal(
+    5,
+    colorspace = list(
+      h = c(0, 360),
+      c = c(5, 25),
+      s = c(0.6, 0.85),
+      l = c(0.6, 0.85)
+    )
+  ))
+})

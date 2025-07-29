@@ -24,16 +24,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // qualpal_cpp_colorspace
-Rcpp::List qualpal_cpp_colorspace(int n, const Rcpp::List& hsl_colorspace, const int n_points, const Rcpp::List& options);
-RcppExport SEXP _qualpalr_qualpal_cpp_colorspace(SEXP nSEXP, SEXP hsl_colorspaceSEXP, SEXP n_pointsSEXP, SEXP optionsSEXP) {
+Rcpp::List qualpal_cpp_colorspace(int n, const Rcpp::List& colorspace, const int n_points, const Rcpp::List& options);
+RcppExport SEXP _qualpalr_qualpal_cpp_colorspace(SEXP nSEXP, SEXP colorspaceSEXP, SEXP n_pointsSEXP, SEXP optionsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::List& >::type hsl_colorspace(hsl_colorspaceSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type colorspace(colorspaceSEXP);
     Rcpp::traits::input_parameter< const int >::type n_points(n_pointsSEXP);
     Rcpp::traits::input_parameter< const Rcpp::List& >::type options(optionsSEXP);
-    rcpp_result_gen = Rcpp::wrap(qualpal_cpp_colorspace(n, hsl_colorspace, n_points, options));
+    rcpp_result_gen = Rcpp::wrap(qualpal_cpp_colorspace(n, colorspace, n_points, options));
     return rcpp_result_gen;
 END_RCPP
 }

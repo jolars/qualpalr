@@ -20,6 +20,12 @@
 - `qualpal()` now has a `extend` method that allows the user to extend
   an existing palette by adding more colors to it. This is useful for
   expanding an existing palette to include more colors.
+- The color space (`list`) method of `qualpal()` now accepts
+  a specification in the LCHab (HCL) color space, which is
+  a cylindrical representation of the Lab color space. This is mostly
+  added to simplify comparisons with other packages that use LCHab
+  as input. We still recommend using the HSL color space, which is
+  more intuitive for most users.
 
 ## Refactoring
 
