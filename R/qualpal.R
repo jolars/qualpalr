@@ -62,12 +62,12 @@
 #'   any value from 0, for normal vision (the default), and 1, for dichromatic
 #'   vision.
 #' @param bg Backgrouind color to consider (but not include) when
-#'  generating the palette. This is useful to avoid colros that are too
-#'  close to the background/canvas color. If \code{NULL} (the default), the
-#'  background color is not considered at all. Any color that is convertable
-#'  via \code{\link[grDevices]{col2rgb}} is acceptable, including hex colors.
+#'   generating the palette. This is useful to avoid colros that are too
+#'   close to the background/canvas color. If \code{NULL} (the default), the
+#'   background color is not considered at all. Any color that is convertable
+#'   via \code{\link[grDevices]{col2rgb}} is acceptable, including hex colors.
 #' @param metric The color metric to use for the color distance
-#'  matrix.
+#'   matrix.
 #'
 #' @return A list of class \code{qualpal} with the following
 #'   components.
