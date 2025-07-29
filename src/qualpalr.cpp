@@ -184,7 +184,7 @@ qualpal_cpp_rgb(int n,
 // [[Rcpp::export]]
 Rcpp::List
 qualpal_cpp_colorspace(int n,
-                       const Rcpp::List& hsl_colorspace,
+                       const Rcpp::List& colorspace,
                        const int n_points,
                        const Rcpp::List& options)
 {
@@ -192,17 +192,26 @@ qualpal_cpp_colorspace(int n,
   auto extend = Rcpp::as<Rcpp::NumericMatrix>(options["extend"]);
 
   std::vector<double> h_lim_vec =
-    Rcpp::as<std::vector<double>>(hsl_colorspace["h"]);
-  std::vector<double> s_lim_vec =
-    Rcpp::as<std::vector<double>>(hsl_colorspace["s"]);
+    Rcpp::as<std::vector<double>>(colorspace["h"]);
+  std::vector<double> s_or_c_lim_vec =
+    Rcpp::as<std::vector<double>>(colorspace["s_or_c"]);
   std::vector<double> l_lim_vec =
-    Rcpp::as<std::vector<double>>(hsl_colorspace["l"]);
+    Rcpp::as<std::vector<double>>(colorspace["l"]);
 
   std::array<double, 2> h_lim = { h_lim_vec[0], h_lim_vec[1] };
-  std::array<double, 2> s_lim = { s_lim_vec[0], s_lim_vec[1] };
+  std::array<double, 2> s_or_c_lim = { s_or_c_lim_vec[0], s_or_c_lim_vec[1] };
   std::array<double, 2> l_lim = { l_lim_vec[0], l_lim_vec[1] };
 
-  qp.setInputColorspace(h_lim, s_lim, l_lim);
+  std::string colorspace_type = Rcpp::as<std::string>(colorspace["type"]);
+
+  if (colorspace_type == "hsl") {
+    qp.setInputColorspace(
+      h_lim, s_or_c_lim, l_lim, qualpal::ColorspaceType::HSL);
+  } else if (colorspace_type == "lchab") {
+    qp.setInputColorspace(
+      h_lim, s_or_c_lim, l_lim, qualpal::ColorspaceType::LCHab);
+  }
+
   qp.setColorspaceSize(n_points);
 
   std::vector<qualpal::colors::RGB> selected_colors;

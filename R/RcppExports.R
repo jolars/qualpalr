@@ -5,8 +5,8 @@ qualpal_cpp_rgb <- function(n, rgb_in, options) {
     .Call(`_qualpalr_qualpal_cpp_rgb`, n, rgb_in, options)
 }
 
-qualpal_cpp_colorspace <- function(n, hsl_colorspace, n_points, options) {
-    .Call(`_qualpalr_qualpal_cpp_colorspace`, n, hsl_colorspace, n_points, options)
+qualpal_cpp_colorspace <- function(n, colorspace, n_points, options) {
+    .Call(`_qualpalr_qualpal_cpp_colorspace`, n, colorspace, n_points, options)
 }
 
 qualpal_cpp_palette <- function(n, palette, options) {

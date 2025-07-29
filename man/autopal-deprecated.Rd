@@ -40,17 +40,25 @@ components.
 \item{HSL}{
 A matrix of the colors in the HSL color space.
 }
-\item{DIN99d}{
-A matrix of the colors in the DIN99d color space (after power
-transformations).
-}
 \item{RGB}{
 A matrix of the colors in the sRGB color space.} \item{hex}{A
 character vector of the colors in hex notation.} \item{de_DIN99d}{A
 distance matrix of color differences according to delta E DIN99d.
 }
+\item{DIN99d}{
+A color difference matrix of the colors corrosponding to the
+\code{metric} used.
+}
+\item{de_DIN99d}{
+The minimum pairwise DIN99d color difference for each color in the
+palette.
+}
+\item{hex}{
+A character vector of the colors in hex notation.
+}
 \item{min_de_DIN99d}{
-The smallest pairwise DIN99d color difference.
+The minimum pairwise DIN99d color difference among all colors in the
+palette.
 }
 }
 \description{

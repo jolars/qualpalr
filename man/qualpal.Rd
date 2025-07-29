@@ -20,22 +20,28 @@ qualpal(
 \item{colorspace}{A color space to generate colors from. Can be any of the
 following:
 \itemize{
-\item A \code{\link{list}} with the following \emph{named} vectors,
+\item A \code{\link{list}} that describes a color space in either
+HSL or LCHab color space. In the first case (HSL), the list must
+contain the following \emph{named} vectors,
 each of length two, giving a range for each item.
 \describe{
 \item{\code{h}}{Hue, in range from -360 to 360}
 \item{\code{s}}{Saturation, in the range from 0 to 1}
 \item{\code{l}}{Lightness, in the range from 0 to 1}
 }
+In the second case (LCHab), the list must contain the following
+\emph{named} vectors,
+each of length two, giving a range for each item.
+\describe{
+\item{\code{h}}{Hue, in range from -360 to 360}
+\item{\code{c}}{Chroma, in the range from 0 to infinity}
+\item{\code{l}}{Lightness, in the range from 0 to 100}
+}
+In these cases, \code{qualpal()} will generate
 \item A \code{\link{character}} vector of length one in
 the form of "Source:Palette", where \emph{Domain} is the name of a
 source that provides a color palette, and \emph{Palette} is the name of
-a color palette from that source. The following source are
-currently
-supported:
-\itemize{
-\item \code{"ColorBrewer"}
-}
+a color palette from that source.
 }}
 
 \item{cvd}{Color vision deficiency adaptation. Use \code{cvd_severity}
@@ -67,53 +73,51 @@ components.
 \item{HSL}{
 A matrix of the colors in the HSL color space.
 }
-\item{DIN99d}{
-A matrix of the colors in the DIN99d color space (after power
-transformations).
-}
 \item{RGB}{
 A matrix of the colors in the sRGB color space.} \item{hex}{A
 character vector of the colors in hex notation.} \item{de_DIN99d}{A
 distance matrix of color differences according to delta E DIN99d.
 }
+\item{DIN99d}{
+A color difference matrix of the colors corrosponding to the
+\code{metric} used.
+}
+\item{de_DIN99d}{
+The minimum pairwise DIN99d color difference for each color in the
+palette.
+}
+\item{hex}{
+A character vector of the colors in hex notation.
+}
 \item{min_de_DIN99d}{
-The smallest pairwise DIN99d color difference.
+The minimum pairwise DIN99d color difference among all colors in the
+palette.
 }
 }
 \description{
-Given a color space or collection of colors, \code{qualpal()} projects
-these colors to the DIN99d color space, where it generates a color palette
-from the most visually distinct colors, optionally taking color vision
-deficiency into account.
+Given a collection of colors, \code{qualpal()} algorithmically
+tries to select to \code{n} most distinct colors from the provided
+input colors, optionally taking color vision deficiency into account.
 }
 \details{
-The function takes a color subspace in the HSL color space, where lightness
-and saturation take values from 0 to 1. Hue take values from -360 to 360,
-although negative values are brought to lie in the range \{0, 360\}; this
-behavior exists to enable color subspaces that span all hues being that the
-hue space is circular.
+In the default \code{metric} setting, the colors that the user provides are
+projected into the DIN99d color space, which is approximately perceptually
+uniform, i.e. color difference is proportional to the euclidean distance
+between two colors. A distance matrix is computed and, as an additional
+step, is transformed using power transformations discovered by Huang 2015 in
+order to fine tune differences.
 
-The HSL color subspace that the user provides is projected into the DIN99d
-color space, which is approximately perceptually uniform, i.e. color
-difference is proportional to the euclidean distance between two colors. A
-distance matrix is computed and, as an additional step, is transformed using
-power transformations discovered by Huang 2015 in order to fine tune
-differences.
-
-\code{qualpal} then searches the distance matrix for the most
-distinct colors; it does this iteratively by first selecting a random set of
-colors and then iterates over each color, putting colors back into the total
-set and replaces it with a new color until it has gone through the whole
-range without changing any of the colors.
+\code{qualpal} then searches the distance matrix for the most distinct
+colors; it does this iteratively by first selecting a random set of colors
+and then iterates over each color, putting colors back into the total set
+and replaces it with a new color until it has gone through the whole range
+without changing any of the colors.
 
 Optionally, \code{qualpal} can adapt palettes to cater to color vision
-deficiency (cvd). This is accomplished by taking the colors
-provided by the user and transforming them to colors that someone with cvd
-would see, that is, simulating cvd. qualpal then chooses colors from
+deficiency (CVD). This is accomplished by taking the colors
+provided by the user and transforming them to colors that someone with CVD
+would see, that is, simulating CVD qualpal then chooses colors from
 these new colors.
-
-\code{qualpal} currently only supports the sRGB color space with the D65
-white point reference.
 }
 \examples{
 # Generate 3 distinct colors from the default color space
@@ -129,6 +133,10 @@ qualpal(5, "ColorBrewer:Dark2", cvd = "deutan", cvd_severity = 1)
 
 # Adapt palette to protanomaly with severity 0.4
 qualpal(8, cvd = "protan", cvd_severity = 0.4)
+
+# Generate and extend a palette with 3 colors
+pal <- qualpal(3)
+qualpal(5, extend = pal$hex)
 
 \dontrun{
 # The range of hue cannot exceed 360
