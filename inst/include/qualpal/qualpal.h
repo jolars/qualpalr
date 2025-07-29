@@ -139,7 +139,7 @@ public:
    * @return Reference to this object for chaining.
    * @throws std::invalid_argument if n_points <= 0.
    */
-  Qualpal& setColorspaceSize(int n_points);
+  Qualpal& setColorspaceSize(std::size_t n_points);
 
   /**
    * @brief Generate a qualitative color palette with the configured options.
@@ -148,7 +148,7 @@ public:
    * @throws std::runtime_error if no input source is configured.
    * @throws std::invalid_argument for invalid configuration.
    */
-  std::vector<colors::RGB> generate(int n);
+  std::vector<colors::RGB> generate(std::size_t n);
 
   /**
    * @brief Extend an existing palette by adding n new colors.
@@ -158,14 +158,14 @@ public:
    * @return Vector of palette + n new RGB colors.
    */
   std::vector<colors::RGB> extend(const std::vector<colors::RGB>& palette,
-                                  int n);
+                                  std::size_t n);
 
 private:
   std::vector<colors::RGB> selectColors(
-    int n,
+    std::size_t n,
     const std::vector<colors::RGB>& fixed_palette = {});
 
-  std::vector<colors::RGB> rgb_colors;
+  std::vector<colors::RGB> rgb_colors_in;
 
   std::vector<std::string> hex_colors;
 
@@ -174,7 +174,7 @@ private:
   std::array<double, 2> h_lim = { 0, 360 };
   std::array<double, 2> s_or_c_lim = { 0, 1 };
   std::array<double, 2> l_lim = { 0, 1 };
-  int n_points = 100;
+  std::size_t n_points = 100;
 
   /**
    * @brief Internal mode for tracking input source.

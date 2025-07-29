@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cmath>
-#include <optional>
 #include <qualpal/color_difference.h>
 #include <qualpal/colors.h>
 #include <qualpal/matrix.h>
@@ -9,12 +8,12 @@
 
 namespace qualpal {
 
-std::vector<int>
-farthestPoints(const int n,
+std::vector<std::size_t>
+farthestPoints(const std::size_t n,
                const std::vector<colors::XYZ>& colors,
                const metrics::MetricType& metric_type,
-               const std::optional<colors::RGB>& bg = std::nullopt,
-               const std::vector<colors::XYZ>& fixed_points = {},
+               const bool has_bg = false,
+               const std::size_t n_fixed = 0,
                const double max_memory = 1);
 
 } // namespace qualpal

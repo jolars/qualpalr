@@ -9,7 +9,7 @@ void
 validatePalette(const std::string& palette)
 {
   std::string delimiter = ":";
-  size_t pos = palette.find(delimiter);
+  std::size_t pos = palette.find(delimiter);
 
   if (pos == std::string::npos) {
     throw std::invalid_argument(
@@ -35,7 +35,7 @@ getPalette(const std::string& palette)
   validatePalette(palette);
 
   std::string delimiter = ":";
-  size_t pos = palette.find(delimiter);
+  std::size_t pos = palette.find(delimiter);
   std::string pkg = palette.substr(0, pos);
   std::string pal = palette.substr(pos + delimiter.length());
 

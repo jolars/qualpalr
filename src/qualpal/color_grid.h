@@ -5,7 +5,7 @@
 
 namespace qualpal {
 
-template<int Dims>
+template<std::size_t Dims>
 class Halton
 {
 public:
@@ -18,7 +18,7 @@ public:
   {
     std::array<double, Dims> result;
 
-    for (int i = 0; i < Dims; i++) {
+    for (std::size_t i = 0; i < Dims; i++) {
       result[i] = halton(counter, primes[i]);
     }
 
@@ -63,13 +63,13 @@ std::vector<ColorType>
 colorGrid(const std::array<double, 2>& angle_lim,
           const std::array<double, 2>& radius_lim,
           const std::array<double, 2>& height_lim,
-          int n_points)
+          std::size_t n_points)
 {
   std::vector<ColorType> colors;
   colors.reserve(n_points);
   Halton<3> halton;
 
-  for (int i = 0; i < n_points; ++i) {
+  for (std::size_t i = 0; i < n_points; ++i) {
     auto vals = halton.next();
     double phi = scaleToInterval(vals[0], angle_lim[0], angle_lim[1]);
     double r = scaleToInterval(vals[1], radius_lim[0], radius_lim[1]);
@@ -86,12 +86,12 @@ inline std::vector<colors::HSL>
 colorGrid(const std::array<double, 2>& hue_lim,
           const std::array<double, 2>& sat_lim,
           const std::array<double, 2>& light_lim,
-          int n_points)
+          std::size_t n_points)
 {
   std::vector<colors::HSL> colors;
   colors.reserve(n_points);
   Halton<3> halton;
-  for (int i = 0; i < n_points; ++i) {
+  for (std::size_t i = 0; i < n_points; ++i) {
     auto vals = halton.next();
     double h = scaleToInterval(vals[0], hue_lim[0], hue_lim[1]);
     double s = scaleToInterval(vals[1], sat_lim[0], sat_lim[1]);
@@ -107,12 +107,12 @@ inline std::vector<colors::LCHab>
 colorGrid(const std::array<double, 2>& hue_lim,
           const std::array<double, 2>& chroma_lim,
           const std::array<double, 2>& light_lim,
-          int n_points)
+          std::size_t n_points)
 {
   std::vector<colors::LCHab> colors;
   colors.reserve(n_points);
   Halton<3> halton;
-  for (int i = 0; i < n_points; ++i) {
+  for (std::size_t i = 0; i < n_points; ++i) {
     auto vals = halton.next();
     double h = scaleToInterval(vals[0], hue_lim[0], hue_lim[1]);
     double c = scaleToInterval(vals[1], chroma_lim[0], chroma_lim[1]);

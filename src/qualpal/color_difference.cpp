@@ -37,5 +37,6 @@ colorDifferenceMatrix(const std::vector<colors::XYZ>& colors,
       return colorDifferenceMatrix(lab_colors, metrics::CIE76{}, max_memory);
     }
   }
+  throw std::invalid_argument("Unsupported metric type");
 }
 } // namespace qualpal

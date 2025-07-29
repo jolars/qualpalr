@@ -27,7 +27,7 @@ public:
    * @param rows Number of rows
    * @param cols Number of columns
    */
-  Matrix(int rows, int cols)
+  Matrix(std::size_t rows, std::size_t cols)
     : rows(rows)
     , cols(cols)
     , data(rows * cols)
@@ -50,7 +50,7 @@ public:
    * @param cols Number of columns
    * @param data Vector containing matrix elements in column-major order
    */
-  Matrix(int rows, int cols, const std::vector<T>& data)
+  Matrix(std::size_t rows, std::size_t cols, const std::vector<T>& data)
     : rows(rows)
     , cols(cols)
     , data(data)
@@ -64,7 +64,10 @@ public:
    * @param col Column index
    * @return Reference to element at (row, col)
    */
-  T& operator()(int row, int col) { return data[col * rows + row]; }
+  T& operator()(std::size_t row, std::size_t col)
+  {
+    return data[col * rows + row];
+  }
 
   /**
    * @brief Access matrix element (const)
@@ -72,7 +75,10 @@ public:
    * @param col Column index
    * @return Const reference to element at (row, col)
    */
-  const T& operator()(int row, int col) const { return data[col * rows + row]; }
+  const T& operator()(std::size_t row, std::size_t col) const
+  {
+    return data[col * rows + row];
+  }
 
   /**
    * @brief Create transpose of this matrix
@@ -81,8 +87,8 @@ public:
   Matrix<T> transpose() const
   {
     Matrix<T> result(cols, rows);
-    for (int i = 0; i < rows; ++i) {
-      for (int j = 0; j < cols; ++j) {
+    for (std::size_t i = 0; i < rows; ++i) {
+      for (std::size_t j = 0; j < cols; ++j) {
         result(j, i) = (*this)(i, j);
       }
     }
@@ -90,13 +96,13 @@ public:
   }
 
   /** @brief Get number of columns */
-  int ncol() const { return cols; }
+  std::size_t ncol() const { return cols; }
 
   /** @brief Get number of rows */
-  int nrow() const { return rows; }
+  std::size_t nrow() const { return rows; }
 
 private:
-  int rows, cols;
+  std::size_t rows, cols;
   std::vector<T> data;
 };
 
@@ -106,7 +112,7 @@ private:
  * @tparam rows Number of rows (compile-time constant)
  * @tparam cols Number of columns (compile-time constant)
  */
-template<typename T, int rows, int cols>
+template<typename T, std::size_t rows, std::size_t cols>
 class FixedMatrix
 {
 public:
@@ -124,9 +130,9 @@ public:
     : data{}
   {
     auto it = list.begin();
-    for (int i = 0; i < rows && it != list.end(); ++i, ++it) {
+    for (std::size_t i = 0; i < rows && it != list.end(); ++i, ++it) {
       auto col_it = it->begin();
-      for (int j = 0; j < cols && col_it != it->end(); ++j, ++col_it) {
+      for (std::size_t j = 0; j < cols && col_it != it->end(); ++j, ++col_it) {
         data[i * cols + j] = *col_it;
       }
     }
@@ -139,8 +145,8 @@ public:
   constexpr FixedMatrix<T, cols, rows> t() const
   {
     FixedMatrix<T, cols, rows> result;
-    for (int i = 0; i < rows; ++i) {
-      for (int j = 0; j < cols; ++j) {
+    for (std::size_t i = 0; i < rows; ++i) {
+      for (std::size_t j = 0; j < cols; ++j) {
         result(j, i) = (*this)(i, j);
       }
     }
@@ -153,7 +159,10 @@ public:
    * @param col Column index
    * @return Reference to element at (row, col)
    */
-  constexpr T& operator()(int row, int col) { return data[row * cols + col]; }
+  constexpr T& operator()(std::size_t row, std::size_t col)
+  {
+    return data[row * cols + col];
+  }
 
   /**
    * @brief Access matrix element (const)
@@ -161,7 +170,7 @@ public:
    * @param col Column index
    * @return Const reference to element at (row, col)
    */
-  constexpr const T& operator()(int row, int col) const
+  constexpr const T& operator()(std::size_t row, std::size_t col) const
   {
     return data[row * cols + col];
   }
@@ -174,7 +183,7 @@ public:
   constexpr FixedMatrix<T, rows, cols> operator*(const T& scalar) const
   {
     FixedMatrix<T, rows, cols> result;
-    for (int i = 0; i < rows * cols; ++i) {
+    for (std::size_t i = 0; i < rows * cols; ++i) {
       result.data[i] = this->data[i] * scalar;
     }
     return result;
@@ -188,8 +197,8 @@ public:
   constexpr std::array<T, rows> operator*(const std::array<T, cols>& vec) const
   {
     std::array<T, rows> result{};
-    for (int i = 0; i < rows; ++i) {
-      for (int j = 0; j < cols; ++j) {
+    for (std::size_t i = 0; i < rows; ++i) {
+      for (std::size_t j = 0; j < cols; ++j) {
         result[i] += (*this)(i, j) * vec[j];
       }
     }
@@ -202,15 +211,15 @@ public:
    * @param other The matrix to multiply with
    * @return Result matrix with dimensions (rows × other_cols)
    */
-  template<int other_cols>
+  template<std::size_t other_cols>
   constexpr FixedMatrix<T, rows, other_cols> operator*(
     const FixedMatrix<T, cols, other_cols>& other) const
   {
     FixedMatrix<T, rows, other_cols> result;
     result.zeros();
-    for (int i = 0; i < rows; ++i) {
-      for (int j = 0; j < other_cols; ++j) {
-        for (int k = 0; k < cols; ++k) {
+    for (std::size_t i = 0; i < rows; ++i) {
+      for (std::size_t j = 0; j < other_cols; ++j) {
+        for (std::size_t k = 0; k < cols; ++k) {
           result(i, j) += (*this)(i, k) * other(k, j);
         }
       }
@@ -227,9 +236,9 @@ public:
   {
     assert(cols == other.nrow());
     Matrix<T> result(rows, other.ncol());
-    for (int i = 0; i < rows; ++i) {
-      for (int j = 0; j < other.ncol(); ++j) {
-        for (int k = 0; k < cols; ++k) {
+    for (std::size_t i = 0; i < rows; ++i) {
+      for (std::size_t j = 0; j < other.ncol(); ++j) {
+        for (std::size_t k = 0; k < cols; ++k) {
           result(i, j) += (*this)(i, k) * other(k, j);
         }
       }
@@ -246,7 +255,7 @@ public:
     const FixedMatrix<T, rows, cols>& other) const
   {
     FixedMatrix<T, rows, cols> result;
-    for (int i = 0; i < rows * cols; ++i) {
+    for (std::size_t i = 0; i < rows * cols; ++i) {
       result.data[i] = this->data[i] + other.data[i];
     }
     return result;
@@ -261,7 +270,7 @@ public:
     const FixedMatrix<T, rows, cols>& other) const
   {
     FixedMatrix<T, rows, cols> result;
-    for (int i = 0; i < rows * cols; ++i) {
+    for (std::size_t i = 0; i < rows * cols; ++i) {
       result.data[i] = this->data[i] - other.data[i];
     }
     return result;

@@ -45,8 +45,8 @@ RGB::RGB(const std::string& hex)
   assert(hex[0] == '#' && "Hex string must start with '#'");
 
   // Assert that the string length is either 4 or 7
-  assert(hex.length() == 4 ||
-         hex.length() == 7 && "Hex string length be 4 or 7");
+  assert((hex.length() == 4 || hex.length() == 7) &&
+         "Hex string length be 4 or 7");
 
   if (hex.length() == 4) {
     ss << std::hex << hex.substr(1, 1) << hex.substr(1, 1);
