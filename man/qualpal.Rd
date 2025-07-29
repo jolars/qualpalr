@@ -10,7 +10,8 @@ qualpal(
   cvd = c("protan", "deutan", "tritan"),
   cvd_severity = 0,
   bg = NULL,
-  metric = c("din99d", "ciede2000", "cie76")
+  metric = c("din99d", "ciede2000", "cie76"),
+  extend = NULL
 )
 }
 \arguments{
@@ -53,6 +54,12 @@ via \code{\link[grDevices]{col2rgb}} is acceptable, including hex colors.}
 
 \item{metric}{The color metric to use for the color distance
 matrix.}
+
+\item{extend}{A palette of colors to use as a fixed set of initial
+colors in the palette, which can be either a matrix or data frame
+of RGB values (with values between 0 and 1) or a character vector
+of hex colors (or any other format that's acceptable in
+\code{\link[grDevices:col2rgb]{grDevices::col2rgb()}}).}
 }
 \value{
 A list of class \code{qualpal} with the following

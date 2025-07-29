@@ -46,3 +46,17 @@ test_that("proper use of qualpal() works", {
   expect_silent(qualpal(9, bg = "#00ff00"))
   expect_silent(qualpal(9, metric = "ciede2000"))
 })
+
+test_that("extending a palette", {
+  base_pal <- qualpal(3)
+
+  base_pal_hex <- base_pal$hex
+  base_pal_rgb <- t(col2rgb(base_pal_hex)) / 255
+
+  expect_no_failure(qualpal(3, extend = base_pal_hex))
+  expect_no_failure(qualpal(5, extend = base_pal_hex))
+  expect_no_failure(qualpal(9, extend = base_pal_rgb))
+
+  expect_error(qualpal(5, extend = "notacolor"))
+  expect_error(qualpal(2, extend = base_pal_hex))
+})

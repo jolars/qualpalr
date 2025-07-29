@@ -87,7 +87,6 @@ organize_output(const std::vector<qualpal::colors::RGB> colors)
 
   std::vector<std::string> hex_out;
 
-  // for (const auto& rgb : selected_colors) {
   for (int i = 0; i < n; ++i) {
     RGB rgb = colors[i];
     DIN99d din99d(rgb);
@@ -163,7 +162,21 @@ qualpal_cpp_rgb(int n,
   }
 
   auto qp = setup_palette(options);
-  auto selected_colors = qp.setInputRGB(rgb_colors).generate(n);
+  qp.setInputRGB(rgb_colors);
+
+  auto extend = Rcpp::as<Rcpp::NumericMatrix>(options["extend"]);
+
+  std::vector<qualpal::colors::RGB> selected_colors;
+
+  if (extend.nrow() > 0) {
+    std::vector<qualpal::colors::RGB> base_colors;
+    for (int i = 0; i < extend.nrow(); ++i) {
+      base_colors.emplace_back(extend(i, 0), extend(i, 1), extend(i, 2));
+    }
+    selected_colors = qp.extend(base_colors, n);
+  } else {
+    selected_colors = qp.generate(n);
+  }
 
   return organize_output(selected_colors);
 }
@@ -176,6 +189,7 @@ qualpal_cpp_colorspace(int n,
                        const Rcpp::List& options)
 {
   auto qp = setup_palette(options);
+  auto extend = Rcpp::as<Rcpp::NumericMatrix>(options["extend"]);
 
   std::vector<double> h_lim_vec =
     Rcpp::as<std::vector<double>>(hsl_colorspace["h"]);
@@ -188,10 +202,20 @@ qualpal_cpp_colorspace(int n,
   std::array<double, 2> s_lim = { s_lim_vec[0], s_lim_vec[1] };
   std::array<double, 2> l_lim = { l_lim_vec[0], l_lim_vec[1] };
 
-  auto selected_colors = qualpal::Qualpal{}
-                           .setInputColorspace(h_lim, s_lim, l_lim)
-                           .setColorspaceSize(n_points)
-                           .generate(n);
+  qp.setInputColorspace(h_lim, s_lim, l_lim);
+  qp.setColorspaceSize(n_points);
+
+  std::vector<qualpal::colors::RGB> selected_colors;
+
+  if (extend.nrow() > 0) {
+    std::vector<qualpal::colors::RGB> base_colors;
+    for (int i = 0; i < extend.nrow(); ++i) {
+      base_colors.emplace_back(extend(i, 0), extend(i, 1), extend(i, 2));
+    }
+    selected_colors = qp.extend(base_colors, n);
+  } else {
+    selected_colors = qp.generate(n);
+  }
 
   return organize_output(selected_colors);
 }
@@ -202,8 +226,21 @@ qualpal_cpp_palette(int n,
                     const std::string& palette,
                     const Rcpp::List& options)
 {
+  auto extend = Rcpp::as<Rcpp::NumericMatrix>(options["extend"]);
   auto qp = setup_palette(options);
-  auto selected_colors = qp.setInputPalette(palette).generate(n);
+  qp.setInputPalette(palette);
+
+  std::vector<qualpal::colors::RGB> selected_colors;
+
+  if (extend.nrow() > 0) {
+    std::vector<qualpal::colors::RGB> base_colors;
+    for (int i = 0; i < extend.nrow(); ++i) {
+      base_colors.emplace_back(extend(i, 0), extend(i, 1), extend(i, 2));
+    }
+    selected_colors = qp.extend(base_colors, n);
+  } else {
+    selected_colors = qp.generate(n);
+  }
 
   return organize_output(selected_colors);
 }

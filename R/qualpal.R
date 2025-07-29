@@ -68,6 +68,11 @@
 #'   via \code{\link[grDevices]{col2rgb}} is acceptable, including hex colors.
 #' @param metric The color metric to use for the color distance
 #'   matrix.
+#' @param extend A palette of colors to use as a fixed set of initial
+#'   colors in the palette, which can be either a matrix or data frame
+#'   of RGB values (with values between 0 and 1) or a character vector
+#'   of hex colors (or any other format that's acceptable in
+#'   [grDevices::col2rgb()]).
 #'
 #' @return A list of class \code{qualpal} with the following
 #'   components.
@@ -114,7 +119,8 @@ qualpal <- function(
   cvd = c("protan", "deutan", "tritan"),
   cvd_severity = 0,
   bg = NULL,
-  metric = c("din99d", "ciede2000", "cie76")
+  metric = c("din99d", "ciede2000", "cie76"),
+  extend = NULL
 ) {
   UseMethod("qualpal", colorspace)
 }
