@@ -27,3 +27,4 @@
 ^flake\.nix$
 ^flake\.lock$
 ^\.envrc$
+^.clang-format$
