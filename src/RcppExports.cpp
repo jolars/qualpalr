@@ -85,6 +85,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_palette_cpp
+std::vector<std::string> get_palette_cpp(const std::string& palette);
+RcppExport SEXP _qualpalr_get_palette_cpp(SEXP paletteSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type palette(paletteSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_palette_cpp(palette));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_qualpalr_qualpal_cpp_rgb", (DL_FUNC) &_qualpalr_qualpal_cpp_rgb, 3},
@@ -93,6 +104,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qualpalr_convert_colors", (DL_FUNC) &_qualpalr_convert_colors, 3},
     {"_qualpalr_analyze_palette_cpp", (DL_FUNC) &_qualpalr_analyze_palette_cpp, 2},
     {"_qualpalr_list_palettes_cpp", (DL_FUNC) &_qualpalr_list_palettes_cpp, 0},
+    {"_qualpalr_get_palette_cpp", (DL_FUNC) &_qualpalr_get_palette_cpp, 1},
     {NULL, NULL, 0}
 };
 
