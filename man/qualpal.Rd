@@ -41,7 +41,8 @@ In these cases, \code{qualpal()} will generate
 \item A \code{\link{character}} vector of length one in
 the form of "Source:Palette", where \emph{Domain} is the name of a
 source that provides a color palette, and \emph{Palette} is the name of
-a color palette from that source.
+a color palette from that source. See \code{\link[=list_palettes]{list_palettes()}} for
+available palettes.
 }}
 
 \item{cvd}{Color vision deficiency adaptation. Use \code{cvd_severity}
@@ -145,5 +146,5 @@ qualpal(3, list(h = c(-20, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
 
 }
 \seealso{
-\code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}}
+\code{\link[=plot.qualpal]{plot.qualpal()}}, \code{\link[=pairs.qualpal]{pairs.qualpal()}}, \code{\link[=list_palettes]{list_palettes()}}
 }

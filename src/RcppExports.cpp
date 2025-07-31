@@ -75,6 +75,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// list_palettes_cpp
+std::map<std::string, std::vector<std::string>> list_palettes_cpp();
+RcppExport SEXP _qualpalr_list_palettes_cpp() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(list_palettes_cpp());
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_qualpalr_qualpal_cpp_rgb", (DL_FUNC) &_qualpalr_qualpal_cpp_rgb, 3},
@@ -82,6 +92,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_qualpalr_qualpal_cpp_palette", (DL_FUNC) &_qualpalr_qualpal_cpp_palette, 3},
     {"_qualpalr_convert_colors", (DL_FUNC) &_qualpalr_convert_colors, 3},
     {"_qualpalr_analyze_palette_cpp", (DL_FUNC) &_qualpalr_analyze_palette_cpp, 2},
+    {"_qualpalr_list_palettes_cpp", (DL_FUNC) &_qualpalr_list_palettes_cpp, 0},
     {NULL, NULL, 0}
 };
 

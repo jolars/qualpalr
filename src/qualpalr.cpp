@@ -1,4 +1,5 @@
 #include "convert.h"
+#include "qualpal/palettes.h"
 #include <Rcpp.h>
 #include <array>
 #include <qualpal.h>
@@ -401,4 +402,14 @@ analyze_palette_cpp(const Rcpp::NumericMatrix& rgb_in,
   // out["hex"] = hex_colors;
 
   return out;
+}
+
+// [[Rcpp::export]]
+std::map<std::string, std::vector<std::string>>
+list_palettes_cpp()
+{
+  std::map<std::string, std::vector<std::string>> palettes =
+    qualpal::listAvailablePalettes();
+
+  return palettes;
 }

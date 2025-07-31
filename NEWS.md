@@ -26,6 +26,10 @@
   added to simplify comparisons with other packages that use LCHab
   as input. We still recommend using the HSL color space, which is
   more intuitive for most users.
+- There's a new function, `list_palettes()`, which lists all built-in palettes
+  available in the package, which can thus be used in the new character method
+  for `qualpal()`. This includes the predefined palettes from ColorBrewer,
+  Tableau, and other sources.
 
 ## Refactoring
 

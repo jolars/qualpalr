@@ -30,3 +30,7 @@ analyze_palette_cpp <- function(rgb_in, options) {
     .Call(`_qualpalr_analyze_palette_cpp`, rgb_in, options)
 }
 
+list_palettes_cpp <- function() {
+    .Call(`_qualpalr_list_palettes_cpp`)
+}
+
