@@ -11,7 +11,7 @@
 #' normal vision. Each list contains `difference_matrix`, `min_distances`, and
 #' `bg_min_distance`
 #'
-#' @seealso [qualpal()[qualpal()]
+#' @seealso [qualpal()]
 #'
 #' @examples
 #' pal <- qualpal(5)

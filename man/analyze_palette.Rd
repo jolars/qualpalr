@@ -48,5 +48,5 @@ analyze_palette(pal$hex, cvd = "protan", cvd_severity = 0.5)
 
 }
 \seealso{
-[qualpal()\code{\link[=qualpal]{qualpal()}}
+\code{\link[=qualpal]{qualpal()}}
 }
