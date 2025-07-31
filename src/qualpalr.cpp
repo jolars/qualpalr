@@ -413,3 +413,11 @@ list_palettes_cpp()
 
   return palettes;
 }
+
+// [[Rcpp::export]]
+std::vector<std::string>
+get_palette_cpp(const std::string& palette)
+{
+  std::vector<std::string> colors = qualpal::getPalette(palette);
+  return colors;
+}

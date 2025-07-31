@@ -34,3 +34,7 @@ list_palettes_cpp <- function() {
     .Call(`_qualpalr_list_palettes_cpp`)
 }
 
+get_palette_cpp <- function(palette) {
+    .Call(`_qualpalr_get_palette_cpp`, palette)
+}
+

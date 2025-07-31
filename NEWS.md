@@ -30,6 +30,8 @@
   available in the package, which can thus be used in the new character method
   for `qualpal()`. This includes the predefined palettes from ColorBrewer,
   Tableau, and other sources.
+- There's a new function, `get_palette()`, which retrieves a palette
+  by name from the built-in palettes.
 
 ## Refactoring
 
