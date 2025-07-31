@@ -48,7 +48,8 @@
 #'     \item A \code{\link{character}} vector of length one in
 #'       the form of "Source:Palette", where \emph{Domain} is the name of a
 #'       source that provides a color palette, and \emph{Palette} is the name of
-#'       a color palette from that source.
+#'       a color palette from that source. See [list_palettes()] for
+#'       available palettes.
 #'   }
 #'
 #' @param cvd Color vision deficiency adaptation. Use \code{cvd_severity}
@@ -95,7 +96,7 @@
 #'     The minimum pairwise DIN99d color difference among all colors in the
 #'     palette.
 #'   }
-#' @seealso \code{\link{plot.qualpal}}, \code{\link{pairs.qualpal}}
+#' @seealso [plot.qualpal()], [pairs.qualpal()], [list_palettes()]
 #' @examples
 #' # Generate 3 distinct colors from the default color space
 #' qualpal(3)
