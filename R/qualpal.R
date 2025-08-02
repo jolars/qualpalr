@@ -52,12 +52,12 @@
 #'       available palettes.
 #'   }
 #'
-#' @param cvd Color vision deficiency adaptation. Use \code{cvd_severity}
-#'   to set the severity of color vision deficiency to adapt to. Permissible
-#'   values are \code{"protan", "deutan",} and \code{"tritan"}.
-#' @param cvd_severity Severity of color vision deficiency to adapt to. Can take
-#'   any value from 0, for normal vision (the default), and 1, for dichromatic
-#'   vision.
+#' @param cvd Color vision deficiency adaptation. This must be a named
+#'   vector with names `protan`, `deutan`, and `tritan` and values
+#'   between 0 and 1, where 0 means no adaptation and 1 means full
+#'   adaptation.
+#' @param cvd_severity DEPRECATED. Use a named `cvd` vector instead, e.g.
+#'  `c(protan = 0.5, deutan = 0.2, tritan = 0)`.
 #' @param bg Backgrouind color to consider (but not include) when
 #'   generating the palette. This is useful to avoid colros that are too
 #'   close to the background/canvas color. If \code{NULL} (the default), the
@@ -110,7 +110,7 @@
 #' qualpal(5, "ColorBrewer:Dark2", cvd = "deutan", cvd_severity = 1)
 #'
 #' # Adapt palette to protanomaly with severity 0.4
-#' qualpal(8, cvd = "protan", cvd_severity = 0.4)
+#' qualpal(8, cvd = c(protan = 0.4))
 #'
 #' # Generate and extend a palette with 3 colors
 #' pal <- qualpal(3)
@@ -125,8 +125,8 @@
 qualpal <- function(
   n,
   colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
-  cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 0,
+  cvd = c(protan = 0, deutan = 0, tritan = 0),
+  cvd_severity,
   bg = NULL,
   metric = c("din99d", "ciede2000", "cie76"),
   extend = NULL

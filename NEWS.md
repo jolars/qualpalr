@@ -32,6 +32,12 @@
   Tableau, and other sources.
 - There's a new function, `get_palette()`, which retrieves a palette
   by name from the built-in palettes.
+- The `cvd` argument now accepts a named numeric vector, which allows specifying
+  the severity of color vision deficiency for each type of deficiency.
+  The names are `"protan"`, `"deuter"`, and `"tritan"`.
+- The `cvd_severity` argument has been deprecated and will be removed
+  in the next major release. The `cvd` argument now handles all cases of color
+  vision deficiency adaptation directly.
 
 ## Refactoring
 

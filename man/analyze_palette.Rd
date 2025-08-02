@@ -16,13 +16,13 @@ analyze_palette(
 \item{palette}{Either a matrix of RGB values (with values between 0 and 1),
 a data frame with RGB values, or a character vector of hex colors.}
 
-\item{cvd}{Color vision deficiency adaptation. Use \code{cvd_severity}
-to set the severity of color vision deficiency to adapt to. Permissible
-values are \code{"protan", "deutan",} and \code{"tritan"}.}
+\item{cvd}{Color vision deficiency adaptation. This must be a named
+vector with names \code{protan}, \code{deutan}, and \code{tritan} and values
+between 0 and 1, where 0 means no adaptation and 1 means full
+adaptation.}
 
-\item{cvd_severity}{Severity of color vision deficiency to adapt to. Can take
-any value from 0, for normal vision (the default), and 1, for dichromatic
-vision.}
+\item{cvd_severity}{DEPRECATED. Use a named \code{cvd} vector instead, e.g.
+\code{c(protan = 0.5, deutan = 0.2, tritan = 0)}.}
 
 \item{bg}{Backgrouind color to consider (but not include) when
 generating the palette. This is useful to avoid colros that are too
