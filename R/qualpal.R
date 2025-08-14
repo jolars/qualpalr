@@ -107,7 +107,7 @@
 #' qualpal(3, "ColorBrewer:Set2")
 #'
 #' # Adapt palette to deuteranopia
-#' qualpal(5, "ColorBrewer:Dark2", cvd = "deutan", cvd_severity = 1)
+#' qualpal(5, "ColorBrewer:Dark2", cvd = c(deutan = 1))
 #'
 #' # Adapt palette to protanomaly with severity 0.4
 #' qualpal(8, cvd = c(protan = 0.4))
