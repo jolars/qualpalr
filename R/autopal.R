@@ -1,4 +1,4 @@
-#' @title Optimize color palette for color vision deficiency
+#' Optimize color palette for color vision deficiency
 #'
 #' **Deprecated**: This function is deprecated and will be removed in a future
 #' release. There is no direct replacement.
@@ -33,6 +33,8 @@
 #' @seealso \code{\link{qualpal-deprecated}}
 NULL
 
+#' Optimize color palette for color vision deficiency
+#'
 #' @rdname qualpal-deprecated
 #' @section \code{autopal}:
 #' This function is deprecated and will be removed in a future release.
