@@ -51,6 +51,8 @@
 <li>The color space (<code>list</code>) method of <code><a href="../reference/qualpal.html">qualpal()</a></code> now accepts a specification in the LCHab (HCL) color space, which is a cylindrical representation of the Lab color space. This is mostly added to simplify comparisons with other packages that use LCHab as input. We still recommend using the HSL color space, which is more intuitive for most users.</li>
 <li>There’s a new function, <code><a href="../reference/list_palettes.html">list_palettes()</a></code>, which lists all built-in palettes available in the package, which can thus be used in the new character method for <code><a href="../reference/qualpal.html">qualpal()</a></code>. This includes the predefined palettes from ColorBrewer, Tableau, and other sources.</li>
 <li>There’s a new function, <code><a href="../reference/get_palette.html">get_palette()</a></code>, which retrieves a palette by name from the built-in palettes.</li>
+<li>The <code>cvd</code> argument now accepts a named numeric vector, which allows specifying the severity of color vision deficiency for each type of deficiency. The names are <code>"protan"</code>, <code>"deuter"</code>, and <code>"tritan"</code>.</li>
+<li>The <code>cvd_severity</code> argument has been deprecated and will be removed in the next major release. The <code>cvd</code> argument now handles all cases of color vision deficiency adaptation directly.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="refactoring-1-0-0">Refactoring<a class="anchor" aria-label="anchor" href="#refactoring-1-0-0"></a></h3>

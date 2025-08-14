@@ -52,8 +52,8 @@ input colors, optionally taking color vision deficiency into account.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">qualpal</span><span class="op">(</span></span>
 <span>  <span class="va">n</span>,</span>
 <span>  colorspace <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span><span class="op">)</span>, s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.5</span><span class="op">)</span>, l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.85</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"protan"</span>, <span class="st">"deutan"</span>, <span class="st">"tritan"</span><span class="op">)</span>,</span>
-<span>  cvd_severity <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>protan <span class="op">=</span> <span class="fl">0</span>, deutan <span class="op">=</span> <span class="fl">0</span>, tritan <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  <span class="va">cvd_severity</span>,</span>
 <span>  bg <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"din99d"</span>, <span class="st">"ciede2000"</span>, <span class="st">"cie76"</span><span class="op">)</span>,</span>
 <span>  extend <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -105,15 +105,15 @@ available palettes.</p></li>
 
 
 <dt id="arg-cvd">cvd<a class="anchor" aria-label="anchor" href="#arg-cvd"></a></dt>
-<dd><p>Color vision deficiency adaptation. Use <code>cvd_severity</code>
-to set the severity of color vision deficiency to adapt to. Permissible
-values are <code>"protan", "deutan",</code> and <code>"tritan"</code>.</p></dd>
+<dd><p>Color vision deficiency adaptation. This must be a named
+vector with names <code>protan</code>, <code>deutan</code>, and <code>tritan</code> and values
+between 0 and 1, where 0 means no adaptation and 1 means full
+adaptation.</p></dd>
 
 
 <dt id="arg-cvd-severity">cvd_severity<a class="anchor" aria-label="anchor" href="#arg-cvd-severity"></a></dt>
-<dd><p>Severity of color vision deficiency to adapt to. Can take
-any value from 0, for normal vision (the default), and 1, for dichromatic
-vision.</p></dd>
+<dd><p>DEPRECATED. Use a named <code>cvd</code> vector instead, e.g.
+<code>c(protan = 0.5, deutan = 0.2, tritan = 0)</code>.</p></dd>
 
 
 <dt id="arg-bg">bg<a class="anchor" aria-label="anchor" href="#arg-bg"></a></dt>
@@ -246,7 +246,7 @@ these new colors.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #fc8d62      24      22</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Adapt palette to deuteranopia</span></span></span>
-<span class="r-in"><span><span class="fu">qualpal</span><span class="op">(</span><span class="fl">5</span>, <span class="st">"ColorBrewer:Dark2"</span>, cvd <span class="op">=</span> <span class="st">"deutan"</span>, cvd_severity <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">qualpal</span><span class="op">(</span><span class="fl">5</span>, <span class="st">"ColorBrewer:Dark2"</span>, cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>deutan <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Colors in the HSL color space </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -267,7 +267,7 @@ these new colors.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #e7298a      26      22      21      20</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Adapt palette to protanomaly with severity 0.4</span></span></span>
-<span class="r-in"><span><span class="fu">qualpal</span><span class="op">(</span><span class="fl">8</span>, cvd <span class="op">=</span> <span class="st">"protan"</span>, cvd_severity <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">qualpal</span><span class="op">(</span><span class="fl">8</span>, cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>protan <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Colors in the HSL color space </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
