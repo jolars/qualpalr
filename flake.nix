@@ -20,56 +20,31 @@
             mkdir -p "$(pwd)/_libs"
             export R_LIBS_USER="$(pwd)/_libs"
           '';
-          packages =
-            # let
-            #   SLOPE = (
-            #     pkgs.rPackages.buildRPackage {
-            #       name = "SLOPE";
-            #       src = ./.;
-            #       propagatedBuildInputs = with pkgs.rPackages; [
-            #         Matrix
-            #         Rcpp
-            #         RcppEigen
-            #         covr
-            #         knitr
-            #         rmarkdown
-            #         scales
-            #         spelling
-            #         testthat
-            #         SparseM
-            #         caret
-            #         e1071
-            #         bigmemory
-            #         BH
-            #       ];
-            #     }
-            #   );
-            # in
-            with pkgs; [
-              bashInteractive
-              autoconf
-              go-task
-              jq
-              llvmPackages.openmp
-              (rWrapper.override {
-                packages = with rPackages; [
-                  devtools
-                  languageserver
-                  glmnet
-                  tidyverse
-                  usethis
-                  knitr
-                  rmarkdown
-                  rhub
-                  spelling
-                  covr
-                  maps
-                  rgl
-                  randtoolbox
-                  Rcpp
-                ];
-              })
-            ];
+          packages = with pkgs; [
+            bashInteractive
+            autoconf
+            go-task
+            jq
+            llvmPackages.openmp
+            (rWrapper.override {
+              packages = with rPackages; [
+                devtools
+                languageserver
+                glmnet
+                tidyverse
+                usethis
+                knitr
+                rmarkdown
+                rhub
+                spelling
+                covr
+                maps
+                rgl
+                randtoolbox
+                Rcpp
+              ];
+            })
+          ];
         };
       }
     );
