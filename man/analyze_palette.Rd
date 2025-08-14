@@ -8,7 +8,7 @@ analyze_palette(
   palette,
   cvd = c(protan = 0, deutan = 0, tritan = 0),
   bg = NULL,
-  metric = c("din99d", "ciede2000", "cie76")
+  metric = c("ciede2000", "din99d", "cie76")
 )
 }
 \arguments{
