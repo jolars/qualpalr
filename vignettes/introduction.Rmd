@@ -10,13 +10,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
 ## Overview
 
 `qualpalr` generates distinct qualitative color palettes, primarily for use in
@@ -24,10 +17,9 @@ R graphics. Given `n` (the number of colors to generate), along with a subset
 in the [hsl color space](https://en.wikipedia.org/wiki/HSL_and_HSV) (a
 cylindrical representation of the RGB color space) `qualpalr` attempts to find
 the `n` colors in the provided color subspace that *maximize the smallest
-pairwise color difference*. This is done by projecting the color subset from the
-HSL color space to the DIN99d space. DIN99d is (approximately) perceptually
-uniform, that is, the euclidean distance between two colors in the space is
-proportional to their perceived difference.
+pairwise color difference*. This is done by computing the pairwise
+color differences between all the input colors, and then
+selecting the `n` colors that maximize the minimum pairwise color difference.
 
 ## Examples
 
@@ -42,13 +34,12 @@ max.
 ```{r}
 #| label: basic-usage
 library(qualpalr)
-pal <- qualpal(n = 5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
+pal <- qualpal(5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
 
 # Adapt the color space to deuteranomaly of severity 0.7
 pal <- qualpal(
-  n = 5,
-  cvd = "deutan",
-  cvd_severity = 0.7
+  5,
+  cvd = c(deutan = 0.7)
 )
 ```
 
@@ -68,13 +59,13 @@ visualize the results.
 # Multidimensional scaling plot
 plot(pal)
 
-# Pairs plot in the Lab color space
+# Pairs plot in the DIN99d color space
 pairs(pal, colorspace = "DIN99d")
 ```
 
 The colors are most easily used in R by accessing `pal$hex`
 
-```{r map, fig.width=5, fig.height=5}
+```{r map}
 #| fig-width: 5
 #| fig-height: 5
 library(maps)
@@ -85,7 +76,7 @@ map("france", fill = TRUE, col = pal$hex, mar = c(0, 0, 0, 0))
 
 `qualpal` begins by generating a point cloud out of the HSL color subspace
 provided by the user, using a quasi-random Halton sequence. Here is the color
-subscape in HSL with settings
+subspace in HSL with settings
 `h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)`.
 
 ```{r}
@@ -136,8 +127,17 @@ plot3d(RGB, col = rgb(RGB), main = "RGB")
 rglwidget()
 ```
 
-It then continues projecting the colors, first into the XYZ space, then CIELab
-(not shown here), and then finally the DIN99d space.
+It then continues projecting the colors into the XYZ space.
+After this, behavior depends on the metric used. By default, qualpal
+uses the CIEDE2000 color difference formula [@sharma2005], which is the current
+state of the art in color difference metrics and standard as 
+defined by the International Commission on Illumination (CIE).
+For illustrative purposes, however, we will show the
+procedure when the DIN99d color space [@cui_uniform_2002] is used instead, which is
+a perceptually uniform color space that 
+uses the Euclidean distance as a color difference metric.
+This makes for a computationally simpler and faster algorithm, but it is not as
+accurate as CIEDE2000. 
 
 ```{r}
 #| label: din-space
@@ -148,12 +148,8 @@ plot3d(DIN99d, col = rgb(RGB), main = "DIN99d")
 rglwidget()
 ```
 
-The DIN99d color space [@cui_uniform_2002] is a Euclidean, perceptually uniform
-color space. This means that the difference between two colors is equal to the
-euclidean distance between them. We take advantage of this by computing a
-distance matrix on all the colors in the subset, finding their pairwise color
-differences. We then apply a power transformation [@huang_power_2015] to fine
-tune these differences.
+When using the DIN99d color space, we also apply a power transformation
+[@huang_power_2015] to fine tune these differences.
 
 To select the `n` colors that the user wanted, we proceed greedily: first, we
 find the two most distant points, then we find the third point that maximizes

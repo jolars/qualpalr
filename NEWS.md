@@ -2,6 +2,9 @@
 
 ## New or Modified Features
 
+- `qualpal()` now uses the CIEDE2000 metric instead of the DIN99d one
+  by default. Users can still specify the DIN99d metric by passing
+  `metric = "din99d"` to `qualpal()`.
 - The `character` method of the `qualpal()` function now accepts
   a name for a predefined palette, such as `"ColorBrewer::Set1"` or
   `"Tableau::10"`, which will use the corresponding palette's

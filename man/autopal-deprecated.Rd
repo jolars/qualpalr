@@ -41,17 +41,15 @@ components.
 A matrix of the colors in the HSL color space.
 }
 \item{RGB}{
-A matrix of the colors in the sRGB color space.} \item{hex}{A
-character vector of the colors in hex notation.} \item{de_DIN99d}{A
-distance matrix of color differences according to delta E DIN99d.
+A matrix of the colors in the sRGB color space.
 }
-\item{DIN99d}{
-A color difference matrix of the colors corrosponding to the
-\code{metric} used.
+\item{hex}{A
+character vector of the colors in hex notation.
 }
 \item{de_DIN99d}{
-The minimum pairwise DIN99d color difference for each color in the
-palette.
+A distance matrix of color differences according to the
+metric used. The name is misleading, bu kept for
+backwards compatibility.
 }
 \item{hex}{
 A character vector of the colors in hex notation.

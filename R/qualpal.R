@@ -4,18 +4,12 @@
 #' tries to select to `n` most distinct colors from the provided
 #' input colors, optionally taking color vision deficiency into account.
 #'
-#' In the default `metric` setting, the colors that the user provides are
-#' projected into the DIN99d color space, which is approximately perceptually
-#' uniform, i.e. color difference is proportional to the euclidean distance
-#' between two colors. A distance matrix is computed and, as an additional
-#' step, is transformed using power transformations discovered by Huang 2015 in
-#' order to fine tune differences.
-#'
-#' \code{qualpal} then searches the distance matrix for the most distinct
-#' colors; it does this iteratively by first selecting a random set of colors
-#' and then iterates over each color, putting colors back into the total set
-#' and replaces it with a new color until it has gone through the whole range
-#' without changing any of the colors.
+#' The main idea is to compute a distance matrix from all the input colors, and
+#' then try to select the most distinct colors based on the color differences
+#' between them. It does this iteratively by first selecting the first `n`
+#' colors from the input colors, then iterates over the palette, putting colors
+#' back into the total set and replaces it with a new color until it has gone
+#' through the whole range without changing any of the colors.
 #'
 #' Optionally, \code{qualpal} can adapt palettes to cater to color vision
 #' deficiency (CVD). This is accomplished by taking the colors
@@ -77,17 +71,15 @@
 #'     A matrix of the colors in the HSL color space.
 #'   }
 #'   \item{RGB}{
-#'     A matrix of the colors in the sRGB color space.} \item{hex}{A
-#'     character vector of the colors in hex notation.} \item{de_DIN99d}{A
-#'     distance matrix of color differences according to delta E DIN99d.
+#'     A matrix of the colors in the sRGB color space.
 #'   }
-#'   \item{DIN99d}{
-#'     A color difference matrix of the colors corrosponding to the
-#'     `metric` used.
+#'   \item{hex}{A
+#'     character vector of the colors in hex notation.
 #'   }
 #'   \item{de_DIN99d}{
-#'     The minimum pairwise DIN99d color difference for each color in the
-#'     palette.
+#'     A distance matrix of color differences according to the
+#'     metric used. The name is misleading, bu kept for
+#'     backwards compatibility.
 #'   }
 #'   \item{hex}{
 #'     A character vector of the colors in hex notation.
@@ -112,9 +104,10 @@
 #' # Adapt palette to protanomaly with severity 0.4
 #' qualpal(8, cvd = c(protan = 0.4))
 #'
-#' # Generate and extend a palette with 3 colors
+#' # Generate and extend a palette with 3 colors, using the DIN99d
+#' # metric
 #' pal <- qualpal(3)
-#' qualpal(5, extend = pal$hex)
+#' qualpal(5, extend = pal$hex, metric = "din99d")
 #'
 #' \dontrun{
 #' # The range of hue cannot exceed 360
@@ -128,7 +121,7 @@ qualpal <- function(
   cvd = c(protan = 0, deutan = 0, tritan = 0),
   cvd_severity,
   bg = NULL,
-  metric = c("din99d", "ciede2000", "cie76"),
+  metric = c("ciede2000", "din99d", "cie76"),
   extend = NULL
 ) {
   UseMethod("qualpal", colorspace)

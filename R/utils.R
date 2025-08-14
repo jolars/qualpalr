@@ -8,7 +8,7 @@ make_options <- function(
   cvd = c(protan = 0, deutan = 0, tritan = 0),
   cvd_severity,
   bg = NULL,
-  metric = c("din99d", "ciede2000", "cie76"),
+  metric = c("ciede2000", "din99d", "cie76"),
   extend = NULL
 ) {
   metric <- match.arg(metric)
