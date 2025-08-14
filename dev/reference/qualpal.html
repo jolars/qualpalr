@@ -55,7 +55,7 @@ input colors, optionally taking color vision deficiency into account.</p>
 <span>  cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>protan <span class="op">=</span> <span class="fl">0</span>, deutan <span class="op">=</span> <span class="fl">0</span>, tritan <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
 <span>  <span class="va">cvd_severity</span>,</span>
 <span>  bg <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"din99d"</span>, <span class="st">"ciede2000"</span>, <span class="st">"cie76"</span><span class="op">)</span>,</span>
+<span>  metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ciede2000"</span>, <span class="st">"din99d"</span>, <span class="st">"cie76"</span><span class="op">)</span>,</span>
 <span>  extend <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -146,20 +146,15 @@ components.</p>
 
 <dt>RGB</dt>
 <dd><p>A matrix of the colors in the sRGB color space.</p></dd>
- <dt>hex</dt>
+
+<dt>hex</dt>
 <dd><p>A
 character vector of the colors in hex notation.</p></dd>
- <dt>de_DIN99d</dt>
-<dd><p>A
-distance matrix of color differences according to delta E DIN99d.</p></dd>
-
-<dt>DIN99d</dt>
-<dd><p>A color difference matrix of the colors corrosponding to the
-<code>metric</code> used.</p></dd>
 
 <dt>de_DIN99d</dt>
-<dd><p>The minimum pairwise DIN99d color difference for each color in the
-palette.</p></dd>
+<dd><p>A distance matrix of color differences according to the
+metric used. The name is misleading, bu kept for
+backwards compatibility.</p></dd>
 
 <dt>hex</dt>
 <dd><p>A character vector of the colors in hex notation.</p></dd>
@@ -171,17 +166,12 @@ palette.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>In the default <code>metric</code> setting, the colors that the user provides are
-projected into the DIN99d color space, which is approximately perceptually
-uniform, i.e. color difference is proportional to the euclidean distance
-between two colors. A distance matrix is computed and, as an additional
-step, is transformed using power transformations discovered by Huang 2015 in
-order to fine tune differences.</p>
-<p><code>qualpal</code> then searches the distance matrix for the most distinct
-colors; it does this iteratively by first selecting a random set of colors
-and then iterates over each color, putting colors back into the total set
-and replaces it with a new color until it has gone through the whole range
-without changing any of the colors.</p>
+    <p>The main idea is to compute a distance matrix from all the input colors, and
+then try to select the most distinct colors based on the color differences
+between them. It does this iteratively by first selecting the first <code>n</code>
+colors from the input colors, then iterates over the palette, putting colors
+back into the total set and replaces it with a new color until it has gone
+through the whole range without changing any of the colors.</p>
 <p>Optionally, <code>qualpal</code> can adapt palettes to cater to color vision
 deficiency (CVD). This is accomplished by taking the colors
 provided by the user and transforming them to colors that someone with CVD
@@ -201,16 +191,16 @@ these new colors.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Colors in the HSL color space </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Hue Saturation Lightness</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #b9d179  76       0.49      0.65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #c8cb70  62       0.47      0.62</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #c96c74 355       0.47      0.61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6f99c5 210       0.43      0.61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #70a3c8 205       0.45      0.61</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DIN99d color difference distance matrix </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         #b9d179 #c96c74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #c96c74      24        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6f99c5      24      23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         #c8cb70 #c96c74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #c96c74      22        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #70a3c8      24      24</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Provide a custom color space</span></span></span>
 <span class="r-in"><span><span class="fu">qualpal</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">35</span>, <span class="fl">360</span><span class="op">)</span>, s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.7</span><span class="op">)</span>, l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.45</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -218,32 +208,32 @@ these new colors.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Colors in the HSL color space </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Hue Saturation Lightness</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #9eba25  71       0.66     0.440</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #b32eb6 298       0.60     0.449</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #062010 143       0.68     0.076</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #9eba25  71       0.66     0.440</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #071e06 117       0.67     0.073</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DIN99d color difference distance matrix </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         #9eba25 #b32eb6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #b32eb6      32        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #062010      29      29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         #b32eb6 #9eba25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #9eba25      32        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #071e06      30      29</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">qualpal</span><span class="op">(</span><span class="fl">3</span>, <span class="st">"ColorBrewer:Set2"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Colors in the HSL color space </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Hue Saturation Lightness</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #8da0cb 222       0.37      0.67</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #a6d854  83       0.63      0.59</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #fc8d62  17       0.96      0.69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #8da0cb 222       0.37      0.67</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DIN99d color difference distance matrix </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         #8da0cb #a6d854</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #a6d854      26        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #fc8d62      24      22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         #a6d854 #fc8d62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #fc8d62      22        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #8da0cb      26      24</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Adapt palette to deuteranopia</span></span></span>
 <span class="r-in"><span><span class="fu">qualpal</span><span class="op">(</span><span class="fl">5</span>, <span class="st">"ColorBrewer:Dark2"</span>, cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>deutan <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -253,67 +243,68 @@ these new colors.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Hue Saturation Lightness</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #e6ab02  44       0.98      0.45</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #a6761d  39       0.70      0.38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #666666   0       0.00      0.40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #1b9e77 162       0.71      0.36</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #7570b3 244       0.31      0.57</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #e7298a 329       0.80      0.53</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DIN99d color difference distance matrix </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         #e6ab02 #a6761d #666666 #7570b3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         #e6ab02 #a6761d #1b9e77 #7570b3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #a6761d      12                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #666666      23      18                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7570b3      29      26      15        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #e7298a      26      22      21      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #1b9e77      24      23                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #7570b3      29      26      24        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #e7298a      26      22      31      20</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Adapt palette to protanomaly with severity 0.4</span></span></span>
 <span class="r-in"><span><span class="fu">qualpal</span><span class="op">(</span><span class="fl">8</span>, cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>protan <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Colors in the HSL color space </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Hue Saturation Lightness</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469   6.7       0.49      0.60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6d6cc9 240.8       0.47      0.61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #c8cb70  61.5       0.47      0.62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #d074a1 330.5       0.50      0.64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7cb697 147.7       0.29      0.60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #eacbc5   9.8       0.48      0.85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #e8bbe5 304.1       0.49      0.82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #81cbd5 187.0       0.50      0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Hue Saturation Lightness</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #c96c74 355       0.47      0.61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #6d6cc9 241       0.47      0.61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #d890cb 310       0.48      0.71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #7dbdcf 193       0.46      0.65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #c1e4d3 150       0.40      0.83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #e5bbbd 357       0.45      0.82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #c49670  27       0.42      0.61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #8acb6c 102       0.48      0.61</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DIN99d color difference distance matrix </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         #cb7469 #6d6cc9 #c8cb70 #d074a1 #7cb697 #eacbc5 #e8bbe5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6d6cc9      23                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #c8cb70      20      29                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #d074a1      12      18      25                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7cb697      23      24      15      25                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #eacbc5      15      23      16      16      19                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #e8bbe5      18      19      23      13      22      12        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #81cbd5      26      21      21      25      11      19      20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         #c96c74 #6d6cc9 #d890cb #7dbdcf #c1e4d3 #e5bbbd #c49670</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #6d6cc9      22                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #d890cb      14      16                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #7dbdcf      25      19      22                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #c1e4d3      25      25      23      13                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #e5bbbd      14      22      13      20      17                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #c49670      12      25      18      22      19      12        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #8acb6c      26      29      27      19      14      22      19</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Generate and extend a palette with 3 colors</span></span></span>
+<span class="r-in"><span><span class="co"># Generate and extend a palette with 3 colors, using the DIN99d</span></span></span>
+<span class="r-in"><span><span class="co"># metric</span></span></span>
 <span class="r-in"><span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu">qualpal</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">qualpal</span><span class="op">(</span><span class="fl">5</span>, extend <span class="op">=</span> <span class="va">pal</span><span class="op">$</span><span class="va">hex</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">qualpal</span><span class="op">(</span><span class="fl">5</span>, extend <span class="op">=</span> <span class="va">pal</span><span class="op">$</span><span class="va">hex</span>, metric <span class="op">=</span> <span class="st">"din99d"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Colors in the HSL color space </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Hue Saturation Lightness</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #b9d179  76       0.49      0.65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #c8cb70  62       0.47      0.62</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #c96c74 355       0.46      0.61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6f99c5 211       0.43      0.60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #e0d0d9 326       0.20      0.85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #ab6dc6 282       0.44      0.60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #70a3c8 205       0.44      0.61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #9467ca 267       0.48      0.60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #e6c5e5 301       0.39      0.84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---------------------------------------- </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DIN99d color difference distance matrix </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         #b9d179 #c96c74 #6f99c5 #e0d0d9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #c96c74      24                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6f99c5      24      23                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #e0d0d9      19      18      17        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #ab6dc6      28      17      17      19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         #c8cb70 #c96c74 #70a3c8 #9467ca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #c96c74      22                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #70a3c8      24      24                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #9467ca      29      19      18        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #e6c5e5      22      18      18      17</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="co"># The range of hue cannot exceed 360</span></span></span>

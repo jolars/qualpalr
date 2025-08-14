@@ -40,7 +40,9 @@
 <h2 class="pkg-version" data-toc-text="1.0.0" id="qualpalr-100">qualpalr 1.0.0<a class="anchor" aria-label="anchor" href="#qualpalr-100"></a></h2>
 <div class="section level3">
 <h3 id="new-or-modified-features-1-0-0">New or Modified Features<a class="anchor" aria-label="anchor" href="#new-or-modified-features-1-0-0"></a></h3>
-<ul><li>The <code>character</code> method of the <code><a href="../reference/qualpal.html">qualpal()</a></code> function now accepts a name for a predefined palette, such as <code>"ColorBrewer::Set1"</code> or <code>"Tableau::10"</code>, which will use the corresponding palette’s colors as input. Passing one of the old colorspace names now throws a warning and will be removed in the next major release.</li>
+<ul><li>
+<code><a href="../reference/qualpal.html">qualpal()</a></code> now uses the CIEDE2000 metric instead of the DIN99d one by default. Users can still specify the DIN99d metric by passing <code>metric = "din99d"</code> to <code><a href="../reference/qualpal.html">qualpal()</a></code>.</li>
+<li>The <code>character</code> method of the <code><a href="../reference/qualpal.html">qualpal()</a></code> function now accepts a name for a predefined palette, such as <code>"ColorBrewer::Set1"</code> or <code>"Tableau::10"</code>, which will use the corresponding palette’s colors as input. Passing one of the old colorspace names now throws a warning and will be removed in the next major release.</li>
 <li>
 <code><a href="../reference/qualpal.html">qualpal()</a></code> now accepts a background color through the <code>bg</code> argument, which is considered when generating the palette, but not included in the fina palette.</li>
 <li>The color difference metric in <code><a href="../reference/qualpal.html">qualpal()</a></code> can now be specified using the <code>metric</code> argument, which accepts either <code>"din99d"</code> (the default), <code>"ciede2000"</code>, or <code>"cie76"</code>. Expect slower performance for <code>"ciede2000"</code>.</li>
