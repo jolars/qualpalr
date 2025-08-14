@@ -15,13 +15,12 @@
 #'
 #' @examples
 #' pal <- qualpal(5)
-#' analyze_palette(pal$hex, cvd = "protan", cvd_severity = 0.5)
+#' analyze_palette(pal$hex, cvd = c(protan = 1))
 #'
 #' @export
 analyze_palette <- function(
   palette,
-  cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 1,
+  cvd = c(protan = 0, deutan = 0, tritan = 0),
   bg = NULL,
   metric = c("din99d", "ciede2000", "cie76")
 ) {
@@ -31,8 +30,7 @@ analyze_palette <- function(
 #' @export
 analyze_palette.matrix <- function(
   palette,
-  cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 1,
+  cvd = c(protan = 0, deutan = 0, tritan = 0),
   bg = NULL,
   metric = c("din99d", "ciede2000", "cie76")
 ) {
@@ -45,7 +43,6 @@ analyze_palette.matrix <- function(
 
   opts <- make_options(
     cvd = cvd,
-    cvd_severity = cvd_severity,
     bg = bg,
     metric = metric
   )
@@ -62,15 +59,13 @@ analyze_palette.matrix <- function(
 #' @export
 analyze_palette.data.frame <- function(
   palette,
-  cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 1,
+  cvd = c(protan = 0, deutan = 0, tritan = 0),
   bg = NULL,
   metric = c("din99d", "ciede2000", "cie76")
 ) {
   analyze_palette(
     as.matrix(palette),
     cvd = cvd,
-    cvd_severity = cvd_severity,
     bg = bg,
     metric = metric
   )
@@ -79,8 +74,7 @@ analyze_palette.data.frame <- function(
 #' @export
 analyze_palette.character <- function(
   palette,
-  cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 1,
+  cvd = c(protan = 0, deutan = 0, tritan = 0),
   bg = NULL,
   metric = c("din99d", "ciede2000", "cie76")
 ) {
@@ -89,7 +83,6 @@ analyze_palette.character <- function(
   analyze_palette(
     pal,
     cvd = cvd,
-    cvd_severity = cvd_severity,
     bg = bg,
     metric = metric
   )

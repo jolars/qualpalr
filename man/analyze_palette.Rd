@@ -6,8 +6,7 @@
 \usage{
 analyze_palette(
   palette,
-  cvd = c("protan", "deutan", "tritan"),
-  cvd_severity = 1,
+  cvd = c(protan = 0, deutan = 0, tritan = 0),
   bg = NULL,
   metric = c("din99d", "ciede2000", "cie76")
 )
@@ -20,9 +19,6 @@ a data frame with RGB values, or a character vector of hex colors.}
 vector with names \code{protan}, \code{deutan}, and \code{tritan} and values
 between 0 and 1, where 0 means no adaptation and 1 means full
 adaptation.}
-
-\item{cvd_severity}{DEPRECATED. Use a named \code{cvd} vector instead, e.g.
-\code{c(protan = 0.5, deutan = 0.2, tritan = 0)}.}
 
 \item{bg}{Backgrouind color to consider (but not include) when
 generating the palette. This is useful to avoid colros that are too
@@ -44,7 +40,7 @@ the differences between the colors in the palette.
 }
 \examples{
 pal <- qualpal(5)
-analyze_palette(pal$hex, cvd = "protan", cvd_severity = 0.5)
+analyze_palette(pal$hex, cvd = c(protan = 1))
 
 }
 \seealso{

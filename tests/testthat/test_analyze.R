@@ -7,7 +7,7 @@ test_that("analyze_palette() works as expected", {
   expect_no_error(analyze_palette(colors))
   expect_no_error(analyze_palette(colors, cvd = NULL))
 
-  res_protan <- analyze_palette(colors, cvd = "protan")
+  res_protan <- analyze_palette(colors, cvd = c("protan" = 0.5))
 
   expect_in("protan", names(res_protan))
 
