@@ -22,7 +22,7 @@ analyze_palette <- function(
   palette,
   cvd = c(protan = 0, deutan = 0, tritan = 0),
   bg = NULL,
-  metric = c("din99d", "ciede2000", "cie76")
+  metric = c("ciede2000", "din99d", "cie76")
 ) {
   UseMethod("analyze_palette")
 }
@@ -32,7 +32,7 @@ analyze_palette.matrix <- function(
   palette,
   cvd = c(protan = 0, deutan = 0, tritan = 0),
   bg = NULL,
-  metric = c("din99d", "ciede2000", "cie76")
+  metric = c("ciede2000", "din99d", "cie76")
 ) {
   stopifnot(
     is.matrix(palette),
@@ -40,6 +40,8 @@ analyze_palette.matrix <- function(
     max(palette) <= 1,
     min(palette) >= 0
   )
+
+  metric <- match.arg(metric)
 
   opts <- make_options(
     cvd = cvd,
@@ -61,7 +63,7 @@ analyze_palette.data.frame <- function(
   palette,
   cvd = c(protan = 0, deutan = 0, tritan = 0),
   bg = NULL,
-  metric = c("din99d", "ciede2000", "cie76")
+  metric = c("ciede2000", "din99d", "cie76")
 ) {
   analyze_palette(
     as.matrix(palette),
@@ -76,7 +78,7 @@ analyze_palette.character <- function(
   palette,
   cvd = c(protan = 0, deutan = 0, tritan = 0),
   bg = NULL,
-  metric = c("din99d", "ciede2000", "cie76")
+  metric = c("ciede2000", "din99d", "cie76")
 ) {
   pal <- t(grDevices::col2rgb(palette, alpha = FALSE)) / 255
 
