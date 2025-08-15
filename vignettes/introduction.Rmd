@@ -12,23 +12,29 @@ vignette: >
 
 ## Overview
 
-`qualpalr` generates distinct qualitative color palettes, primarily for use in
-R graphics. Given `n` (the number of colors to generate), along with a subset
-in the [hsl color space](https://en.wikipedia.org/wiki/HSL_and_HSV) (a
+`qualpalr` generates qualitative color palettes optimized
+for maximally distinct colors. Given `n` (the number of colors to generate), along with a subset
+in the [hsl color space](https://en.wikipedia.org/wiki/HSL_and_HSV)[^1] (a
 cylindrical representation of the RGB color space) `qualpalr` attempts to find
 the `n` colors in the provided color subspace that *maximize the smallest
 pairwise color difference*. This is done by computing the pairwise
 color differences between all the input colors, and then
 selecting the `n` colors that maximize the minimum pairwise color difference.
 
+[^1]: Input can also be a predefined set of colors or a
+  subspace of the LCH~ab~ color space.
+
 ## Examples
 
-`qualpalr` relies on one basic function, `qualpal()`, which takes as its input
+`qualpalr` main workhorse is `qualpal()`, which takes as its input
 `n` (the number of colors to generate) and `colorspace`, which can be either
 
 * a list of numeric vectors `h` (hue from -360 to 360), `s` (saturation from
-0 to 1), and `l` (lightness from 0 to 1), all of length 2, specifying a min and
-max.
+  0 to 1), and `l` (lightness from 0 to 1), all of length 2, specifying a min and
+  max,
+* a list of numeric vectors `h` (hue from -360 to 360), `c` (chroma from
+  0 to 100), and `l` (lightness from 0 to 100), all of length 2, specifying a min and
+  max, or
 * a character vector specifying a predefined color palette.
 
 ```{r}
@@ -36,15 +42,12 @@ max.
 library(qualpalr)
 pal <- qualpal(5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
 
-# Adapt the color space to deuteranomaly of severity 0.7
-pal <- qualpal(
-  5,
-  cvd = c(deutan = 0.7)
-)
+# Adapt the color space to deuteranopia of severity 0.7
+pal <- qualpal(5, cvd = c(deutan = 0.7))
 ```
 
 The resulting object, `pal`, is a list with several color tables and a distance
-matrix based on the DIN99d color difference formula.
+matrix based based on the color difference metric used, by default CIEDE2000 (`metric = ciede2000`).
 
 ```{r}
 #| label: qualpal-list
@@ -127,17 +130,15 @@ plot3d(RGB, col = rgb(RGB), main = "RGB")
 rglwidget()
 ```
 
-It then continues projecting the colors into the XYZ space.
-After this, behavior depends on the metric used. By default, qualpal
-uses the CIEDE2000 color difference formula [@sharma2005], which is the current
-state of the art in color difference metrics and standard as 
-defined by the International Commission on Illumination (CIE).
-For illustrative purposes, however, we will show the
-procedure when the DIN99d color space [@cui_uniform_2002] is used instead, which is
-a perceptually uniform color space that 
-uses the Euclidean distance as a color difference metric.
-This makes for a computationally simpler and faster algorithm, but it is not as
-accurate as CIEDE2000. 
+It then continues projecting the colors into the XYZ space. After this,
+behavior depends on the metric used. By default, qualpal uses the CIEDE2000
+color difference formula [@sharma2005], which is the current state of the art
+in color difference metrics and standard as defined by the International
+Commission on Illumination (CIE). For illustrative purposes, however, we will
+show the procedure when the DIN99d color space [@cui_uniform_2002] is used
+instead, which is a perceptually uniform color space that uses the Euclidean
+distance as a color difference metric. This makes for a computationally simpler
+and faster algorithm, but it is not as accurate as CIEDE2000. 
 
 ```{r}
 #| label: din-space
@@ -154,8 +155,8 @@ When using the DIN99d color space, we also apply a power transformation
 To select the `n` colors that the user wanted, we proceed greedily: first, we
 find the two most distant points, then we find the third point that maximizes
 the minimum distance to the previously selected points. This is repeated until
-`n` points are selected. These points are then returned to the user; below is an
-example using `n = 5`.
+`n` points are selected. These points are then returned to the user; below is
+an example using `n = 5`.
 
 ```{r}
 #| label: selected-points
