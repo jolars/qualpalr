@@ -55,8 +55,7 @@ subspaces and, optionally, adapt it to color deficiency (here *deuteranomaly*).
 ```{r pal2}
 pal2 <- qualpal(
   n = 4,
-  cvd = "deutan",
-  cvd_severity = 0.5
+  cvd = c(deutan = 0.5)
 )
 ```
 
@@ -92,7 +91,7 @@ install.packages("qualpalr")
 The development version can be installed by running
 
 ```{r install_github, eval = FALSE}
-devtools::install_github("jolars/qualpalr")
+pak::pkg_install("jolars/qualpalr")
 ```
 
 ## Versioning

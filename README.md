@@ -38,7 +38,7 @@ We can retrieve the generated colors in hex format
 
 ``` r
 pal$hex
-#> [1] "#c86d75" "#6e6dc8" "#80c76d" "#d1d5df"
+#> [1] "#cd836c" "#9468c9" "#81cbd4" "#c7ca71"
 ```
 
 Alternatively, we can create a palette using one of the predefined color
@@ -48,8 +48,7 @@ subspaces and, optionally, adapt it to color deficiency (here
 ``` r
 pal2 <- qualpal(
   n = 4,
-  cvd = "deutan",
-  cvd_severity = 0.5
+  cvd = c(deutan = 0.5)
 )
 ```
 
@@ -58,10 +57,10 @@ the palette we have generated.
 
 ``` r
 pal2$de_DIN99d
-#>          #c96c74  #6d6cc9  #81cbd5
-#> #6d6cc9 21.60194                  
-#> #81cbd5 25.95410 21.45727         
-#> #c8cb70 22.29156 29.27338 20.55607
+#>          #6d6cc9  #e8bbe5  #cb7469
+#> #e8bbe5 18.55197                  
+#> #cb7469 23.07448 17.62027         
+#> #d1eac2 27.38009 20.50007 23.00737
 ```
 
 The palette may also be plotted with in a multidimensional scaling plot
@@ -93,7 +92,7 @@ install.packages("qualpalr")
 The development version can be installed by running
 
 ``` r
-devtools::install_github("jolars/qualpalr")
+pak::pkg_install("jolars/qualpalr")
 ```
 
 ## Versioning
