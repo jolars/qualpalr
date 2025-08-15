@@ -69,21 +69,20 @@
 <p>We can retrieve the generated colors in hex format</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pal</span><span class="op">$</span><span class="va">hex</span></span>
-<span><span class="co">#&gt; [1] "#c86d75" "#6e6dc8" "#80c76d" "#d1d5df"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "#cd836c" "#9468c9" "#81cbd4" "#c7ca71"</span></span></code></pre></div>
 <p>Alternatively, we can create a palette using one of the predefined color subspaces and, optionally, adapt it to color deficiency (here <em>deuteranomaly</em>).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pal2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/qualpal.html">qualpal</a></span><span class="op">(</span></span>
 <span>  n <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>  cvd <span class="op">=</span> <span class="st">"deutan"</span>,</span>
-<span>  cvd_severity <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>  cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>deutan <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We can look at a distance matrix of the pairwise color differences from the palette we have generated.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pal2</span><span class="op">$</span><span class="va">de_DIN99d</span></span>
-<span><span class="co">#&gt;          #c96c74  #6d6cc9  #81cbd5</span></span>
-<span><span class="co">#&gt; #6d6cc9 21.60194                  </span></span>
-<span><span class="co">#&gt; #81cbd5 25.95410 21.45727         </span></span>
-<span><span class="co">#&gt; #c8cb70 22.29156 29.27338 20.55607</span></span></code></pre></div>
+<span><span class="co">#&gt;          #6d6cc9  #e8bbe5  #cb7469</span></span>
+<span><span class="co">#&gt; #e8bbe5 18.55197                  </span></span>
+<span><span class="co">#&gt; #cb7469 23.07448 17.62027         </span></span>
+<span><span class="co">#&gt; #d1eac2 27.38009 20.50007 23.00737</span></span></code></pre></div>
 <p>The palette may also be plotted with in a multidimensional scaling plot generated from the distance matrix of the colors in the palette.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pal2</span><span class="op">)</span></span></code></pre></div>
@@ -101,7 +100,7 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"qualpalr"</span><span class="op">)</span></span></code></pre></div>
 <p>The development version can be installed by running</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jolars/qualpalr"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"jolars/qualpalr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="versioning">Versioning<a class="anchor" aria-label="anchor" href="#versioning"></a>
