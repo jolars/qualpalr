@@ -65,8 +65,8 @@ Qualpal::setInputColorspace(const std::array<double, 2>& h_lim,
       throw std::invalid_argument("Lightness must be between 0 and 1");
     }
   } else if (space == ColorspaceType::LCHab) {
-    if (h_lim[0] < 0 || h_lim[1] > 360) {
-      throw std::invalid_argument("Hue must be between 0 and 360");
+    if (h_lim[0] < -360 || h_lim[1] > 360) {
+      throw std::invalid_argument("Hue must be between -360 and 360");
     }
 
     if (s_or_c_lim[0] < 0) {
