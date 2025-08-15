@@ -2,11 +2,10 @@
  * @file
  * @brief Qualpal API for generating qualitative color palettes
  *
- * This file defines the Qualpal class, which provides a builder-style interface
- * for configuring and generating maximally distinct color palettes using
- * perceptual color difference in DIN99d color space. The API supports multiple
- * input formats, color vision deficiency simulation, and flexible configuration
- * options.
+ * This file defines the Qualpal class, which provides a builder-style
+ * interface for configuring and generating maximally distinct color palettes
+ * using perceptual color difference. The API supports multiple input formats,
+ * color vision deficiency simulation, and flexible configuration options.
  *
  * Usage example:
  * @code{.cpp}
@@ -92,14 +91,15 @@ public:
   /**
    * @brief Set input colors by sampling HSL colorspace.
    * @param h_lim Hue range in degrees [-360, 360].
-   * @param s_lim Saturation range [0, 1].
-   * @param l_lim Lightness range [0, 1].
+   * @param s_or_c_lim Saturation or Chroma (depending on `ColorspaceType`)
+   * range [0, 1] or >= 0.
+   * @param l_lim Lightness range [0, 1] or [0, 100].
    * @param space Colorspace type
    * @return Reference to this object for chaining.
    * @throws std::invalid_argument for invalid ranges.
    */
   Qualpal& setInputColorspace(const std::array<double, 2>& h_lim,
-                              const std::array<double, 2>& s_lim,
+                              const std::array<double, 2>& s_or_c_lim,
                               const std::array<double, 2>& l_lim,
                               ColorspaceType space = ColorspaceType::HSL);
 
@@ -190,7 +190,7 @@ private:
 
   std::map<std::string, double> cvd;
   std::optional<colors::RGB> bg;
-  metrics::MetricType metric = metrics::MetricType::DIN99d;
+  metrics::MetricType metric = metrics::MetricType::CIEDE2000;
   double max_memory = 1;
   ColorspaceType colorspace_input = ColorspaceType::HSL;
 };

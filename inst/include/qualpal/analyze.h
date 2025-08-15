@@ -60,12 +60,13 @@ using PaletteAnalysisMap = std::map<std::string, PaletteAnalysis>;
  * type.
  */
 PaletteAnalysisMap
-analyzePalette(const std::vector<colors::RGB>& colors,
-               const metrics::MetricType& metric = metrics::MetricType::DIN99d,
-               const std::map<std::string, double>& cvd = { { "deutan", 1.0 },
-                                                            { "protan", 1.0 },
-                                                            { "tritan", 1.0 } },
-               const std::optional<colors::RGB>& bg = std::nullopt,
-               double max_memory = 1.0);
+analyzePalette(
+  const std::vector<colors::RGB>& colors,
+  const metrics::MetricType& metric = metrics::MetricType::CIEDE2000,
+  const std::map<std::string, double>& cvd = { { "deutan", 1.0 },
+                                               { "protan", 1.0 },
+                                               { "tritan", 1.0 } },
+  const std::optional<colors::RGB>& bg = std::nullopt,
+  double max_memory = 1.0);
 
 } // namespace qualpal
