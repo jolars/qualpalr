@@ -137,14 +137,14 @@ for generating color palettes for categorical data. It uses an iterative
 method with random sampling to incrementally build the palette. The
 algorithm is described in the paper by @gramazio2016.
 
-It's based on Python under the hood and the code is available
-[on GitHub](https://github.com/connorgr/colorgorical). The web
-app is, at the time of writing, down, but is otherwise
-located at <http://vrl.cs.brown.edu/color>. Prior to it going down,
-however, I generated a palette using the same HCL color space as 
-for the iWantHue example above. By default, Colorgorical also tries
-to maximize the name difference of the colors, but I have turned that off
-for the sake of thie comparison. The resulting palette is as follows:
+It's based on Python under the hood and the code is available [on
+GitHub](https://github.com/connorgr/colorgorical). The web app is, at the time
+of writing, down, but is otherwise accessible via a link on
+<https://gramaz.io/colorgorical/>. Prior to it going down, however, I generated
+a palette using the same HCL color space as for the iWantHue example above. By
+default, Colorgorical also tries to maximize the name difference of the colors,
+but I have turned that off for the sake of thie comparison. The resulting
+palette is as follows:
 
 ```{r}
 colorgorical <- c("#b4ddd4", "#9b233d", "#2eece6", "#f82387", "#32a190")
