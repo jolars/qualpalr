@@ -1,6 +1,6 @@
 Package: qualpalr
 Title: Automatic Generation of Qualitative Color Palettes
-Version: 0.4.4.9000
+Version: 1.0.0
 Authors@R:
     person(
       "Johan",
