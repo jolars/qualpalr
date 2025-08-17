@@ -44,8 +44,9 @@
 #'       source that provides a color palette, and \emph{Palette} is the name of
 #'       a color palette from that source. See [list_palettes()] for
 #'       available palettes.
+#'     \item A matrix or data frame of RGB values (with values between 0 and
+#'       1).
 #'   }
-#'
 #' @param cvd Color vision deficiency adaptation. This must be a named
 #'   vector with names `protan`, `deutan`, and `tritan` and values
 #'   between 0 and 1, where 0 means no adaptation and 1 means full

@@ -43,6 +43,8 @@ the form of "Source:Palette", where \emph{Domain} is the name of a
 source that provides a color palette, and \emph{Palette} is the name of
 a color palette from that source. See \code{\link[=list_palettes]{list_palettes()}} for
 available palettes.
+\item A matrix or data frame of RGB values (with values between 0 and
+1).
 }}
 
 \item{cvd}{Color vision deficiency adaptation. This must be a named
