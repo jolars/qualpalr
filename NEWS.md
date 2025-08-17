@@ -12,7 +12,7 @@
   now throws a warning and will be removed in the next major release.
 - `qualpal()` now accepts a background color through the `bg` argument,
   which is considered when generating the palette, but not included in the
-  fina palette.
+  final palette.
 - The color difference metric in `qualpal()` can now be specified
   using the `metric` argument, which accepts either `"din99d"` (the default),
   `"ciede2000"`, or `"cie76"`. Expect slower performance for `"ciede2000"`.

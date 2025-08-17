@@ -8,7 +8,7 @@ list_palettes()
 }
 \value{
 A list of available color palettes. Each palette is a named list
-with a charatcer vector.
+with a character vector.
 }
 \description{
 List available color palettes

@@ -143,7 +143,7 @@ of writing, down, but is otherwise accessible via a link on
 <https://gramaz.io/colorgorical/>. Prior to it going down, however, I generated
 a palette using the same HCL color space as for the iWantHue example above. By
 default, Colorgorical also tries to maximize the name difference of the colors,
-but I have turned that off for the sake of thie comparison. The resulting
+but I have turned that off for the sake of this comparison. The resulting
 palette is as follows:
 
 ```{r}

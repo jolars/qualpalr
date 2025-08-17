@@ -53,7 +53,7 @@ adaptation.}
 \item{cvd_severity}{DEPRECATED. Use a named \code{cvd} vector instead, e.g.
 \code{c(protan = 0.5, deutan = 0.2, tritan = 0)}.}
 
-\item{bg}{Backgrouind color to consider (but not include) when
+\item{bg}{Background color to consider (but not include) when
 generating the palette. This is useful to avoid colros that are too
 close to the background/canvas color. If \code{NULL} (the default), the
 background color is not considered at all. Any color that is convertable

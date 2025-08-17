@@ -20,7 +20,7 @@ vector with names \code{protan}, \code{deutan}, and \code{tritan} and values
 between 0 and 1, where 0 means no adaptation and 1 means full
 adaptation.}
 
-\item{bg}{Backgrouind color to consider (but not include) when
+\item{bg}{Background color to consider (but not include) when
 generating the palette. This is useful to avoid colros that are too
 close to the background/canvas color. If \code{NULL} (the default), the
 background color is not considered at all. Any color that is convertable
