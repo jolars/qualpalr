@@ -1,48 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/introduction.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/autopal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pairs.qualpal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.qualpal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/print.qualpal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/qualpal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/qualpalr-package.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://jolars.github.io/qualpalr/404.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/CONDUCT.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/LICENSE-text.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/articles/comparisons.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/articles/index.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/articles/introduction.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/authors.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/index.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/news/index.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/analyze_palette.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/autopal-deprecated.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/convert_colors.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/get_palette.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/index.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/list_palettes.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/pairs.qualpal.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/plot.qualpal.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/print.qualpal.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/qualpal-deprecated.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/qualpal.html</loc></url>
+<url><loc>https://jolars.github.io/qualpalr/reference/qualpalr-package.html</loc></url>
 </urlset>
+
