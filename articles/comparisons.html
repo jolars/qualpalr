@@ -126,19 +126,19 @@ input.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">##         Hue Saturation Lightness</span></span>
 <span><span class="co">## #0081ff 210          1      0.50</span></span>
-<span><span class="co">## #761b00  14          1      0.23</span></span>
-<span><span class="co">## #005700 120          1      0.17</span></span>
+<span><span class="co">## #771b00  14          1      0.23</span></span>
+<span><span class="co">## #005800 120          1      0.17</span></span>
 <span><span class="co">## #00ffb1 162          1      0.50</span></span>
-<span><span class="co">## #ffab6a  26          1      0.71</span></span>
+<span><span class="co">## #ffac6b  26          1      0.71</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  ---------------------------------------- </span></span>
 <span><span class="co">## DIN99d color difference distance matrix </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##         #0081ff #761b00 #005700 #00ffb1</span></span>
-<span><span class="co">## #761b00      31                        </span></span>
-<span><span class="co">## #005700      29      24                </span></span>
+<span><span class="co">##         #0081ff #771b00 #005800 #00ffb1</span></span>
+<span><span class="co">## #771b00      31                        </span></span>
+<span><span class="co">## #005800      29      24                </span></span>
 <span><span class="co">## #00ffb1      29      36      26        </span></span>
-<span><span class="co">## #ffab6a      31      24      28      27</span></span></code></pre>
+<span><span class="co">## #ffac6b      31      24      28      27</span></span></code></pre>
 <p>Finally, to compare the two palettes, we can use the
 <code><a href="../reference/analyze_palette.html">analyze_palette()</a></code> function from <strong>qualpalr</strong>,
 which returns a list of analyses of the palettes, one for each type of
@@ -157,15 +157,15 @@ values for the normal vision analysis.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/analyze_palette.html">analyze_palette</a></span><span class="op">(</span><span class="va">pal</span><span class="op">$</span><span class="va">hex</span>, metric <span class="op">=</span> <span class="st">"ciede2000"</span><span class="op">)</span><span class="op">$</span><span class="va">normal</span></span></code></pre></div>
 <pre><code><span><span class="co">## $difference_matrix</span></span>
-<span><span class="co">##          #0081ff  #761b00  #005700  #00ffb1</span></span>
-<span><span class="co">## #761b00 52.69780                           </span></span>
-<span><span class="co">## #005700 60.31205 51.89289                  </span></span>
-<span><span class="co">## #00ffb1 55.50559 84.70701 52.19110         </span></span>
-<span><span class="co">## #ffab6a 52.79782 52.08042 60.01532 51.20163</span></span>
+<span><span class="co">##          #0081ff  #771b00  #005800  #00ffb1</span></span>
+<span><span class="co">## #771b00 52.68595                           </span></span>
+<span><span class="co">## #005800 60.31118 52.20662                  </span></span>
+<span><span class="co">## #00ffb1 55.50559 84.64856 51.73998         </span></span>
+<span><span class="co">## #ffac6b 52.85371 52.06510 59.63868 50.86874</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $min_distances</span></span>
-<span><span class="co">##  #0081ff  #761b00  #005700  #00ffb1  #ffab6a </span></span>
-<span><span class="co">## 52.69780 51.89289 51.89289 51.20163 51.20163 </span></span>
+<span><span class="co">##  #0081ff  #771b00  #005800  #00ffb1  #ffac6b </span></span>
+<span><span class="co">## 52.68595 52.06510 51.73998 50.86874 50.86874 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $bg_min_distance</span></span>
 <span><span class="co">## [1] NaN</span></span></code></pre>
