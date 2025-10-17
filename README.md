@@ -1,10 +1,13 @@
 
+# qualpalr <img src='https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg' align="right" width="139" />
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/jolars/qualpalr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jolars/qualpalr?branch=main)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/qualpalr)](https://cran.r-project.org/package=qualpalr)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.08936/status.svg)](https://doi.org/10.21105/joss.08936)
 <!-- badges: end -->
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -50,6 +53,8 @@ pal2 <- qualpal(
   n = 4,
   cvd = c(deutan = 0.5)
 )
+#> The argument 'cvd_severity' is deprecated and will be
+#>       removed in a future version. Please use a named 'cvd' object instead.
 ```
 
 We can look at a distance matrix of the pairwise color differences from
