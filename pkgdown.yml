@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   comparisons: comparisons.html
   introduction: introduction.html
-last_built: 2025-10-17T11:22Z
+last_built: 2025-10-17T12:31Z
 urls:
   reference: https://jolars.github.io/qualpalr/reference
   article: https://jolars.github.io/qualpalr/articles
