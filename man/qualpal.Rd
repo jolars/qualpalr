@@ -56,7 +56,7 @@ adaptation.}
 \code{c(protan = 0.5, deutan = 0.2, tritan = 0)}.}
 
 \item{bg}{Background color to consider (but not include) when
-generating the palette. This is useful to avoid colros that are too
+generating the palette. This is useful to avoid colors that are too
 close to the background/canvas color. If \code{NULL} (the default), the
 background color is not considered at all. Any color that is convertable
 via \code{\link[grDevices]{col2rgb}} is acceptable, including hex colors.}

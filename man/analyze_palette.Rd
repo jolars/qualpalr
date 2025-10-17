@@ -21,7 +21,7 @@ between 0 and 1, where 0 means no adaptation and 1 means full
 adaptation.}
 
 \item{bg}{Background color to consider (but not include) when
-generating the palette. This is useful to avoid colros that are too
+generating the palette. This is useful to avoid colors that are too
 close to the background/canvas color. If \code{NULL} (the default), the
 background color is not considered at all. Any color that is convertable
 via \code{\link[grDevices]{col2rgb}} is acceptable, including hex colors.}
