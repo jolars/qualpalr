@@ -1,45 +1,19 @@
-year <- sub("-.*", "", meta$Date)
-
-if (!length(year)) {
-  i <- regexpr("(?<=\\s{1})\\d{4}(?=-{1})", meta$Built, perl = TRUE)
-  year <- substring(meta$Built, i, i + 3)
-}
-
-if (!length(year))
-  year <- substr(Sys.Date(),1,4)
-
-pkg <- meta$Package
-vers <- meta$Version
-title <- meta$Title
-
-if (is.null(vers))
-  vers <- packageVersion(pkg)
-
-vers <- paste("R package version", vers)
-
-author <- meta$`Authors@R`
-if (length(author)) {
-  aar <- .read_authors_at_R_field(author)
-  author <- Filter(function(e) {
-    !(is.null(e$given) && is.null(e$family)) && !is.na(match("aut", e$role))
-  }, aar)
-  if (!length(author))
-    author <- Filter(function(e) {
-      !(is.null(e$given) && is.null(e$family)) && !is.na(match("cre", e$role))
-    }, aar)
-}
-
-author <- format(author, include = c("given", "family"))
-if (length(author) > 1L)
-  author <- paste(paste(head(author, -1L), collapse = ", "),
-                  tail(author, 1L), sep = " and ")
-
 bibentry(
-  bibtype = "Manual",
-  title   = paste0("{", pkg, "}: ", title),
-  author  = author,
-  year    = year,
-  note    = vers,
-  url     = "https://CRAN.R-project.org/package=qualpalr",
+  bibtype = "Article",
+  title = "Qualpal: Qualitative Color Palettes for Everyone",
+  author = person(
+    given = "Johan",
+    family = "Larsson",
+    role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0002-4029-5945")
+  ),
+  journal = "Journal of Open Source Software",
+  year = "2025",
+  volume = "10",
+  number = "114",
+  pages = "8936",
+  doi = "10.21105/joss.08936",
+  issn = "2475-9066",
+  url = "https://joss.theoj.org/papers/10.21105/joss.08936",
   header  = "To cite use of the qualpalr R package in publications, please use:"
 )
