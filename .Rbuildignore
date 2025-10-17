@@ -28,3 +28,4 @@
 ^flake\.lock$
 ^\.envrc$
 ^.clang-format$
+^CITATION.cff$
