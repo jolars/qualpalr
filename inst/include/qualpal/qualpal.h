@@ -9,13 +9,32 @@
  *
  * Usage example:
  * @code{.cpp}
+ * // Basic usage with RGB input, 6 color palette
  * qualpal::Qualpal qp;
- * qp.setInputRGB(rgb_colors)
- *   .setCvd(cvd_params)
- *   .setBackground(bg)
- *   .setMetric(metric)
+ * qp.setInputRGB(<rgb_colors>)
+ *   .setCvd({{"protan", 0.5}, {"deuter", 0.2}})
+ *   .setBackground("#ffffff")
+ *   .setMetric(qualpal::metrics::MetricType::DIN99d)
  *   .setMemoryLimit(2.0);
- * auto palette = qp.generate(n);
+ * auto palette = qp.generate(6);
+ *
+ * // Use colorspace input (HSL space)
+ * qualpal::Qualpal qp4;
+ * qp4.setInputColorspace({0, 360}, {0.5, 1.0}, {0.3, 0.7});
+ * auto palette4 = qp4.generate(8);
+ *
+ * // Using hex color input
+ * qualpal::Qualpal qp2;
+ * qp2.setInputHex({"#ff0000", "#00ff00", "#0000ff"});
+ * auto palette2 = qp2.generate(3);
+ *
+ * // Use a built-in palette
+ * auto palette3 =
+ *   qualpal::Qualpal{}.setInputPalette("ColorBrewer:Set2").generate(5);
+ *
+ * // Extend an existing palette
+ * std::vector<qualpal::colors::RGB> base{ "#ff0000", "#a9ef93", "#ffe302" };
+ * auto pal_extended = qualpal::Qualpal{}.extend(base, 3); // base + 3 new
  * @endcode
  */
 
@@ -67,7 +86,8 @@ public:
 
   /**
    * @brief Set input colors from a vector of RGB values.
-   * @param colors Vector of RGB colors to use as input.
+   * @param colors Vector of RGB colors to use as input. Each
+   * channel should be in [0, 1].
    * @return Reference to this object for chaining.
    */
   Qualpal& setInputRGB(const std::vector<colors::RGB>& colors);
@@ -89,7 +109,7 @@ public:
   Qualpal& setInputPalette(const std::string& palette_name);
 
   /**
-   * @brief Set input colors by sampling HSL colorspace.
+   * @brief Set input colors by sampling a colorspace (HSL or LCHab).
    * @param h_lim Hue range in degrees [-360, 360].
    * @param s_or_c_lim Saturation or Chroma (depending on `ColorspaceType`)
    * range [0, 1] or >= 0.
@@ -105,9 +125,12 @@ public:
 
   /**
    * @brief Set color vision deficiency simulation parameters.
-   * @param cvd_params Map of {"protanomaly"|"deutananomaly"|"tritanomaly" ->
-   * severity [0,1]}.
+   * @param cvd_params Map of CVD type to severity, e.g., {{"protan", 0.5},
+   * {"deutan", 0.2}}. Valid keys: "protan", "deutan", "tritan". Severity must
+   * be in [0, 1].
    * @return Reference to this object for chaining.
+   * @throws std::invalid_argument if an invalid key or out-of-range severity is
+   * provided.
    */
   Qualpal& setCvd(const std::map<std::string, double>& cvd_params);
 
@@ -134,7 +157,8 @@ public:
   Qualpal& setMemoryLimit(double gb);
 
   /**
-   * @brief Set the number of points in the colorspace grid for HSL input.
+   * @brief Set the number of points in the colorspace grid for HSL and LCHab
+   * input.
    * @param n_points Number of points to sample in the colorspace grid.
    * @return Reference to this object for chaining.
    * @throws std::invalid_argument if n_points <= 0.
@@ -144,7 +168,7 @@ public:
   /**
    * @brief Generate a qualitative color palette with the configured options.
    * @param n Number of colors to generate.
-   * @return Vector of n selected RGB colors.
+   * @return Vector of n selected RGB colors, each channel in [0, 1].
    * @throws std::runtime_error if no input source is configured.
    * @throws std::invalid_argument for invalid configuration.
    */
@@ -153,8 +177,9 @@ public:
   /**
    * @brief Extend an existing palette by adding n new colors.
    * @param palette Existing palette (RGB colors) to keep fixed.
-   * @param n Size of the new palette to generate, which includes
-   * the existing palette.
+   * @param n Total size of the new palette to generate, including
+   * existing colors. In other words, the new palette will have
+   * `n` colors.
    * @return Vector of palette + n new RGB colors.
    */
   std::vector<colors::RGB> extend(const std::vector<colors::RGB>& palette,
@@ -174,7 +199,7 @@ private:
   std::array<double, 2> h_lim = { 0, 360 };
   std::array<double, 2> s_or_c_lim = { 0, 1 };
   std::array<double, 2> l_lim = { 0, 1 };
-  std::size_t n_points = 100;
+  std::size_t n_points = 1000;
 
   /**
    * @brief Internal mode for tracking input source.

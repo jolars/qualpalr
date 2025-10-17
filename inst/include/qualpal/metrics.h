@@ -1,10 +1,13 @@
 /**
  * @file
- * @brief Color difference metrics for qualpal
+ * @brief Color difference metrics for qualpal.
  *
- * This file contains various color difference calculation methods that can be
- * used with the colorDifferenceMatrix function to compute perceptual color
- * differences.
+ * Provides classes and functions for computing perceptual color differences
+ * using standard metrics (DIN99d, CIE76, CIEDE2000). These metrics are used
+ * for palette analysis, selection, and color distinguishability evaluation.
+ *
+ * All metrics are callable objects (functors) and can be used with
+ * colorDifferenceMatrix() and palette generation algorithms.
  */
 
 #pragma once
@@ -16,21 +19,21 @@
 namespace qualpal {
 
 /**
- * @brief Color difference metrics for perceptual color comparison
+ * @brief Color difference metrics for perceptual color comparison.
  *
- * This namespace contains various color difference calculation methods that
- * quantify the perceptual difference between colors. These metrics are used
- * with algorithms like farthestPoints() to select visually distinct color
- * palettes.
+ * Contains functor classes implementing standard color difference formulas
+ * (DIN99d, CIE76, CIEDE2000) for quantifying perceptual differences between
+ * colors. Used in palette selection (e.g., farthestPoints()), palette analysis,
+ * and color distinguishability evaluation.
  *
- * All metric classes follow the same interface pattern:
- * - Callable with operator() taking two color objects
- * - Template-based to accept any color type that can be converted to the
- *   required color space
- * - Return a numeric difference value (higher = more different)
+ * All metric classes:
+ * - Are callable with operator() taking two color objects.
+ * - Are template-based to accept any color type convertible to the required
+ * color space.
+ * - Return a numeric difference value (Delta E; higher = more different).
  *
- * @see colorDifferenceMatrix() for computing full distance matrices
- * @see farthestPoints() for palette selection using these metrics
+ * @see colorDifferenceMatrix() for computing full distance matrices.
+ * @see farthestPoints() for palette selection using these metrics.
  */
 namespace metrics {
 namespace detail {
@@ -74,10 +77,15 @@ class Lab;
 class DIN99d;
 
 /**
- * @brief Supported color difference metrics for palette generation.
+ * @brief Supported color difference metrics for palette generation and
+ * analysis.
  *
- * Use this enum to select which color difference formula to use
- * in qualpal algorithms and CLI.
+ * Use this enum to select the color difference formula for qualpal algorithms,
+ * palette analysis, and CLI tools.
+ *
+ * - DIN99d: Perceptually uniform metric, robust for small differences.
+ * - CIE76: Simple Euclidean distance in Lab space (Delta E 1976).
+ * - CIEDE2000: State-of-the-art perceptual metric (Delta E 2000).
  */
 enum class MetricType
 {
@@ -87,10 +95,19 @@ enum class MetricType
 };
 
 /**
- * @brief DIN99d color difference with optional power transformation
+ * @brief DIN99d color difference metric with optional power transformation.
  *
- * Calculates Euclidean distance in DIN99d color space, with optional
- * power transformation for improved perceptual uniformity.
+ * Computes the Euclidean distance between two colors in DIN99d color space.
+ * Optionally applies a power transformation for improved perceptual uniformity.
+ *
+ * @tparam ColorType1, ColorType2 Any color type convertible to colors::DIN99d.
+ *
+ * @param use_power_transform Whether to apply power transformation (default:
+ * true).
+ * @param power Power value for transformation (default: 0.74).
+ * @param scale Scale factor after transformation (default: 1.28).
+ *
+ * @see qualpal::colors::DIN99d
  */
 class DIN99d
 {
@@ -139,10 +156,15 @@ public:
 };
 
 /**
- * @brief CIE76 (Delta E 1976) color difference
+ * @brief CIE76 (Delta E 1976) color difference metric.
  *
- * Standard CIE76 color difference formula using Euclidean distance in CIE Lab
- * space.
+ * Computes the Euclidean distance between two colors in CIE Lab space.
+ * This is the simplest color difference formula, but less perceptually accurate
+ * than DIN99d or CIEDE2000.
+ *
+ * @tparam ColorType1, ColorType2 Any color type convertible to colors::Lab.
+ *
+ * @see qualpal::colors::Lab
  */
 struct CIE76
 {
@@ -163,10 +185,22 @@ struct CIE76
 };
 
 /**
- * @brief CIEDE2000 (Delta E 2000) color difference
+ * @brief CIEDE2000 (Delta E 2000) color difference metric.
  *
- * CIEDE2000 color difference formula
- * space.
+ * Computes the perceptual color difference between two colors using the
+ * CIEDE2000 formula, the most accurate standard for perceptual color
+ * difference. Allows optional weighting factors for lightness, chroma, and hue.
+ *
+ * While most accurate, this is also the most computationally intensive
+ * of the metrics.
+ *
+ * @tparam ColorType1, ColorType2 Any color type convertible to colors::Lab.
+ *
+ * @param K_L Lightness weighting factor (default: 1.0).
+ * @param K_C Chroma weighting factor (default: 1.0).
+ * @param K_H Hue weighting factor (default: 1.0).
+ *
+ * @see qualpal::colors::Lab
  */
 class CIEDE2000
 {

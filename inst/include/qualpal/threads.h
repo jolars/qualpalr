@@ -14,20 +14,25 @@
 namespace qualpal {
 
 /**
- * @brief Manages OpenMP thread settings across qualpal
+ * @brief Centralized management of thread settings for parallel computations.
  *
- * This class provides a centralized way to control thread settings for parallel
- * computations. It handles both OpenMP and non-OpenMP builds, defaulting to
- * sequential execution when OpenMP is not available.
+ * The Threads class provides a unified interface to control the number of
+ * threads used for parallel computations throughout qualpal. It supports both
+ * OpenMP and non-OpenMP builds:
+ * - When OpenMP is available, it sets and queries the OpenMP thread count.
+ * - When OpenMP is not available, all computations run sequentially
+ * (single-threaded).
  *
- * Thread count defaults to half of the available threads (typically the number
- * of physical CPU cores) to avoid performance degradation from hyperthreading
- * when using Eigen.
+ * By default, the thread count is set to half the number of available hardware
+ * threads (typically the number of physical CPU cores), but can be changed at
+ * runtime.
  *
- * Usage:
+ * @note This class is not thread-safe. Set the thread count before starting
+ * parallel work.
+ *
  * @code
- * Threads::set(4);  // Set to use 4 threads
- * std::size_t n = Threads::get();  // Get current thread count
+ * qualpal::Threads::set(4);  // Set to use 4 threads
+ * std::size_t n = qualpal::Threads::get();  // Get current thread count
  * @endcode
  */
 class Threads
@@ -37,6 +42,8 @@ public:
    * @brief Set the number of threads to use for parallel computations
    *
    * @param n Number of threads. Must be positive.
+   * @throws std::invalid_argument if n is zero.
+   * @note When OpenMP is enabled, this sets the OpenMP thread count globally.
    */
   static void set(const std::size_t n)
   {
@@ -51,16 +58,17 @@ public:
   }
 
   /**
-   * @brief Get the current number of threads
+   * @brief Get the current number of threads used for parallel computations.
    *
-   * @return Current thread count
+   * @return The current thread count as set by set(), or the default value.
    */
   static std::size_t get() { return num_threads; }
 
 private:
 #ifdef _OPENMP
-  /// Number of threads to use. Defaults to half of max threads,
-  /// which is typically the number of physical CPU cores.
+  /// Number of threads to use for parallel computations.
+  /// Defaults to half of the maximum available threads (typically the number of
+  /// physical CPU cores).
   inline static std::size_t num_threads =
     std::max(1, omp_get_max_threads() / 2);
 #else

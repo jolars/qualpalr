@@ -249,9 +249,9 @@ RGB::hex() const
   std::stringstream ss;
 
   ss << "#" << std::hex << std::setfill('0');
-  ss << std::setw(2) << static_cast<int>(this->r() * 255);
-  ss << std::setw(2) << static_cast<int>(this->g() * 255);
-  ss << std::setw(2) << static_cast<int>(this->b() * 255);
+  ss << std::setw(2) << static_cast<int>(std::round(this->r() * 255));
+  ss << std::setw(2) << static_cast<int>(std::round(this->g() * 255));
+  ss << std::setw(2) << static_cast<int>(std::round(this->b() * 255));
 
   return ss.str();
 }

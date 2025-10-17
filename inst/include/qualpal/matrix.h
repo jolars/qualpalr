@@ -1,9 +1,11 @@
 /**
  * @file
- * @brief Matrix classes for qualpal
+ * @brief Matrix classes for qualpal.
  *
- * This file contains dynamic and fixed-size matrix implementations used for
- * color difference calculations and other linear algebra operations.
+ * Provides both dynamic (runtime-sized) and fixed-size (compile-time-sized)
+ * matrix implementations for color difference calculations and general linear
+ * algebra operations. Supports element access, transposition, arithmetic, and
+ * multiplication with vectors/matrices.
  */
 
 #pragma once
@@ -15,8 +17,20 @@
 namespace qualpal {
 
 /**
- * @brief Dynamic matrix class with runtime-determined dimensions
- * @tparam T Element type (typically double or float)
+ * @brief Dynamic matrix class with runtime-determined dimensions.
+ * @tparam T Element type (typically double or float).
+ *
+ * Stores elements in column-major order (Fortran-style).
+ * Provides element access, transposition, and dimension queries.
+ *
+ * Example:
+ * @code
+ * Matrix<double> mat(2, 3); // 2 rows, 3 columns
+ * mat(0, 1) = 5.0;          // Set element at row 0, column 1
+ * double v = mat(1, 2);     // Get element at row 1, column 2
+ * @endcode
+ *
+ * @see FixedMatrix for compile-time sized matrices
  */
 template<typename T>
 class Matrix
@@ -59,10 +73,12 @@ public:
   }
 
   /**
-   * @brief Access matrix element (mutable)
-   * @param row Row index
-   * @param col Column index
-   * @return Reference to element at (row, col)
+   * @brief Access matrix element (mutable).
+   * @param row Row index (0-based).
+   * @param col Column index (0-based).
+   * @return Reference to element at (row, col).
+   * @note Elements are stored in column-major order: data[col * nrow + row].
+   * @throws std::out_of_range if indices are out of bounds (in debug builds).
    */
   T& operator()(std::size_t row, std::size_t col)
   {
@@ -70,10 +86,12 @@ public:
   }
 
   /**
-   * @brief Access matrix element (const)
-   * @param row Row index
-   * @param col Column index
-   * @return Const reference to element at (row, col)
+   * @brief Access matrix element (const).
+   * @param row Row index (0-based).
+   * @param col Column index (0-based).
+   * @return Const reference to element at (row, col).
+   * @note Elements are stored in column-major order: data[col * nrow + row].
+   * @throws std::out_of_range if indices are out of bounds (in debug builds).
    */
   const T& operator()(std::size_t row, std::size_t col) const
   {
@@ -107,10 +125,21 @@ private:
 };
 
 /**
- * @brief Fixed-size matrix class with compile-time dimensions
- * @tparam T Element type (typically double or float)
- * @tparam rows Number of rows (compile-time constant)
- * @tparam cols Number of columns (compile-time constant)
+ * @brief Fixed-size matrix class with compile-time dimensions.
+ * @tparam T Element type (typically double or float).
+ * @tparam rows Number of rows (compile-time constant).
+ * @tparam cols Number of columns (compile-time constant).
+ *
+ * Stores elements in row-major order (C-style).
+ * Provides constexpr element access, arithmetic, and multiplication.
+ *
+ * Example:
+ * @code
+ * FixedMatrix<double, 2, 3> mat = { {1.0, 2.0, 3.0}, {4.0, 5.0, 6.0} };
+ * double v = mat(1, 2); // Access element at row 1, column 2
+ * @endcode
+ *
+ * @see Matrix for dynamic-sized matrices
  */
 template<typename T, std::size_t rows, std::size_t cols>
 class FixedMatrix
@@ -154,10 +183,12 @@ public:
   }
 
   /**
-   * @brief Access matrix element (mutable)
-   * @param row Row index
-   * @param col Column index
-   * @return Reference to element at (row, col)
+   * @brief Access matrix element (mutable).
+   * @param row Row index (0-based).
+   * @param col Column index (0-based).
+   * @return Reference to element at (row, col).
+   * @note Elements are stored in row-major order: data[row * cols + col].
+   * @throws std::out_of_range if indices are out of bounds (in debug builds).
    */
   constexpr T& operator()(std::size_t row, std::size_t col)
   {
@@ -165,10 +196,12 @@ public:
   }
 
   /**
-   * @brief Access matrix element (const)
-   * @param row Row index
-   * @param col Column index
-   * @return Const reference to element at (row, col)
+   * @brief Access matrix element (const).
+   * @param row Row index (0-based).
+   * @param col Column index (0-based).
+   * @return Const reference to element at (row, col).
+   * @note Elements are stored in row-major order: data[row * cols + col].
+   * @throws std::out_of_range if indices are out of bounds (in debug builds).
    */
   constexpr const T& operator()(std::size_t row, std::size_t col) const
   {
@@ -206,10 +239,10 @@ public:
   }
 
   /**
-   * @brief Matrix-matrix multiplication (FixedMatrix * FixedMatrix)
-   * @tparam other_cols Number of columns in the other matrix
-   * @param other The matrix to multiply with
-   * @return Result matrix with dimensions (rows × other_cols)
+   * @brief Matrix-matrix multiplication (FixedMatrix * FixedMatrix).
+   * @tparam other_cols Number of columns in the other matrix.
+   * @param other The matrix to multiply with (must have 'cols' rows).
+   * @return Result matrix with dimensions (rows × other_cols).
    */
   template<std::size_t other_cols>
   constexpr FixedMatrix<T, rows, other_cols> operator*(

@@ -66,19 +66,27 @@ class LCHab;
 /**
  * @brief RGB color representation with values in [0,1] range
  *
- * The RGB class provides conversion between RGB and other color spaces
- * including HSL, XYZ, and Lab. All RGB values are normalized to [0,1].
+ * Represents a color in the standard Red-Green-Blue (RGB) color space. All
+ * channel values are normalized to the range [0, 1].
+ *
+ * Provides conversion constructors for HSL, XYZ, Lab, and LCHab color spaces.
+ * Also supports construction from hexadecimal color strings in "#RRGGBB" or
+ * "#RGB" format.
  *
  * @code{.cpp}
  * // Create RGB from normalized values
  * RGB red(1.0, 0.0, 0.0);
  *
- * // Create from hex string
+ * // Create from hex string (6-digit and 3-digit)
  * RGB blue("#0000ff");
+ * RGB magenta("#f0f");
  *
  * // Convert to hex
  * std::string hex = red.hex(); // "#ff0000"
  * @endcode
+ *
+ * @throws std::invalid_argument if hex string format is invalid.
+ * @see HSL, XYZ, Lab, LCHab for conversions.
  */
 class RGB
 {
@@ -118,6 +126,14 @@ public:
    * @endcode
    */
   RGB(const std::string& hex);
+
+  /**
+   * @brief Construct RGB from hexadecimal color string literal
+   * @param hex Hex color string in format "#RRGGBB" or "#RGB"
+   * @throws std::invalid_argument if hex format is invalid
+   */
+  RGB(const char* hex)
+    : RGB(std::string(hex)) {};
 
   /**
    * @brief Construct RGB from HSL color
@@ -183,13 +199,20 @@ public:
 /**
  * @brief HSL (Hue, Saturation, Lightness) color representation
  *
- * HSL color space with hue in degrees [0,360), saturation and lightness in
- * [0,1]. Provides intuitive color manipulation and conversion to/from RGB.
+ * Represents a color in the HSL color space:
+ * - Hue: [0, 360) degrees (0 = red, 120 = green, 240 = blue)
+ * - Saturation: [0, 1] (0 = gray, 1 = fully saturated)
+ * - Lightness: [0, 1] (0 = black, 1 = white)
+ *
+ * Provides conversion constructors for RGB, XYZ, Lab, and LCHab color spaces.
  *
  * @code{.cpp}
  * HSL orange(30, 1.0, 0.5);    // Pure orange
  * HSL gray(0, 0.0, 0.5);       // Medium gray
+ * HSL from_rgb(RGB(0.5, 0.2, 0.7));
  * @endcode
+ *
+ * @see RGB, XYZ, Lab, LCHab for conversions.
  */
 class HSL
 {
@@ -263,10 +286,27 @@ public:
 };
 
 /**
- * @brief XYZ color representation (CIE 1931 color space)
+ * @brief XYZ color representation (CIE 1931 color space).
  *
- * Device-independent color space that serves as an intermediate
- * for conversions between RGB and perceptually uniform spaces.
+ * Represents a color in the device-independent CIE 1931 XYZ color space.
+ * Used as an intermediate for conversions between RGB and perceptually uniform
+ * spaces (Lab, LCHab, DIN99d).
+ *
+ * - X: [0, ~0.95] (roughly red-like)
+ * - Y: [0, 1] (luminance)
+ * - Z: [0, ~1.09] (roughly blue-like)
+ *
+ * Most conversions use the D65 reference white point by default.
+ *
+ * @code{.cpp}
+ * // Create XYZ from RGB
+ * XYZ xyz_from_rgb(RGB(0.5, 0.2, 0.7));
+ *
+ * // Modify whitepoint
+ * XYZ xyz_custom_white(0.4, 0.5, 0.6, { 0.96422, 1.0, 0.82521 }); // D50
+ * @endcode
+ *
+ * @see RGB, Lab, LCHab, DIN99d for conversions.
  */
 class XYZ
 {
@@ -346,11 +386,20 @@ public:
 /**
  * @brief DIN99d color space representation
  *
- * Perceptually uniform color space optimized for color difference
- * calculations. Used internally by qualpal for palette generation.
+ * @brief DIN99d color space representation.
  *
- * DIN99d provides better perceptual uniformity than Lab color space,
- * particularly for small color differences.
+ * Perceptually uniform color space optimized for color difference
+ * calculations, especially for small differences. Used internally by qualpal
+ * for palette generation.
+ *
+ * - l: Lightness [0, 100]
+ * - a: Green-red axis [-128, 127]
+ * - b: Blue-yellow axis [-128, 127]
+ *
+ * Provides conversion constructors for RGB, HSL, Lab, and XYZ.
+ * Most conversions use the D65 reference white point by default.
+ *
+ * @see Lab, RGB, HSL, XYZ for conversions.
  */
 class DIN99d
 {
@@ -426,14 +475,19 @@ public:
 };
 
 /**
- * @brief Lab color space representation (CIE L*a*b*)
+ * @brief Lab color space representation (CIE L*a*b*).
  *
  * Perceptually uniform color space where Euclidean distance
  * approximates perceived color difference.
  *
- * - L: lightness (0 = black, 100 = white)
- * - a: green-red axis (negative = green, positive = red)
- * - b: blue-yellow axis (negative = blue, positive = yellow)
+ * - L: Lightness [0, 100] (0 = black, 100 = white)
+ * - a: Green-red axis [-128, 127] (negative = green, positive = red)
+ * - b: Blue-yellow axis [-128, 127] (negative = blue, positive = yellow)
+ *
+ * Provides conversion constructors for RGB, HSL, XYZ, and LCHab.
+ * Most conversions use the D65 reference white point by default.
+ *
+ * @see RGB, HSL, XYZ, LCHab for conversions.
  */
 class Lab
 {
@@ -504,12 +558,18 @@ public:
 /**
  * @brief LCHab color space representation (CIE L*C*h)
  *
- * A cylindrical representation of Lab color space:
- * - L: lightness [0,100]
- * - C: chroma [0,∞)
- * - H: hue in degrees [0,360)
+ * @brief LCHab color space representation (CIE L*C*h).
  *
- * Provides a more intuitive way to represent colors in Lab space.
+ * Cylindrical representation of Lab color space:
+ * - L: Lightness [0, 100]
+ * - C: Chroma [0, ∞)
+ * - H: Hue in degrees [0, 360)
+ *
+ * Useful for intuitive manipulation of color lightness, chroma, and hue.
+ * Provides conversion constructors for Lab, RGB, HSL, and XYZ.
+ * Most conversions use the D65 reference white point by default.
+ *
+ * @see Lab, RGB, HSL, XYZ for conversions.
  */
 class LCHab
 {

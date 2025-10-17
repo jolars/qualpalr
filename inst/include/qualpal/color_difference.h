@@ -1,9 +1,12 @@
-/** @file
+/**
+ * @file
  * @brief Functions for generating color difference matrices.
  *
- * This file provides functions to compute pairwise color differences between
- * a set of colors using various color difference metrics. It supports parallel
- * computation and memory management.
+ * Provides functions to compute pairwise color differences between a set of
+ * colors using various perceptual color difference metrics (e.g., DIN99d,
+ * CIEDE2000, CIE76). Supports parallel computation (OpenMP) and memory
+ * management for large matrices. Used for palette analysis, selection, and
+ * color distinguishability evaluation.
  */
 
 #pragma once
@@ -36,14 +39,26 @@ checkMatrixSize(std::size_t n, double max_gb = 1.0)
 } // namespace detail
 
 /**
- * @brief Generate a color difference matrix
- * @tparam ColorType Any color class (colors::RGB, colors::HSL, colors::XYZ,
- * colors::Lab, colors::DIN99d)
- * @tparam Metric Color difference metric (defaults to metrics::DIN99d)
- * @param colors Vector of colors to compare
- * @param metric Color difference metric to use
+ * @brief Generate a symmetric color difference matrix for a set of colors.
+ *
+ * Computes the pairwise perceptual color differences between all colors in the
+ * input vector, using the specified color difference metric (e.g., DIN99d,
+ * CIEDE2000, CIE76). The result is a symmetric matrix where element (i, j) is
+ * the distance between colors[i] and colors[j].
+ *
+ * @tparam ColorType Any color class convertible to the required color space
+ * (e.g., colors::RGB, colors::HSL, colors::XYZ, colors::Lab, colors::DIN99d).
+ * @tparam Metric Color difference metric functor (defaults to metrics::DIN99d).
+ * @param colors Vector of colors to compare.
+ * @param metric Color difference metric to use (optional; default is DIN99d).
  * @param max_memory Maximum memory (in GB) allowed for the matrix
- * @return Symmetric matrix of pairwise color differences
+ * (default: 1.0).
+ * @return Matrix<double> Symmetric matrix of pairwise color differences [size:
+ * n x n].
+ * @throws std::invalid_argument if fewer than one color is provided.
+ * @throws std::runtime_error if the estimated matrix size exceeds max_memory.
+ *
+ * @see metrics::DIN99d, metrics::CIEDE2000, metrics::CIE76
  */
 template<typename ColorType, typename Metric = metrics::DIN99d>
 Matrix<double>
@@ -89,13 +104,25 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
 }
 
 /**
- * @brief Generate a color difference matrix for Lab colors with runtime metric
+ * @brief Generate a color difference matrix for XYZ colors with runtime metric
  * selection.
  *
- * @param colors Vector of XYZ colors to compare.
- * @param metric_type Color difference metric to use.
- * @param max_memory Maximum memory (in GB) allowed for the matrix.
- * @return Symmetric matrix of pairwise color differences.
+ * Computes the pairwise color differences between all colors in the input
+ * vector, using the specified color difference metric (selected at runtime via
+ * MetricType). Internally converts XYZ colors to the appropriate color space
+ * for the selected metric.
+ *
+ * @param colors Vector of colors::XYZ colors to compare.
+ * @param metric_type Color difference metric to use (DIN99d, CIEDE2000, or
+ * CIE76).
+ * @param max_memory Maximum memory (in GB) allowed for the matrix
+ * (default: 1.0).
+ * @return Matrix<double> Symmetric matrix of pairwise color differences [size:
+ * n x n].
+ * @throws std::invalid_argument if the metric type is unsupported or input is
+ * invalid.
+ * @throws std::runtime_error if the estimated matrix size exceeds max_memory.
+ *
  * @see metrics::MetricType
  */
 Matrix<double>
