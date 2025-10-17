@@ -1,3 +1,16 @@
+# qualpalr 1.0.1
+
+## Minor Changes
+
+- The project has been published as a paper in JOSS:
+  <https://joss.theoj.org/papers/10.21105/joss.08936>, and the
+  citation information has been updated in the package.
+- Qualpalr has been updated to use v3.3.0 of the underlying qualpal C++ library.
+
+## Bug Fixes
+
+- Fixes an edge case when converting RGB colors to a hex representation.
+
 # qualpalr 1.0.0
 
 ## New or Modified Features
