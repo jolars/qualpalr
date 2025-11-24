@@ -1,0 +1,26 @@
+# Optimize color palette for color vision deficiency
+
+Optimize color palette for color vision deficiency
+
+Deprecated functions in package qualpal.
+
+The functions listed below are deprecated and will be defunct in the
+next major version future. When possible, alternative functions with
+similar functionality are also mentioned. Help pages for deprecated
+functions are available at `help("<function>-deprecated")`.
+
+## Usage
+
+``` r
+autopal(
+  n,
+  colorspace = list(h = c(0, 360), s = c(0.2, 0.5), l = c(0.6, 0.85)),
+  cvd = c("protan", "deutan", "tritan"),
+  target = 20
+)
+```
+
+## `autopal`
+
+This function is deprecated and will be removed in a future release. No
+direct replacement is available.
