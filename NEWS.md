@@ -1,5 +1,20 @@
 # qualpalr (development version)
 
+## Breaking Changes
+
+- The previous method for catering to multiple types of color
+  vision deficiencies has been revised. Previously, it
+  incorrectly chained simulations of all the deficiencies together,
+  which does not work as intended since the operations are not
+  commutative and hence depend on the order in which they are applied.
+  Now, instead, the color differences are computed separately for
+  each type of deficiency (protanopia, deuteranopia, and tritanopia)
+  as well as normal vision, and the minimum color distance across
+  all types is maximized. The input of the `cvd` argument is
+  unchanged, but the behavior is different. This change may lead
+  to different palettes being generated when multiple types of
+  color vision deficiencies are specified.
+
 ## New Features
 
 - Added `white_point` parameter to `qualpal()` to allow users to
