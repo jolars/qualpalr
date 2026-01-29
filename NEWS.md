@@ -1,4 +1,4 @@
-# qualpalr (development version)
+# qualpalr 2.0.0
 
 ## Breaking Changes
 
