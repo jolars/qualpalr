@@ -17,6 +17,34 @@
 namespace qualpal {
 
 /**
+ * @enum WhitePoint
+ * @brief Standard CIE illuminants for color space conversions
+ *
+ * Common reference white points used in colorimetry:
+ * - D65: Daylight at 6500K (most common, used for sRGB)
+ * - D50: Daylight at 5000K (used in printing/graphics)
+ * - D55: Daylight at 5500K
+ * - A: Incandescent tungsten at 2856K
+ * - E: Equal energy (theoretical)
+ */
+enum class WhitePoint
+{
+  D65, ///< Daylight 6500K {0.95047, 1.0, 1.08883}
+  D50, ///< Daylight 5000K {0.96422, 1.0, 0.82521}
+  D55, ///< Daylight 5500K {0.95682, 1.0, 0.92149}
+  A,   ///< Incandescent {1.09850, 1.0, 0.35585}
+  E    ///< Equal energy {1.0, 1.0, 1.0}
+};
+
+/**
+ * @brief Convert WhitePoint enum to XYZ tristimulus values
+ * @param wp WhitePoint enum value
+ * @return Array of XYZ tristimulus values
+ */
+std::array<double, 3>
+whitePointToXYZ(WhitePoint wp);
+
+/**
  * @brief Color representation classes for various color spaces
  *
  * This namespace provides classes for representing colors in different color

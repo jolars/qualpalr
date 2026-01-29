@@ -48,39 +48,53 @@ Qualpal::setInputColorspace(const std::array<double, 2>& h_lim,
                             const std::array<double, 2>& l_lim,
                             ColorspaceType space)
 {
-  if (space == ColorspaceType::HSL) {
-    if (h_lim[0] < -360 || h_lim[1] > 360) {
-      throw std::invalid_argument("Hue must be between -360 and 360");
-    }
+  ColorspaceRegion region{ h_lim, s_or_c_lim, l_lim };
+  return setInputColorspaceRegions({ region }, space);
+}
 
-    if (h_lim[1] - h_lim[0] > 360) {
-      throw std::invalid_argument("Hue range must be less than 360");
-    }
+Qualpal&
+Qualpal::setInputColorspaceRegions(const std::vector<ColorspaceRegion>& regions,
+                                   ColorspaceType space)
+{
+  if (regions.empty()) {
+    throw std::invalid_argument("At least one colorspace region is required");
+  }
 
-    if (s_or_c_lim[0] < 0 || s_or_c_lim[1] > 1) {
-      throw std::invalid_argument("Saturation/chroma must be between 0 and 1");
-    }
+  // Validate each region
+  for (const auto& region : regions) {
+    if (space == ColorspaceType::HSL) {
+      if (region.h_lim[0] < -360 || region.h_lim[1] > 360) {
+        throw std::invalid_argument("Hue must be between -360 and 360");
+      }
 
-    if (l_lim[0] < 0 || l_lim[1] > 1) {
-      throw std::invalid_argument("Lightness must be between 0 and 1");
-    }
-  } else if (space == ColorspaceType::LCHab) {
-    if (h_lim[0] < -360 || h_lim[1] > 360) {
-      throw std::invalid_argument("Hue must be between -360 and 360");
-    }
+      if (region.h_lim[1] - region.h_lim[0] > 360) {
+        throw std::invalid_argument("Hue range must be less than 360");
+      }
 
-    if (s_or_c_lim[0] < 0) {
-      throw std::invalid_argument("Chroma must be non-negative");
-    }
+      if (region.s_or_c_lim[0] < 0 || region.s_or_c_lim[1] > 1) {
+        throw std::invalid_argument(
+          "Saturation/chroma must be between 0 and 1");
+      }
 
-    if (l_lim[0] < 0 || l_lim[1] > 100) {
-      throw std::invalid_argument("Lightness must be between 0 and 100");
+      if (region.l_lim[0] < 0 || region.l_lim[1] > 1) {
+        throw std::invalid_argument("Lightness must be between 0 and 1");
+      }
+    } else if (space == ColorspaceType::LCHab) {
+      if (region.h_lim[0] < -360 || region.h_lim[1] > 360) {
+        throw std::invalid_argument("Hue must be between -360 and 360");
+      }
+
+      if (region.s_or_c_lim[0] < 0) {
+        throw std::invalid_argument("Chroma must be non-negative");
+      }
+
+      if (region.l_lim[0] < 0 || region.l_lim[1] > 100) {
+        throw std::invalid_argument("Lightness must be between 0 and 100");
+      }
     }
   }
 
-  this->h_lim = h_lim;
-  this->s_or_c_lim = s_or_c_lim;
-  this->l_lim = l_lim;
+  this->colorspace_regions = regions;
   this->colorspace_input = space;
   this->mode = Mode::COLORSPACE;
   return *this;
@@ -137,6 +151,20 @@ Qualpal::setColorspaceSize(std::size_t n_points)
   return *this;
 }
 
+Qualpal&
+Qualpal::setWhitePoint(WhitePoint wp)
+{
+  this->white_point = whitePointToXYZ(wp);
+  return *this;
+}
+
+Qualpal&
+Qualpal::setWhitePoint(const std::array<double, 3>& white_point)
+{
+  this->white_point = white_point;
+  return *this;
+}
+
 std::vector<colors::RGB>
 Qualpal::selectColors(std::size_t n,
                       const std::vector<colors::RGB>& fixed_palette)
@@ -158,22 +186,39 @@ Qualpal::selectColors(std::size_t n,
         rgb_colors_in.emplace_back(hex);
       }
       break;
-    case Mode::COLORSPACE:
+    case Mode::COLORSPACE: {
       rgb_colors_in.clear();
+
+      // Calculate points per region (distribute evenly)
+      std::size_t points_per_region = n_points / colorspace_regions.size();
+      std::size_t remainder = n_points % colorspace_regions.size();
+
       rgb_colors_in.reserve(n_points);
-      if (colorspace_input == ColorspaceType::HSL) {
-        for (const auto& hsl :
-             colorGrid<colors::HSL>(h_lim, s_or_c_lim, l_lim, n_points)) {
-          rgb_colors_in.emplace_back(hsl);
-        }
-      } else if (colorspace_input == ColorspaceType::LCHab) {
-        for (const auto& hsl :
-             colorGrid<colors::LCHab>(h_lim, s_or_c_lim, l_lim, n_points)) {
-          rgb_colors_in.emplace_back(hsl);
+
+      for (std::size_t i = 0; i < colorspace_regions.size(); ++i) {
+        const auto& region = colorspace_regions[i];
+        // Add one extra point to first 'remainder' regions to distribute evenly
+        std::size_t region_points = points_per_region + (i < remainder ? 1 : 0);
+
+        if (colorspace_input == ColorspaceType::HSL) {
+          for (const auto& hsl : colorGrid<colors::HSL>(region.h_lim,
+                                                        region.s_or_c_lim,
+                                                        region.l_lim,
+                                                        region_points)) {
+            rgb_colors_in.emplace_back(hsl);
+          }
+        } else if (colorspace_input == ColorspaceType::LCHab) {
+          for (const auto& lch : colorGrid<colors::LCHab>(region.h_lim,
+                                                          region.s_or_c_lim,
+                                                          region.l_lim,
+                                                          region_points)) {
+            rgb_colors_in.emplace_back(lch);
+          }
         }
       }
       break;
-    default:
+    }
+    case Mode::NONE:
       throw std::runtime_error("No input source configured.");
   }
 
@@ -212,25 +257,16 @@ Qualpal::selectColors(std::size_t n,
     rgb_colors.push_back(*bg);
   }
 
-  // Simulate CVD if needed
-  std::vector<colors::RGB> rgb_colors_mod = rgb_colors;
-
-  for (const auto& [cvd_type, cvd_severity] : cvd) {
-    if (cvd_severity > 0) {
-      for (auto& rgb : rgb_colors_mod) {
-        rgb = simulateCvd(rgb, cvd_type, cvd_severity);
-      }
-    }
-  }
-
+  // Convert colors to XYZ for distance calculations
   std::vector<colors::XYZ> xyz_colors;
-  xyz_colors.reserve(rgb_colors_mod.size());
-  for (const auto& c : rgb_colors_mod) {
+  xyz_colors.reserve(rgb_colors.size());
+  for (const auto& c : rgb_colors) {
     xyz_colors.emplace_back(c);
   }
 
-  // Select new colors
-  auto ind = farthestPoints(n, xyz_colors, metric, has_bg, n_fixed, max_memory);
+  // Select new colors (CVD-aware if CVD parameters are set)
+  auto ind = farthestPoints(
+    n, xyz_colors, metric, has_bg, n_fixed, max_memory, white_point, cvd);
 
   // Output: fixed_palette + selected new colors
   std::vector<colors::RGB> result;

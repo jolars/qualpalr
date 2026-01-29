@@ -8,6 +8,25 @@
 #include <sstream>
 
 namespace qualpal {
+
+std::array<double, 3>
+whitePointToXYZ(WhitePoint wp)
+{
+  switch (wp) {
+    case WhitePoint::D65:
+      return { 0.95047, 1.0, 1.08883 };
+    case WhitePoint::D50:
+      return { 0.96422, 1.0, 0.82521 };
+    case WhitePoint::D55:
+      return { 0.95682, 1.0, 0.92149 };
+    case WhitePoint::A:
+      return { 1.09850, 1.0, 0.35585 };
+    case WhitePoint::E:
+      return { 1.0, 1.0, 1.0 };
+  }
+  return { 0.95047, 1.0, 1.08883 }; // Default to D65
+}
+
 namespace colors {
 
 inline double

@@ -15,6 +15,7 @@
  *   .setCvd({{"protan", 0.5}, {"deuter", 0.2}})
  *   .setBackground("#ffffff")
  *   .setMetric(qualpal::metrics::MetricType::DIN99d)
+ *   .setWhitePoint(qualpal::WhitePoint::D50)  // Optional: D50 for printing
  *   .setMemoryLimit(2.0);
  * auto palette = qp.generate(6);
  *
@@ -22,6 +23,14 @@
  * qualpal::Qualpal qp4;
  * qp4.setInputColorspace({0, 360}, {0.5, 1.0}, {0.3, 0.7});
  * auto palette4 = qp4.generate(8);
+ *
+ * // Use multiple colorspace regions (warm and cool colors only)
+ * qualpal::Qualpal qp5;
+ * qp5.setInputColorspaceRegions({
+ *   {{0, 60}, {0.5, 1.0}, {0.3, 0.7}},      // Warm: reds/oranges
+ *   {{180, 240}, {0.5, 1.0}, {0.3, 0.7}}    // Cool: cyans/blues
+ * }, qualpal::ColorspaceType::HSL);
+ * auto palette5 = qp5.generate(8);
  *
  * // Using hex color input
  * qualpal::Qualpal qp2;
@@ -64,6 +73,22 @@ enum class ColorspaceType
 {
   HSL,
   LCHab
+};
+
+/**
+ * @struct ColorspaceRegion
+ * @brief Defines a rectangular region in a cylindrical color space
+ *
+ * This struct represents a 3D rectangular subset of a cylindrical color space
+ * (HSL or LCHab). Multiple regions can be combined to sample from arbitrary
+ * unions of subsets within the same color space. Regions may overlap, which
+ * will result in higher sampling density in overlapping areas.
+ */
+struct ColorspaceRegion
+{
+  std::array<double, 2> h_lim;      ///< Hue range in degrees [-360, 360]
+  std::array<double, 2> s_or_c_lim; ///< Saturation/Chroma range
+  std::array<double, 2> l_lim;      ///< Lightness range
 };
 
 /**
@@ -124,6 +149,29 @@ public:
                               ColorspaceType space = ColorspaceType::HSL);
 
   /**
+   * @brief Set input colors by sampling multiple regions in a colorspace.
+   * @param regions Vector of colorspace regions to sample from. Regions may
+   * overlap, which will increase sampling density in overlapping areas.
+   * @param space Colorspace type (HSL or LCHab)
+   * @return Reference to this object for chaining.
+   * @throws std::invalid_argument if regions is empty or any region has
+   * invalid ranges.
+   *
+   * @code{.cpp}
+   * // Sample from warm and cool colors only
+   * qualpal::Qualpal qp;
+   * qp.setInputColorspaceRegions({
+   *   {{0, 60}, {0.5, 1.0}, {0.3, 0.7}},    // Reds/oranges
+   *   {{180, 240}, {0.5, 1.0}, {0.3, 0.7}}  // Cyans/blues
+   * }, qualpal::ColorspaceType::HSL);
+   * auto palette = qp.generate(8);
+   * @endcode
+   */
+  Qualpal& setInputColorspaceRegions(
+    const std::vector<ColorspaceRegion>& regions,
+    ColorspaceType space = ColorspaceType::HSL);
+
+  /**
    * @brief Set color vision deficiency simulation parameters.
    * @param cvd_params Map of CVD type to severity, e.g., {{"protan", 0.5},
    * {"deutan", 0.2}}. Valid keys: "protan", "deutan", "tritan". Severity must
@@ -166,6 +214,20 @@ public:
   Qualpal& setColorspaceSize(std::size_t n_points);
 
   /**
+   * @brief Set the reference white point for color conversions.
+   * @param wp White point enum value (D65, D50, D55, A, or E).
+   * @return Reference to this object for chaining.
+   */
+  Qualpal& setWhitePoint(WhitePoint wp);
+
+  /**
+   * @brief Set the reference white point using custom XYZ values.
+   * @param white_point Custom XYZ tristimulus values for the white point.
+   * @return Reference to this object for chaining.
+   */
+  Qualpal& setWhitePoint(const std::array<double, 3>& white_point);
+
+  /**
    * @brief Generate a qualitative color palette with the configured options.
    * @param n Number of colors to generate.
    * @return Vector of n selected RGB colors, each channel in [0, 1].
@@ -196,9 +258,7 @@ private:
 
   std::string palette;
 
-  std::array<double, 2> h_lim = { 0, 360 };
-  std::array<double, 2> s_or_c_lim = { 0, 1 };
-  std::array<double, 2> l_lim = { 0, 1 };
+  std::vector<ColorspaceRegion> colorspace_regions;
   std::size_t n_points = 1000;
 
   /**
@@ -218,6 +278,7 @@ private:
   metrics::MetricType metric = metrics::MetricType::CIEDE2000;
   double max_memory = 1;
   ColorspaceType colorspace_input = ColorspaceType::HSL;
+  std::array<double, 3> white_point = { 0.95047, 1, 1.08883 }; // D65
 };
 
 } // namespace qualpal

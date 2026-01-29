@@ -1,20 +1,21 @@
-#include "qualpal/metrics.h"
 #include <qualpal/color_difference.h>
 #include <qualpal/matrix.h>
+#include <qualpal/metrics.h>
 
 namespace qualpal {
 
 Matrix<double>
 colorDifferenceMatrix(const std::vector<colors::XYZ>& colors,
                       const metrics::MetricType& metric_type,
-                      const double max_memory)
+                      const double max_memory,
+                      const std::array<double, 3>& white_point)
 {
   switch (metric_type) {
     case metrics::MetricType::DIN99d: {
       std::vector<colors::DIN99d> din99d_colors;
       din99d_colors.reserve(colors.size());
       for (const auto& col : colors) {
-        din99d_colors.emplace_back(col);
+        din99d_colors.emplace_back(col, white_point);
       }
       return colorDifferenceMatrix(
         din99d_colors, metrics::DIN99d{}, max_memory);
@@ -23,7 +24,7 @@ colorDifferenceMatrix(const std::vector<colors::XYZ>& colors,
       std::vector<colors::Lab> lab_colors;
       lab_colors.reserve(colors.size());
       for (const auto& col : colors) {
-        lab_colors.emplace_back(col);
+        lab_colors.emplace_back(col, white_point);
       }
       return colorDifferenceMatrix(
         lab_colors, metrics::CIEDE2000{}, max_memory);
@@ -32,7 +33,7 @@ colorDifferenceMatrix(const std::vector<colors::XYZ>& colors,
       std::vector<colors::Lab> lab_colors;
       lab_colors.reserve(colors.size());
       for (const auto& col : colors) {
-        lab_colors.emplace_back(col);
+        lab_colors.emplace_back(col, white_point);
       }
       return colorDifferenceMatrix(lab_colors, metrics::CIE76{}, max_memory);
     }

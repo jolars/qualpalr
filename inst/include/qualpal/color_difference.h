@@ -11,7 +11,6 @@
 
 #pragma once
 
-#include <cmath>
 #include <qualpal/matrix.h>
 #include <qualpal/metrics.h>
 #include <qualpal/threads.h>
@@ -89,12 +88,12 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
 #ifdef _OPENMP
 #pragma omp parallel for num_threads(Threads::get())
 #endif
-  for (std::size_t i = 0; i < n_colors; ++i) {
+  for (int i = 0; i < static_cast<int>(n_colors); ++i) {
     result(i, i) = 0.0;
 #ifdef _OPENMP
 #pragma omp simd
 #endif
-    for (std::size_t j = i + 1; j < n_colors; ++j) {
+    for (std::size_t j = static_cast<std::size_t>(i) + 1; j < n_colors; ++j) {
       double d = metric(colors[i], colors[j]);
       result(i, j) = d;
       result(j, i) = d;
@@ -117,6 +116,8 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
  * CIE76).
  * @param max_memory Maximum memory (in GB) allowed for the matrix
  * (default: 1.0).
+ * @param white_point Reference white point for XYZ to Lab/DIN99d conversions
+ * (default: D65).
  * @return Matrix<double> Symmetric matrix of pairwise color differences [size:
  * n x n].
  * @throws std::invalid_argument if the metric type is unsupported or input is
@@ -128,6 +129,9 @@ colorDifferenceMatrix(const std::vector<ColorType>& colors,
 Matrix<double>
 colorDifferenceMatrix(const std::vector<colors::XYZ>& colors,
                       const metrics::MetricType& metric_type,
-                      const double max_memory = 1);
+                      const double max_memory = 1,
+                      const std::array<double, 3>& white_point = { 0.95047,
+                                                                   1,
+                                                                   1.08883 });
 
 } // namespace qualpal
