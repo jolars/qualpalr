@@ -29,7 +29,7 @@ We can retrieve the generated colors in hex format
 
 ``` r
 pal$hex
-#> [1] "#cd836c" "#9468c9" "#81cbd4" "#c7ca71"
+#> [1] "#ce836d" "#9569ca" "#82cbd5" "#c8ca71"
 ```
 
 Alternatively, we can create a palette using one of the predefined color
@@ -41,8 +41,6 @@ pal2 <- qualpal(
   n = 4,
   cvd = c(deutan = 0.5)
 )
-#> The argument 'cvd_severity' is deprecated and will be
-#>       removed in a future version. Please use a named 'cvd' object instead.
 ```
 
 We can look at a distance matrix of the pairwise color differences from
@@ -50,10 +48,10 @@ the palette we have generated.
 
 ``` r
 pal2$de_DIN99d
-#>          #6d6cc9  #e8bbe5  #cb7469
-#> #e8bbe5 18.55197                  
-#> #cb7469 23.07448 17.62027         
-#> #d1eac2 27.38009 20.50007 23.00737
+#>          #6e6cca  #d8c3e9  #cb7469
+#> #d8c3e9 17.56447                  
+#> #cb7469 23.07448 19.38801         
+#> #d2ebc3 27.38009 19.24089 23.00737
 ```
 
 The palette may also be plotted with in a multidimensional scaling plot

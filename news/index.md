@@ -1,5 +1,31 @@
 # Changelog
 
+## qualpalr 2.0.0
+
+### Breaking Changes
+
+- The previous method for catering to multiple types of color vision
+  deficiencies has been revised. Previously, it incorrectly chained
+  simulations of all the deficiencies together, which does not work as
+  intended since the operations are not commutative and hence depend on
+  the order in which they are applied. Now, instead, the color
+  differences are computed separately for each type of deficiency
+  (protanopia, deuteranopia, and tritanopia) as well as normal vision,
+  and the minimum color distance across all types is maximized. The
+  input of the `cvd` argument is unchanged, but the behavior is
+  different. This change may lead to different palettes being generated
+  when multiple types of color vision deficiencies are specified.
+
+### New Features
+
+- Added `white_point` parameter to
+  [`qualpal()`](https://jolars.github.io/qualpalr/reference/qualpal.md)
+  to allow users to specify the reference white point for color space
+  conversions. Available options are “D65” (default, daylight at 6500K),
+  “D50” (daylight at 5000K, common in printing), “D55” (daylight at
+  5500K), “A” (incandescent tungsten at 2856K), and “E” (equal energy).
+  The white point affects how perceptual color distances are calculated.
+
 ## qualpalr 1.0.1
 
 CRAN release: 2025-10-17

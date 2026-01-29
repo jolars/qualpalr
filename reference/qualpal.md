@@ -14,7 +14,8 @@ qualpal(
   cvd_severity,
   bg = NULL,
   metric = c("ciede2000", "din99d", "cie76"),
-  extend = NULL
+  extend = NULL,
+  white_point = c("D65", "D50", "D55", "A", "E")
 )
 ```
 
@@ -102,6 +103,13 @@ qualpal(
   (with values between 0 and 1) or a character vector of hex colors (or
   any other format that's acceptable in
   [`grDevices::col2rgb()`](https://rdrr.io/r/grDevices/col2rgb.html)).
+
+- white_point:
+
+  The white point to use for color space conversions. Can be one of
+  "D65" (default, daylight at 6500K), "D50" (daylight at 5000K), "D55"
+  (daylight at 5500K), "A" (incandescent tungsten at 2856K), or "E"
+  (equal energy).
 
 ## Value
 
@@ -235,26 +243,26 @@ qualpal(8, cvd = c(protan = 0.4))
 #> Colors in the HSL color space 
 #> 
 #>         Hue Saturation Lightness
-#> #ca6c74 355       0.47      0.61
+#> #ce836c  14       0.50      0.62
+#> #d074a2 330       0.50      0.64
 #> #6e6cca 241       0.47      0.61
-#> #d890cc 310       0.48      0.71
-#> #7dbdd0 193       0.46      0.65
-#> #c1e4d3 150       0.40      0.83
-#> #e6bbbd 357       0.45      0.82
-#> #c59671  27       0.42      0.61
-#> #8acc6d 102       0.48      0.61
+#> #77b6c6 192       0.41      0.62
+#> #e7c7e7 299       0.41      0.84
+#> #6ec7a1 154       0.44      0.61
+#> #bcc76c  67       0.45      0.60
+#> #e4d7ca  30       0.33      0.84
 #> 
 #>  ---------------------------------------- 
 #> DIN99d color difference distance matrix 
 #> 
-#>         #ca6c74 #6e6cca #d890cc #7dbdd0 #c1e4d3 #e6bbbd #c59671
-#> #6e6cca      22                                                
-#> #d890cc      14      16                                        
-#> #7dbdd0      25      19      22                                
-#> #c1e4d3      25      25      23      13                        
-#> #e6bbbd      14      22      13      20      17                
-#> #c59671      12      25      18      22      19      12        
-#> #8acc6d      26      29      27      19      14      22      19
+#>         #ce836c #d074a2 #6e6cca #77b6c6 #e7c7e7 #6ec7a1 #bcc76c
+#> #d074a2      13                                                
+#> #6e6cca      24      18                                        
+#> #77b6c6      24      24      19                                
+#> #e7c7e7      18      15      19      18                        
+#> #6ec7a1      24      27      26      12      22                
+#> #bcc76c      19      25      29      21      22      15        
+#> #e4d7ca      16      19      24      18      13      18      14
 
 # Generate and extend a palette with 3 colors, using the DIN99d
 # metric
@@ -278,6 +286,27 @@ qualpal(5, extend = pal$hex, metric = "din99d")
 #> #70a4c8      24      24                
 #> #9468ca      29      19      18        
 #> #e6c6e6      22      18      18      17
+
+# Use a different white point (D50, common in printing)
+qualpal(5, white_point = "D50")
+#> ---------------------------------------- 
+#> Colors in the HSL color space 
+#> 
+#>         Hue Saturation Lightness
+#> #c89c71  30       0.44      0.61
+#> #d074a2 330       0.50      0.64
+#> #7086c7 225       0.43      0.61
+#> #8acc6d 102       0.48      0.61
+#> #c7eadc 155       0.46      0.85
+#> 
+#>  ---------------------------------------- 
+#> DIN99d color difference distance matrix 
+#> 
+#>         #c89c71 #d074a2 #7086c7 #8acc6d
+#> #d074a2      17                        
+#> #7086c7      24      19                
+#> #8acc6d      18      28      26        
+#> #c7eadc      20      25      22      14
 
 if (FALSE) { # \dontrun{
 # The range of hue cannot exceed 360
