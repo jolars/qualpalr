@@ -1,5 +1,15 @@
 # qualpalr (development version)
 
+## New Features
+
+- Added `white_point` parameter to `qualpal()` to allow users to
+  specify the reference white point for color space conversions.
+  Available options are "D65" (default, daylight at 6500K), "D50"
+  (daylight at 5000K, common in printing), "D55" (daylight at
+  5500K), "A" (incandescent tungsten at 2856K), and "E" (equal
+  energy). The white point affects how perceptual color distances
+  are calculated.
+
 # qualpalr 1.0.1
 
 ## Minor Changes

@@ -65,6 +65,10 @@
 #'   of RGB values (with values between 0 and 1) or a character vector
 #'   of hex colors (or any other format that's acceptable in
 #'   [grDevices::col2rgb()]).
+#' @param white_point The white point to use for color space conversions.
+#'   Can be one of "D65" (default, daylight at 6500K), "D50" (daylight at
+#'   5000K), "D55" (daylight at 5500K), "A" (incandescent tungsten at 2856K),
+#'   or "E" (equal energy).
 #'
 #' @return A list of class \code{qualpal} with the following
 #'   components.
@@ -110,6 +114,9 @@
 #' pal <- qualpal(3)
 #' qualpal(5, extend = pal$hex, metric = "din99d")
 #'
+#' # Use a different white point (D50, common in printing)
+#' qualpal(5, white_point = "D50")
+#'
 #' \dontrun{
 #' # The range of hue cannot exceed 360
 #' qualpal(3, list(h = c(-20, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
@@ -123,7 +130,8 @@ qualpal <- function(
   cvd_severity,
   bg = NULL,
   metric = c("ciede2000", "din99d", "cie76"),
-  extend = NULL
+  extend = NULL,
+  white_point = c("D65", "D50", "D55", "A", "E")
 ) {
   UseMethod("qualpal", colorspace)
 }

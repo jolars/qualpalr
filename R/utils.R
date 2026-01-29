@@ -9,9 +9,11 @@ make_options <- function(
   cvd_severity,
   bg = NULL,
   metric = c("ciede2000", "din99d", "cie76"),
-  extend = NULL
+  extend = NULL,
+  white_point = c("D65", "D50", "D55", "A", "E")
 ) {
   metric <- match.arg(metric)
+  white_point <- match.arg(white_point)
 
   if (!missing(cvd_severity)) {
     message(
@@ -68,5 +70,5 @@ make_options <- function(
   } else {
     bg <- double(0)
   }
-  list(cvd = cvd_list, bg = bg, metric = metric, extend = extend)
+  list(cvd = cvd_list, bg = bg, metric = metric, extend = extend, white_point = white_point)
 }

@@ -44,6 +44,7 @@ setup_palette(const Rcpp::List& options)
   auto bg_vec = as<Rcpp::NumericVector>(options["bg"]);
   auto cvd_list = as<Rcpp::List>(options["cvd"]);
   auto metric = as<std::string>(options["metric"]);
+  auto white_point_str = as<std::string>(options["white_point"]);
 
   if (bg_vec.size() == 3) {
     qp.setBackground(qualpal::colors::RGB(bg_vec[0], bg_vec[1], bg_vec[2]));
@@ -68,6 +69,18 @@ setup_palette(const Rcpp::List& options)
     qp.setMetric(qualpal::metrics::MetricType::CIEDE2000);
   } else if (metric == "cie76") {
     qp.setMetric(qualpal::metrics::MetricType::CIE76);
+  }
+
+  if (white_point_str == "D65") {
+    qp.setWhitePoint(qualpal::WhitePoint::D65);
+  } else if (white_point_str == "D50") {
+    qp.setWhitePoint(qualpal::WhitePoint::D50);
+  } else if (white_point_str == "D55") {
+    qp.setWhitePoint(qualpal::WhitePoint::D55);
+  } else if (white_point_str == "A") {
+    qp.setWhitePoint(qualpal::WhitePoint::A);
+  } else if (white_point_str == "E") {
+    qp.setWhitePoint(qualpal::WhitePoint::E);
   }
 
   return qp;

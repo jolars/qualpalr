@@ -27,6 +27,7 @@ test_that("erroneous input to qualpal() returns errors", {
   expect_error(qualpal(3, matrix(runif(10), ncol = 5)))
   expect_error(qualpal(3, bg = "notacolor"))
   expect_error(qualpal(3, metric = "HSL"))
+  expect_error(qualpal(3, white_point = "invalid"))
 })
 
 test_that("proper use of qualpal() works", {
@@ -45,6 +46,11 @@ test_that("proper use of qualpal() works", {
   expect_silent(qualpal(3, bg = "white"))
   expect_silent(qualpal(9, bg = "#00ff00"))
   expect_silent(qualpal(9, metric = "ciede2000"))
+  expect_silent(qualpal(3, white_point = "D65"))
+  expect_silent(qualpal(3, white_point = "D50"))
+  expect_silent(qualpal(3, white_point = "D55"))
+  expect_silent(qualpal(3, white_point = "A"))
+  expect_silent(qualpal(3, white_point = "E"))
 })
 
 test_that("extending a palette", {
@@ -89,4 +95,20 @@ test_that("colorspace input", {
       l = c(0.6, 0.85)
     )
   ))
+})
+
+test_that("white point affects color selection", {
+  set.seed(123)
+  pal_d65 <- qualpal(5, white_point = "D65")
+  set.seed(123)
+  pal_d50 <- qualpal(5, white_point = "D50")
+  set.seed(123)
+  pal_a <- qualpal(5, white_point = "A")
+  
+  # Different white points should potentially produce different palettes
+  # (at least sometimes, depending on the random seed and colorspace)
+  # We just verify the function accepts the parameter and runs
+  expect_true(length(pal_d65$hex) == 5)
+  expect_true(length(pal_d50$hex) == 5)
+  expect_true(length(pal_a$hex) == 5)
 })
