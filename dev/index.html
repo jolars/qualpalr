@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">qualpalr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.4.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,11 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9">
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header"><h1 id="qualpalr-">qualpalr <img src="https://raw.githubusercontent.com/jolars/qualpal/refs/heads/main/docs/images/logo.svg" align="right" width="139"><a class="anchor" aria-label="anchor" href="#qualpalr-"></a>
+</h1></div>
+<!-- badges: start -->
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <p><code>qualpalr</code> generates distinct qualitative color palettes, primarily for use in R graphics. Given <code>n</code> (the number of colors to generate), along with a subset in the <a href="https://en.wikipedia.org/wiki/HSL_and_HSV" class="external-link">hsl color space</a> (a cylindrical representation of the RGB color space) <code>qualpalr</code> attempts to find the <code>n</code> colors in the provided color subspace that <em>maximize the smallest pairwise color difference</em>. This is done by projecting the color subset from the HSL color space to the DIN99d space. DIN99d is (approximately) perceptually uniform, that is, the euclidean distance between two colors in the space is proportional to their perceived difference.</p>
 <p><code>qualpalr</code> was inspired by <a href="http://medialab.github.io/iwanthue/" class="external-link">i want hue</a>.</p>
@@ -75,7 +79,9 @@
 <code class="sourceCode R"><span><span class="va">pal2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/qualpal.html">qualpal</a></span><span class="op">(</span></span>
 <span>  n <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>deutan <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; The argument 'cvd_severity' is deprecated and will be</span></span>
+<span><span class="co">#&gt;       removed in a future version. Please use a named 'cvd' object instead.</span></span></code></pre></div>
 <p>We can look at a distance matrix of the pairwise color differences from the palette we have generated.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pal2</span><span class="op">$</span><span class="va">de_DIN99d</span></span>
@@ -117,7 +123,7 @@
 </h2>
 <p><code>qualpalr</code> is open source software, licensed under <a href="https://github.com/jolars/qualpalr/blob/main/LICENSE" class="external-link">GPL-3</a>.</p>
 </div>
-
+</div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
@@ -155,6 +161,7 @@
 <li><a href="https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/jolars/qualpalr/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/jolars/qualpalr?branch=main" class="external-link"><img src="https://codecov.io/gh/jolars/qualpalr/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://cran.r-project.org/package=qualpalr" class="external-link"><img src="http://www.r-pkg.org/badges/version/qualpalr" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://doi.org/10.21105/joss.08936" class="external-link"><img src="https://joss.theoj.org/papers/10.21105/joss.08936/status.svg" alt="DOI"></a></li>
 </ul>
 </div>
 
@@ -167,7 +174,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

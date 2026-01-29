@@ -9,7 +9,7 @@ the differences between the colors in the palette."><meta name="robots" content=
 
     <a class="navbar-brand me-2" href="../index.html">qualpalr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.4.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,8 +72,8 @@ adaptation.</p></dd>
 
 
 <dt id="arg-bg">bg<a class="anchor" aria-label="anchor" href="#arg-bg"></a></dt>
-<dd><p>Backgrouind color to consider (but not include) when
-generating the palette. This is useful to avoid colros that are too
+<dd><p>Background color to consider (but not include) when
+generating the palette. This is useful to avoid colors that are too
 close to the background/canvas color. If <code>NULL</code> (the default), the
 background color is not considered at all. Any color that is convertable
 via <code><a href="https://rdrr.io/r/grDevices/col2rgb.html" class="external-link">col2rgb</a></code> is acceptable, including hex colors.</p></dd>
@@ -101,15 +101,15 @@ normal vision. Each list contains <code>difference_matrix</code>, <code>min_dist
 <span class="r-in"><span><span class="fu">analyze_palette</span><span class="op">(</span><span class="va">pal</span><span class="op">$</span><span class="va">hex</span>, cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>protan <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $deutan</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $deutan$difference_matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          #c8cb70  #7bc4cc  #cb7469  #6d6cc9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7bc4cc 31.92168                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 41.59276 43.76051                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6d6cc9 64.31978 33.48929 35.21757         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #d7c3e9 45.21912 31.43774 30.05420 29.97800</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          #c9cb70  #7cc4cc  #cb7469  #6e6cca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #7cc4cc 31.95148                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 41.40243 43.64204                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #6e6cca 64.37811 33.37803 35.19014         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #d8c3e9 45.21974 31.62615 29.96390 29.99927</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $deutan$min_distances</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  #c8cb70  #7bc4cc  #cb7469  #6d6cc9  #d7c3e9 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31.92168 31.43774 30.05420 29.97800 29.97800 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  #c9cb70  #7cc4cc  #cb7469  #6e6cca  #d8c3e9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31.95148 31.62615 29.96390 29.99927 29.96390 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $deutan$bg_min_distance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NaN</span>
@@ -117,15 +117,15 @@ normal vision. Each list contains <code>difference_matrix</code>, <code>min_dist
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $normal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $normal$difference_matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          #c8cb70  #7bc4cc  #cb7469  #6d6cc9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7bc4cc 31.92168                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 41.59276 43.76051                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6d6cc9 64.31978 33.48929 35.21757         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #d7c3e9 45.21912 31.43774 30.05420 29.97800</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          #c9cb70  #7cc4cc  #cb7469  #6e6cca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #7cc4cc 31.95148                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 41.40243 43.64204                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #6e6cca 64.37811 33.37803 35.19014         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #d8c3e9 45.21974 31.62615 29.96390 29.99927</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $normal$min_distances</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  #c8cb70  #7bc4cc  #cb7469  #6d6cc9  #d7c3e9 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31.92168 31.43774 30.05420 29.97800 29.97800 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  #c9cb70  #7cc4cc  #cb7469  #6e6cca  #d8c3e9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31.95148 31.62615 29.96390 29.99927 29.96390 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $normal$bg_min_distance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NaN</span>
@@ -133,15 +133,15 @@ normal vision. Each list contains <code>difference_matrix</code>, <code>min_dist
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $protan</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $protan$difference_matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           #c8cb70   #7bc4cc   #cb7469   #6d6cc9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7bc4cc 31.794395                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 26.259368 26.871922                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6d6cc9 57.422891 26.634673 36.610806          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #d7c3e9 38.360173  6.724315 33.522738 26.562888</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          #c9cb70  #7cc4cc  #cb7469  #6e6cca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #7cc4cc 31.75402                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 26.29280 26.85895                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #6e6cca 57.52869 26.64757 36.71673         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #d8c3e9 38.33444  6.73337 33.51401 26.53771</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $protan$min_distances</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   #c8cb70   #7bc4cc   #cb7469   #6d6cc9   #d7c3e9 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26.259368  6.724315 26.259368 26.562888  6.724315 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  #c9cb70  #7cc4cc  #cb7469  #6e6cca  #d8c3e9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26.29280  6.73337 26.29280 26.53771  6.73337 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $protan$bg_min_distance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NaN</span>
@@ -149,15 +149,15 @@ normal vision. Each list contains <code>difference_matrix</code>, <code>min_dist
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tritan</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tritan$difference_matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          #c8cb70  #7bc4cc  #cb7469  #6d6cc9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7bc4cc 31.92168                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 41.59276 43.76051                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6d6cc9 64.31978 33.48929 35.21757         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #d7c3e9 45.21912 31.43774 30.05420 29.97800</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          #c9cb70  #7cc4cc  #cb7469  #6e6cca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #7cc4cc 31.95148                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 41.40243 43.64204                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #6e6cca 64.37811 33.37803 35.19014         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> #d8c3e9 45.21974 31.62615 29.96390 29.99927</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tritan$min_distances</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  #c8cb70  #7bc4cc  #cb7469  #6d6cc9  #d7c3e9 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31.92168 31.43774 30.05420 29.97800 29.97800 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  #c9cb70  #7cc4cc  #cb7469  #6e6cca  #d8c3e9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31.95148 31.62615 29.96390 29.99927 29.96390 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tritan$bg_min_distance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NaN</span>
@@ -175,7 +175,7 @@ normal vision. Each list contains <code>difference_matrix</code>, <code>min_dist
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
