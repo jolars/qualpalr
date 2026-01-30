@@ -38,7 +38,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.0.0" id="qualpalr-200">qualpalr 2.0.0<a class="anchor" aria-label="anchor" href="#qualpalr-200"></a></h2>
+<h2 class="pkg-version" data-toc-text="2.0.0" id="qualpalr-200">qualpalr 2.0.0<a class="anchor" aria-label="anchor" href="#qualpalr-200"></a></h2><p class="text-muted">CRAN release: 2026-01-29</p>
 <div class="section level3">
 <h3 id="breaking-changes-2-0-0">Breaking Changes<a class="anchor" aria-label="anchor" href="#breaking-changes-2-0-0"></a></h3>
 <ul><li>The previous method for catering to multiple types of color vision deficiencies has been revised. Previously, it incorrectly chained simulations of all the deficiencies together, which does not work as intended since the operations are not commutative and hence depend on the order in which they are applied. Now, instead, the color differences are computed separately for each type of deficiency (protanopia, deuteranopia, and tritanopia) as well as normal vision, and the minimum color distance across all types is maximized. The input of the <code>cvd</code> argument is unchanged, but the behavior is different. This change may lead to different palettes being generated when multiple types of color vision deficiencies are specified.</li>

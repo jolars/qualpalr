@@ -2,6 +2,8 @@
 
 ## qualpalr 2.0.0
 
+CRAN release: 2026-01-29
+
 ### Breaking Changes
 
 - The previous method for catering to multiple types of color vision
