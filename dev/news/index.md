@@ -2,6 +2,11 @@
 
 ## qualpalr (development version)
 
+### Refactoring
+
+- The package now uses cpp11 instead of Rcpp to bind the C++ code to R.
+  This should speed up compilation times and reduce dependencies.
+
 ## qualpalr 2.0.0
 
 CRAN release: 2026-01-29
