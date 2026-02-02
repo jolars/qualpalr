@@ -4,7 +4,7 @@ PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS)
 CXX_STD = CXX17
 
 SOURCES = \
-	RcppExports.cpp \
+	cpp11.cpp \
 	qualpalr.cpp \
 	qualpal/analyze.cpp \
 	qualpal/color_difference.cpp \

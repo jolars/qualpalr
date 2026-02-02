@@ -1,4 +1,4 @@
-#include <Rcpp.h>
+#include <cpp11.hpp>
 #include <qualpal/colors.h>
 
 template<typename T>
@@ -22,6 +22,6 @@ convert(const T& color, const std::string& to)
     XYZ xyz(color);
     return { xyz.x(), xyz.y(), xyz.z() };
   } else {
-    Rcpp::stop("Unknown colorspace");
+    cpp11::stop("Unknown colorspace");
   }
 }
