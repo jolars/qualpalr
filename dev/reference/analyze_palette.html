@@ -9,7 +9,7 @@ the differences between the colors in the palette."><meta name="robots" content=
 
     <a class="navbar-brand me-2" href="../index.html">qualpalr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.1.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">2.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,11 +101,11 @@ normal vision. Each list contains <code>difference_matrix</code>, <code>min_dist
 <span class="r-in"><span><span class="fu">analyze_palette</span><span class="op">(</span><span class="va">pal</span><span class="op">$</span><span class="va">hex</span>, cvd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>protan <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $deutan</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $deutan$difference_matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          #c9cb70  #7cc4cc  #cb7469  #6e6cca</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7cc4cc 31.95148                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 41.40243 43.64204                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6e6cca 64.37811 33.37803 35.19014         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #d8c3e9 45.21974 31.62615 29.96390 29.99927</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          1        2        3        4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 31.95148                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 41.40243 43.64204                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 64.37811 33.37803 35.19014         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 45.21974 31.62615 29.96390 29.99927</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $deutan$min_distances</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  #c9cb70  #7cc4cc  #cb7469  #6e6cca  #d8c3e9 </span>
@@ -117,11 +117,11 @@ normal vision. Each list contains <code>difference_matrix</code>, <code>min_dist
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $normal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $normal$difference_matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          #c9cb70  #7cc4cc  #cb7469  #6e6cca</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7cc4cc 31.95148                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 41.40243 43.64204                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6e6cca 64.37811 33.37803 35.19014         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #d8c3e9 45.21974 31.62615 29.96390 29.99927</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          1        2        3        4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 31.95148                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 41.40243 43.64204                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 64.37811 33.37803 35.19014         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 45.21974 31.62615 29.96390 29.99927</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $normal$min_distances</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  #c9cb70  #7cc4cc  #cb7469  #6e6cca  #d8c3e9 </span>
@@ -133,11 +133,11 @@ normal vision. Each list contains <code>difference_matrix</code>, <code>min_dist
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $protan</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $protan$difference_matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          #c9cb70  #7cc4cc  #cb7469  #6e6cca</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7cc4cc 31.75402                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 26.29280 26.85895                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6e6cca 57.52869 26.64757 36.71673         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #d8c3e9 38.33444  6.73337 33.51401 26.53771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          1        2        3        4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 31.75402                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 26.29280 26.85895                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 57.52869 26.64757 36.71673         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 38.33444  6.73337 33.51401 26.53771</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $protan$min_distances</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  #c9cb70  #7cc4cc  #cb7469  #6e6cca  #d8c3e9 </span>
@@ -149,11 +149,11 @@ normal vision. Each list contains <code>difference_matrix</code>, <code>min_dist
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tritan</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tritan$difference_matrix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          #c9cb70  #7cc4cc  #cb7469  #6e6cca</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #7cc4cc 31.95148                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #cb7469 41.40243 43.64204                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #6e6cca 64.37811 33.37803 35.19014         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> #d8c3e9 45.21974 31.62615 29.96390 29.99927</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          1        2        3        4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 31.95148                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 41.40243 43.64204                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 64.37811 33.37803 35.19014         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 45.21974 31.62615 29.96390 29.99927</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tritan$min_distances</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  #c9cb70  #7cc4cc  #cb7469  #6e6cca  #d8c3e9 </span>

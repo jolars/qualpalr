@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">qualpalr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.1.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">2.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +62,7 @@
                         <h4 data-toc-skip class="author">Johan
 Larsson</h4>
             
-            <h4 data-toc-skip class="date">2026-01-29</h4>
+            <h4 data-toc-skip class="date">2026-02-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jolars/qualpalr/blob/main/vignettes/comparisons.Rmd" class="external-link"><code>vignettes/comparisons.Rmd</code></a></small>
       <div class="d-none name"><code>comparisons.Rmd</code></div>
@@ -125,21 +125,21 @@ input.</p>
 <pre><code><span><span class="co">## ---------------------------------------- </span></span>
 <span><span class="co">## Colors in the HSL color space </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##         Hue Saturation Lightness</span></span>
-<span><span class="co">## #0081ff 210          1      0.50</span></span>
-<span><span class="co">## #771b00  14          1      0.23</span></span>
-<span><span class="co">## #005800 120          1      0.17</span></span>
-<span><span class="co">## #00ffb1 162          1      0.50</span></span>
-<span><span class="co">## #ffac6b  26          1      0.71</span></span>
+<span><span class="co">##      [,1] [,2] [,3]</span></span>
+<span><span class="co">## [1,]  210    1 0.50</span></span>
+<span><span class="co">## [2,]   14    1 0.23</span></span>
+<span><span class="co">## [3,]  120    1 0.17</span></span>
+<span><span class="co">## [4,]  162    1 0.50</span></span>
+<span><span class="co">## [5,]   26    1 0.71</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  ---------------------------------------- </span></span>
 <span><span class="co">## DIN99d color difference distance matrix </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##         #0081ff #771b00 #005800 #00ffb1</span></span>
-<span><span class="co">## #771b00      31                        </span></span>
-<span><span class="co">## #005800      29      24                </span></span>
-<span><span class="co">## #00ffb1      29      36      26        </span></span>
-<span><span class="co">## #ffac6b      31      24      28      27</span></span></code></pre>
+<span><span class="co">##    1  2  3  4</span></span>
+<span><span class="co">## 2 31         </span></span>
+<span><span class="co">## 3 29 24      </span></span>
+<span><span class="co">## 4 29 36 26   </span></span>
+<span><span class="co">## 5 31 24 28 27</span></span></code></pre>
 <p>Finally, to compare the two palettes, we can use the
 <code><a href="../reference/analyze_palette.html">analyze_palette()</a></code> function from <strong>qualpalr</strong>,
 which returns a list of analyses of the palettes, one for each type of
@@ -158,11 +158,11 @@ values for the normal vision analysis.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/analyze_palette.html">analyze_palette</a></span><span class="op">(</span><span class="va">pal</span><span class="op">$</span><span class="va">hex</span>, metric <span class="op">=</span> <span class="st">"ciede2000"</span><span class="op">)</span><span class="op">$</span><span class="va">normal</span></span></code></pre></div>
 <pre><code><span><span class="co">## $difference_matrix</span></span>
-<span><span class="co">##          #0081ff  #771b00  #005800  #00ffb1</span></span>
-<span><span class="co">## #771b00 52.68595                           </span></span>
-<span><span class="co">## #005800 60.31118 52.20662                  </span></span>
-<span><span class="co">## #00ffb1 55.50559 84.64856 51.73998         </span></span>
-<span><span class="co">## #ffac6b 52.85371 52.06510 59.63868 50.86874</span></span>
+<span><span class="co">##          1        2        3        4</span></span>
+<span><span class="co">## 2 52.68595                           </span></span>
+<span><span class="co">## 3 60.31118 52.20662                  </span></span>
+<span><span class="co">## 4 55.50559 84.64856 51.73998         </span></span>
+<span><span class="co">## 5 52.85371 52.06510 59.63868 50.86874</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $min_distances</span></span>
 <span><span class="co">##  #0081ff  #771b00  #005800  #00ffb1  #ffac6b </span></span>
@@ -173,11 +173,11 @@ values for the normal vision analysis.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/analyze_palette.html">analyze_palette</a></span><span class="op">(</span><span class="va">iwanthue</span>, metric <span class="op">=</span> <span class="st">"ciede2000"</span><span class="op">)</span><span class="op">$</span><span class="va">normal</span></span></code></pre></div>
 <pre><code><span><span class="co">## $difference_matrix</span></span>
-<span><span class="co">##          #5f683c  #5c87b5  #79bf4b  #c79041</span></span>
-<span><span class="co">## #5c87b5 40.29442                           </span></span>
-<span><span class="co">## #79bf4b 29.94464 50.43511                  </span></span>
-<span><span class="co">## #c79041 29.25577 42.50749 32.66864         </span></span>
-<span><span class="co">## #7bb99d 29.76810 31.42995 17.49101 33.43658</span></span>
+<span><span class="co">##          1        2        3        4</span></span>
+<span><span class="co">## 2 40.29442                           </span></span>
+<span><span class="co">## 3 29.94464 50.43511                  </span></span>
+<span><span class="co">## 4 29.25577 42.50749 32.66864         </span></span>
+<span><span class="co">## 5 29.76810 31.42995 17.49101 33.43658</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $min_distances</span></span>
 <span><span class="co">##  #5f683c  #5c87b5  #79bf4b  #c79041  #7bb99d </span></span>
