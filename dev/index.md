@@ -20,6 +20,7 @@ Let’s create a palette of 4 colors of hues from 0 to 360, saturation
 between 0.1 and 0.5, and lightness from 0.6 to 0.85.
 
 ``` r
+
 library(qualpalr)
 
 pal <- qualpal(n = 4, list(h = c(0, 360), s = c(0.1, 0.5), l = c(0.6, 0.85)))
@@ -28,6 +29,7 @@ pal <- qualpal(n = 4, list(h = c(0, 360), s = c(0.1, 0.5), l = c(0.6, 0.85)))
 We can retrieve the generated colors in hex format
 
 ``` r
+
 pal$hex
 #> [1] "#ce836d" "#9569ca" "#82cbd5" "#c8ca71"
 ```
@@ -37,6 +39,7 @@ subspaces and, optionally, adapt it to color deficiency (here
 *deuteranomaly*).
 
 ``` r
+
 pal2 <- qualpal(
   n = 4,
   cvd = c(deutan = 0.5)
@@ -47,6 +50,7 @@ We can look at a distance matrix of the pairwise color differences from
 the palette we have generated.
 
 ``` r
+
 pal2$de_DIN99d
 #>          #6e6cca  #d8c3e9  #cb7469
 #> #d8c3e9 17.56447                  
@@ -58,6 +62,7 @@ The palette may also be plotted with in a multidimensional scaling plot
 generated from the distance matrix of the colors in the palette.
 
 ``` r
+
 plot(pal2)
 ```
 
@@ -67,6 +72,7 @@ Or it might be plotted in one of the provided color spaces as a
 scatterplot matrix.
 
 ``` r
+
 pairs(pal2, colorspace = "HSL")
 ```
 
@@ -77,12 +83,14 @@ pairs(pal2, colorspace = "HSL")
 The current CRAN release can be installed by running
 
 ``` r
+
 install.packages("qualpalr")
 ```
 
 The development version can be installed by running
 
 ``` r
+
 pak::pkg_install("jolars/qualpalr")
 ```
 
