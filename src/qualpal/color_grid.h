@@ -122,4 +122,119 @@ colorGrid(const std::array<double, 2>& hue_lim,
   return colors;
 }
 
+// Direct HSL-Halton sampling; used as a fallback when an HSL axis is
+// narrow enough that LCHab-bounding-box rejection sampling would have a
+// catastrophic accept rate. The HSL→LCHab map is nonlinear, so a pinned HSL
+// axis does NOT correspond to a pinned LCHab axis — pinning is best
+// preserved by sampling in HSL coordinates directly.
+inline std::vector<colors::RGB>
+hslColorGridDirect(const std::array<double, 2>& h_lim_hsl,
+                   const std::array<double, 2>& s_lim_hsl,
+                   const std::array<double, 2>& l_lim_hsl,
+                   std::size_t n_points)
+{
+  auto hsl = colorGrid<colors::HSL>(h_lim_hsl, s_lim_hsl, l_lim_hsl, n_points);
+  std::vector<colors::RGB> out;
+  out.reserve(hsl.size());
+  for (const auto& c : hsl) {
+    out.emplace_back(c);
+  }
+  return out;
+}
+
+// Halton-sample inside an LCHab box that covers sRGB, reject to user HSL
+// bounds, and stop after a fixed attempt budget. Returns however many
+// candidates were collected (may be fewer than n_points). Used as the
+// perceptual-uniformity stage of hslColorGridViaLch.
+inline std::vector<colors::RGB>
+hslColorGridLchAttempt(const std::array<double, 2>& h_lim_hsl,
+                       const std::array<double, 2>& s_lim_hsl,
+                       const std::array<double, 2>& l_lim_hsl,
+                       std::size_t n_points,
+                       std::size_t max_attempts)
+{
+  // LCHab box generous enough to cover sRGB.
+  constexpr double L_LO = 0.0, L_HI = 100.0;
+  constexpr double C_LO = 0.0, C_HI = 150.0;
+
+  Halton<3> halton;
+  std::vector<colors::RGB> out;
+  out.reserve(n_points);
+
+  std::size_t attempts = 0;
+  while (out.size() < n_points && attempts < max_attempts) {
+    auto v = halton.next();
+    ++attempts;
+
+    double L = L_LO + v[0] * (L_HI - L_LO);
+    double C = C_LO + v[1] * (C_HI - C_LO);
+    double h_lch = v[2] * 360.0;
+
+    colors::LCHab lch(L, C, h_lch);
+    colors::RGB rgb(lch);
+
+    if (rgb.r() < 0.0 || rgb.r() > 1.0 || rgb.g() < 0.0 || rgb.g() > 1.0 ||
+        rgb.b() < 0.0 || rgb.b() > 1.0) {
+      continue;
+    }
+
+    colors::HSL hsl(rgb);
+
+    if (hsl.s() < s_lim_hsl[0] || hsl.s() > s_lim_hsl[1]) {
+      continue;
+    }
+    if (hsl.l() < l_lim_hsl[0] || hsl.l() > l_lim_hsl[1]) {
+      continue;
+    }
+
+    // Hue range can be specified in [-360, 360] with wrap; check three
+    // offsets to cover crossings of 0/360.
+    double h = hsl.h();
+    bool in_h = false;
+    for (double offset : { -360.0, 0.0, 360.0 }) {
+      double hh = h + offset;
+      if (hh >= h_lim_hsl[0] && hh <= h_lim_hsl[1]) {
+        in_h = true;
+        break;
+      }
+    }
+    if (!in_h) {
+      continue;
+    }
+
+    out.push_back(rgb);
+  }
+
+  return out;
+}
+
+// Generate HSL-constrained candidates with the most-uniform-in-Lab strategy
+// achievable inside a fixed compute budget: try LCHab-uniform sampling with
+// HSL-bounds rejection up to a cap, then top up any shortfall with direct
+// HSL-Halton. The cap creates a soft transition — wide HSL ranges fill from
+// LCHab before the cap hits, narrow/pinned HSL ranges blow through the cap
+// and fill the remainder from HSL where the constraint is exact.
+inline std::vector<colors::RGB>
+hslColorGridViaLch(const std::array<double, 2>& h_lim_hsl,
+                   const std::array<double, 2>& s_lim_hsl,
+                   const std::array<double, 2>& l_lim_hsl,
+                   std::size_t n_points)
+{
+  // Budget: 50 attempts per output. Wide HSL ranges (>10% LCHab acceptance)
+  // finish well below the cap; ranges that drive acceptance under ~2% start
+  // requiring HSL top-up.
+  const std::size_t max_attempts = std::max<std::size_t>(n_points * 50, 20000);
+
+  auto out = hslColorGridLchAttempt(
+    h_lim_hsl, s_lim_hsl, l_lim_hsl, n_points, max_attempts);
+
+  if (out.size() < n_points) {
+    std::size_t deficit = n_points - out.size();
+    auto top_up = hslColorGridDirect(h_lim_hsl, s_lim_hsl, l_lim_hsl, deficit);
+    out.insert(out.end(), top_up.begin(), top_up.end());
+  }
+
+  return out;
+}
+
 } // namespace qualpal

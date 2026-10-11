@@ -228,6 +228,28 @@ public:
   Qualpal& setWhitePoint(const std::array<double, 3>& white_point);
 
   /**
+   * @brief Configure the post-discrete continuous refinement step.
+   *
+   * Experimental. When `n_starts > 0`, generate() runs continuous local
+   * refinement after the discrete farthest-points selection, shifting each
+   * non-fixed palette point in CIE L*a*b* to maximize its minimum CIEDE2000
+   * distance to the others. With `n_starts > 1`, the refinement is run from
+   * additional random seeds (in-region, in-gamut) and the best palette is
+   * kept — this escapes basins where the discrete warm start was suboptimal.
+   *
+   * Refinement only takes effect when the input source is a colorspace
+   * region (HSL or LCHab); for fixed input sets (RGB/hex/named palettes)
+   * the output must come from the input set, so refinement is skipped.
+   *
+   * @param n_starts 0 disables refinement; 1 single-start (warm start from
+   * the discrete selection); ≥2 multi-start (warm start + random extras).
+   * Default is 5.
+   * @return Reference to this object for chaining.
+   * @throws std::invalid_argument if n_starts is negative.
+   */
+  Qualpal& setRefinementStarts(int n_starts);
+
+  /**
    * @brief Generate a qualitative color palette with the configured options.
    * @param n Number of colors to generate.
    * @return Vector of n selected RGB colors, each channel in [0, 1].
@@ -279,6 +301,7 @@ private:
   double max_memory = 1;
   ColorspaceType colorspace_input = ColorspaceType::HSL;
   std::array<double, 3> white_point = { 0.95047, 1, 1.08883 }; // D65
+  int n_refinement_starts = 5;
 };
 
 } // namespace qualpal

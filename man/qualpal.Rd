@@ -12,7 +12,8 @@ qualpal(
   bg = NULL,
   metric = c("ciede2000", "din99d", "cie76"),
   extend = NULL,
-  white_point = c("D65", "D50", "D55", "A", "E")
+  white_point = c("D65", "D50", "D55", "A", "E"),
+  refinement_starts = 5L
 )
 }
 \arguments{
@@ -75,6 +76,14 @@ of hex colors (or any other format that's acceptable in
 Can be one of "D65" (default, daylight at 6500K), "D50" (daylight at
 5000K), "D55" (daylight at 5500K), "A" (incandescent tungsten at 2856K),
 or "E" (equal energy).}
+
+\item{refinement_starts}{A nonnegative integer controlling experimental
+continuous refinement. The default, \code{5L}, uses the discrete selection
+plus four random starting palettes and keeps the best result. Use \code{1L}
+to refine only the discrete selection or \code{0L} to disable refinement.
+Applies only to color space regions with \code{metric = "ciede2000"}.
+Random starts use fixed C++ seeds and are unaffected by \code{set.seed()}.
+Refinement can change the generated palette and increase runtime.}
 }
 \value{
 A list of class \code{qualpal} with the following
@@ -113,6 +122,12 @@ between them. It does this iteratively by first selecting the first \code{n}
 colors from the input colors, then iterates over the palette, putting colors
 back into the total set and replaces it with a new color until it has gone
 through the whole range without changing any of the colors.
+
+For HSL and LCHab color space regions, the selected colors are then
+refined continuously in CIE L\emph{a}b* to improve their minimum CIEDE2000
+distance. This experimental step preserves fixed colors supplied through
+\code{extend} and respects the input region. Refinement is disabled for other
+metrics and for explicit RGB inputs or named palettes.
 
 Optionally, \code{qualpal} can adapt palettes to cater to color vision
 deficiency (CVD). This is accomplished by taking the colors

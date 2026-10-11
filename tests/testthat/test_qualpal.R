@@ -112,3 +112,53 @@ test_that("white point affects color selection", {
   expect_true(length(pal_d50$hex) == 5)
   expect_true(length(pal_a$hex) == 5)
 })
+
+test_that("refinement starts are validated", {
+  for (starts in list(-1, 0.5, NA_real_, Inf, numeric(), c(1, 2),
+                      "5", TRUE, .Machine$integer.max + 1)) {
+    expect_error(qualpal(3, refinement_starts = starts),
+                 "refinement_starts must be a nonnegative integer")
+  }
+})
+
+test_that("refinement controls colorspace optimization", {
+  discrete <- qualpal(4, refinement_starts = 0L)
+  refined <- qualpal(4, refinement_starts = 1L)
+  multistart <- qualpal(4, refinement_starts = 5L)
+  score <- function(pal) {
+    min(analyze_palette(pal$RGB, metric = "ciede2000")$normal$min_distances)
+  }
+
+  expect_gte(score(refined), score(discrete) - 1e-6)
+  expect_gte(score(multistart), score(refined) - 1e-6)
+  expect_false(isTRUE(all.equal(refined$RGB, discrete$RGB)))
+  expect_equal(qualpal(4), multistart)
+
+  set.seed(42)
+  first <- qualpal(4, refinement_starts = 2L)
+  set.seed(99)
+  expect_equal(qualpal(4, refinement_starts = 2L), first)
+
+  fixed <- discrete$RGB[1:2, , drop = FALSE]
+  extended <- qualpal(4, extend = fixed, refinement_starts = 2L)
+  expect_equal(unname(extended$RGB[1:2, ]), unname(fixed))
+})
+
+test_that("refinement is skipped for other metrics and fixed inputs", {
+  for (metric in c("din99d", "cie76")) {
+    expect_equal(
+      qualpal(4, metric = metric, refinement_starts = 5L),
+      qualpal(4, metric = metric, refinement_starts = 0L)
+    )
+  }
+  inputs <- list(
+    "ColorBrewer:Set2",
+    matrix(c(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0), ncol = 3, byrow = TRUE)
+  )
+  for (input in inputs) {
+    expect_equal(
+      qualpal(3, colorspace = input, refinement_starts = 5L),
+      qualpal(3, colorspace = input, refinement_starts = 0L)
+    )
+  }
+})

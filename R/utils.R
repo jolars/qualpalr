@@ -10,8 +10,18 @@ make_options <- function(
   bg = NULL,
   metric = c("ciede2000", "din99d", "cie76"),
   extend = NULL,
-  white_point = c("D65", "D50", "D55", "A", "E")
+  white_point = c("D65", "D50", "D55", "A", "E"),
+  refinement_starts = 5L
 ) {
+  if (!is.numeric(refinement_starts) ||
+      length(refinement_starts) != 1L ||
+      !is.finite(refinement_starts) ||
+      refinement_starts < 0 ||
+      refinement_starts > .Machine$integer.max ||
+      refinement_starts %% 1 != 0) {
+    stop("refinement_starts must be a nonnegative integer.", call. = FALSE)
+  }
+
   metric <- match.arg(metric)
   white_point <- match.arg(white_point)
 
@@ -70,5 +80,12 @@ make_options <- function(
   } else {
     bg <- double(0)
   }
-  list(cvd = cvd_list, bg = bg, metric = metric, extend = extend, white_point = white_point)
+  list(
+    cvd = cvd_list,
+    bg = bg,
+    metric = metric,
+    extend = extend,
+    white_point = white_point,
+    refinement_starts = as.integer(refinement_starts)
+  )
 }

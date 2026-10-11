@@ -9,6 +9,7 @@ SOURCES = \
 	qualpal/analyze.cpp \
 	qualpal/color_difference.cpp \
 	qualpal/colors.cpp \
+	qualpal/continuous_refinement.cpp \
 	qualpal/cvd.cpp \
 	qualpal/farthest_points.cpp \
 	qualpal/palettes.cpp \

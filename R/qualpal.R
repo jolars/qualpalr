@@ -11,6 +11,12 @@
 #' back into the total set and replaces it with a new color until it has gone
 #' through the whole range without changing any of the colors.
 #'
+#' For HSL and LCHab color space regions, the selected colors are then
+#' refined continuously in CIE L*a*b* to improve their minimum CIEDE2000
+#' distance. This experimental step preserves fixed colors supplied through
+#' `extend` and respects the input region. Refinement is disabled for other
+#' metrics and for explicit RGB inputs or named palettes.
+#'
 #' Optionally, \code{qualpal} can adapt palettes to cater to color vision
 #' deficiency (CVD). This is accomplished by taking the colors
 #' provided by the user and transforming them to colors that someone with CVD
@@ -69,6 +75,14 @@
 #'   Can be one of "D65" (default, daylight at 6500K), "D50" (daylight at
 #'   5000K), "D55" (daylight at 5500K), "A" (incandescent tungsten at 2856K),
 #'   or "E" (equal energy).
+#'
+#' @param refinement_starts A nonnegative integer controlling experimental
+#'   continuous refinement. The default, `5L`, uses the discrete selection
+#'   plus four random starting palettes and keeps the best result. Use `1L`
+#'   to refine only the discrete selection or `0L` to disable refinement.
+#'   Applies only to color space regions with `metric = "ciede2000"`.
+#'   Random starts use fixed C++ seeds and are unaffected by `set.seed()`.
+#'   Refinement can change the generated palette and increase runtime.
 #'
 #' @return A list of class \code{qualpal} with the following
 #'   components.
@@ -131,7 +145,8 @@ qualpal <- function(
   bg = NULL,
   metric = c("ciede2000", "din99d", "cie76"),
   extend = NULL,
-  white_point = c("D65", "D50", "D55", "A", "E")
+  white_point = c("D65", "D50", "D55", "A", "E"),
+  refinement_starts = 5L
 ) {
   UseMethod("qualpal", colorspace)
 }

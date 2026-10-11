@@ -43,6 +43,10 @@ setup_palette(const cpp11::list& options)
   auto cvd_list = cpp11::as_cpp<cpp11::list>(options["cvd"]);
   auto metric = cpp11::as_cpp<std::string>(options["metric"]);
   auto white_point_str = cpp11::as_cpp<std::string>(options["white_point"]);
+  auto refinement_starts = cpp11::as_cpp<int>(options["refinement_starts"]);
+
+  // Refinement currently optimizes CIEDE2000 regardless of the selected metric.
+  qp.setRefinementStarts(metric == "ciede2000" ? refinement_starts : 0);
 
   if (bg_vec.size() == 3) {
     qp.setBackground(qualpal::colors::RGB(bg_vec[0], bg_vec[1], bg_vec[2]));
