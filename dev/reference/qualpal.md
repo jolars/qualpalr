@@ -15,7 +15,8 @@ qualpal(
   bg = NULL,
   metric = c("ciede2000", "din99d", "cie76"),
   extend = NULL,
-  white_point = c("D65", "D50", "D55", "A", "E")
+  white_point = c("D65", "D50", "D55", "A", "E"),
+  refinement_starts = 5L
 )
 ```
 
@@ -111,6 +112,17 @@ qualpal(
   (daylight at 5500K), "A" (incandescent tungsten at 2856K), or "E"
   (equal energy).
 
+- refinement_starts:
+
+  A nonnegative integer controlling experimental continuous refinement.
+  The default, `5L`, uses the discrete selection plus four random
+  starting palettes and keeps the best result. Use `1L` to refine only
+  the discrete selection or `0L` to disable refinement. Applies only to
+  color space regions with `metric = "ciede2000"`. Random starts use
+  fixed C++ seeds and are unaffected by
+  [`set.seed()`](https://rdrr.io/r/base/Random.html). Refinement can
+  change the generated palette and increase runtime.
+
 ## Value
 
 A list of class `qualpal` with the following components.
@@ -151,6 +163,12 @@ palette, putting colors back into the total set and replaces it with a
 new color until it has gone through the whole range without changing any
 of the colors.
 
+For HSL and LCHab color space regions, the selected colors are then
+refined continuously in CIE L*a*b\* to improve their minimum CIEDE2000
+distance. This experimental step preserves fixed colors supplied through
+`extend` and respects the input region. Refinement is disabled for other
+metrics and for explicit RGB inputs or named palettes.
+
 Optionally, `qualpal` can adapt palettes to cater to color vision
 deficiency (CVD). This is accomplished by taking the colors provided by
 the user and transforming them to colors that someone with CVD would
@@ -172,16 +190,16 @@ qualpal(3)
 #> Colors in the HSL color space 
 #> 
 #>      [,1] [,2] [,3]
-#> [1,]   62 0.47 0.62
-#> [2,]  355 0.47 0.61
-#> [3,]  205 0.45 0.61
+#> [1,]  356  0.5  0.6
+#> [2,]   60  0.5  0.6
+#> [3,]  201  0.5  0.6
 #> 
 #>  ---------------------------------------- 
 #> DIN99d color difference distance matrix 
 #> 
 #>    1  2
-#> 2 22   
-#> 3 24 24
+#> 2 23   
+#> 3 25 24
 
 # Provide a custom color space
 qualpal(n = 3, list(h = c(35, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
@@ -189,16 +207,16 @@ qualpal(n = 3, list(h = c(35, 360), s = c(0.5, 0.7), l = c(0, 0.45)))
 #> Colors in the HSL color space 
 #> 
 #>      [,1] [,2]  [,3]
-#> [1,]  298 0.60 0.449
-#> [2,]   71 0.66 0.440
-#> [3,]  117 0.67 0.073
+#> [1,]   60  0.7 0.450
+#> [2,]  300  0.7 0.450
+#> [3,]  120  0.7 0.073
 #> 
 #>  ---------------------------------------- 
 #> DIN99d color difference distance matrix 
 #> 
 #>    1  2
-#> 2 32   
-#> 3 30 29
+#> 2 33   
+#> 3 31 31
 
 qualpal(3, "ColorBrewer:Set2")
 #> ---------------------------------------- 
@@ -243,26 +261,26 @@ qualpal(8, cvd = c(protan = 0.4))
 #> Colors in the HSL color space 
 #> 
 #>      [,1] [,2] [,3]
-#> [1,]   14 0.50 0.62
-#> [2,]  330 0.50 0.64
-#> [3,]  241 0.47 0.61
-#> [4,]  192 0.41 0.62
-#> [5,]  299 0.41 0.84
-#> [6,]  154 0.44 0.61
-#> [7,]   67 0.45 0.60
-#> [8,]   30 0.33 0.84
+#> [1,]   25  0.5 0.60
+#> [2,]  358  0.5 0.60
+#> [3,]  120  0.5 0.60
+#> [4,]  344  0.5 0.79
+#> [5,]  240  0.5 0.60
+#> [6,]  209  0.5 0.68
+#> [7,]  171  0.5 0.61
+#> [8,]   38  0.5 0.85
 #> 
 #>  ---------------------------------------- 
 #> DIN99d color difference distance matrix 
 #> 
 #>    1  2  3  4  5  6  7
-#> 2 13                  
-#> 3 24 18               
-#> 4 24 24 19            
-#> 5 18 15 19 18         
-#> 6 24 27 26 12 22      
-#> 7 19 25 29 21 22 15   
-#> 8 16 19 24 18 13 18 14
+#> 2 12                  
+#> 3 22 27               
+#> 4 14 13 25            
+#> 5 26 23 30 21         
+#> 6 23 24 22 19 16      
+#> 7 24 28 14 23 25 14   
+#> 8 15 20 18 14 27 20 19
 
 # Generate and extend a palette with 3 colors, using the DIN99d
 # metric
@@ -272,20 +290,20 @@ qualpal(5, extend = pal$hex, metric = "din99d")
 #> Colors in the HSL color space 
 #> 
 #>      [,1] [,2] [,3]
-#> [1,]   61 0.47 0.62
-#> [2,]  355 0.47 0.61
-#> [3,]  205 0.44 0.61
-#> [4,]  267 0.48 0.60
-#> [5,]  301 0.39 0.84
+#> [1,]  356 0.50 0.60
+#> [2,]   60 0.50 0.60
+#> [3,]  201 0.50 0.60
+#> [4,]  268 0.45 0.62
+#> [5,]  332 0.25 0.84
 #> 
 #>  ---------------------------------------- 
 #> DIN99d color difference distance matrix 
 #> 
 #>    1  2  3  4
-#> 2 22         
-#> 3 24 24      
-#> 4 29 19 18   
-#> 5 22 18 18 17
+#> 2 23         
+#> 3 25 24      
+#> 4 19 29 18   
+#> 5 18 19 18 18
 
 # Use a different white point (D50, common in printing)
 qualpal(5, white_point = "D50")
@@ -293,20 +311,20 @@ qualpal(5, white_point = "D50")
 #> Colors in the HSL color space 
 #> 
 #>      [,1] [,2] [,3]
-#> [1,]   30 0.44 0.61
-#> [2,]  330 0.50 0.64
-#> [3,]  225 0.43 0.61
-#> [4,]  102 0.48 0.61
-#> [5,]  155 0.46 0.85
+#> [1,]   65 0.54 0.55
+#> [2,]  179 0.48 0.60
+#> [3,]  243 0.44 0.62
+#> [4,]   10 0.42 0.85
+#> [5,]  354 0.49 0.60
 #> 
 #>  ---------------------------------------- 
 #> DIN99d color difference distance matrix 
 #> 
 #>    1  2  3  4
-#> 2 17         
-#> 3 24 19      
-#> 4 18 28 26   
-#> 5 20 25 22 14
+#> 2 21         
+#> 3 30 22      
+#> 4 18 20 22   
+#> 5 24 27 21 17
 
 if (FALSE) { # \dontrun{
 # The range of hue cannot exceed 360
