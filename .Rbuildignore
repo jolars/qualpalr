@@ -24,8 +24,11 @@
 ^_pkgdown\.yml$
 ^CRAN-SUBMISSION$
 ^\.direnv$
-^flake\.nix$
-^flake\.lock$
+^devenv\.nix$
+^devenv\.yaml$
+^devenv\.lock$
+^devenv\.local\.(nix|yaml)$
+^\.devenv.*$
 ^\.envrc$
 ^.clang-format$
 ^CITATION.cff$
