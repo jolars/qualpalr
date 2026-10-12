@@ -48,21 +48,21 @@ pal
     ## ---------------------------------------- 
     ## Colors in the HSL color space 
     ## 
-    ##         Hue Saturation Lightness
-    ## #ca6c74 355       0.47      0.61
-    ## #6e6cca 241       0.47      0.61
-    ## #c6a5db 277       0.43      0.75
-    ## #c7eadc 155       0.46      0.85
-    ## #c9cb70  62       0.47      0.62
+    ##      [,1] [,2] [,3]
+    ## [1,]  360  0.5 0.60
+    ## [2,]   60  0.5 0.60
+    ## [3,]  240  0.5 0.60
+    ## [4,]  300  0.5 0.73
+    ## [5,]  157  0.5 0.85
     ## 
     ##  ---------------------------------------- 
     ## DIN99d color difference distance matrix 
     ## 
-    ##         #ca6c74 #6e6cca #c6a5db #c7eadc
-    ## #6e6cca      22                        
-    ## #c6a5db      17      14                
-    ## #c7eadc      25      25      20        
-    ## #c9cb70      22      29      24      16
+    ##    1  2  3  4
+    ## 2 22         
+    ## 3 23 31      
+    ## 4 17 26 17   
+    ## 5 26 17 26 23
 
 Methods for `pairs` and `plot` have been written for `qualpal` objects
 to help visualize the results.

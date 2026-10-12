@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/jolars/qualpalr/blob/v2.0.0/inst/CITATION)
+[`inst/CITATION`](https://github.com/jolars/qualpalr/blob/main/inst/CITATION)
 
 Larsson J (2025). “Qualpal: Qualitative Color Palettes for Everyone.”
 *Journal of Open Source Software*, **10**(114), 8936. ISSN 2475-9066.
