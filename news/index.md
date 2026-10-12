@@ -1,5 +1,24 @@
 # Changelog
 
+## qualpalr 2.1.0
+
+### New Features
+
+- [`qualpal()`](https://jolars.github.io/qualpalr/reference/qualpal.md)
+  gains `refinement_starts` to control experimental continuous
+  refinement for HSL and LCHab regions with the CIEDE2000 metric. The
+  default uses five starts, which can change palettes and increase
+  runtime. Set it to zero to disable refinement. Other metrics and fixed
+  input sets skip refinement.
+- HSL regions now use the updated C++ library’s LCH-based candidate
+  sampler. Disabling refinement does not restore palettes from earlier
+  library versions.
+
+### Refactoring
+
+- The package now uses cpp11 instead of Rcpp to bind the C++ code to R.
+  This should speed up compilation times and reduce dependencies.
+
 ## qualpalr 2.0.0
 
 CRAN release: 2026-01-29

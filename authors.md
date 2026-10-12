@@ -11,8 +11,8 @@ Source:
 [`inst/CITATION`](https://github.com/jolars/qualpalr/blob/main/inst/CITATION)
 
 Larsson J (2025). “Qualpal: Qualitative Color Palettes for Everyone.”
-*Journal of Open Source Software*, **10**(114), 8936. ISSN 2475-9066,
-[doi:10.21105/joss.08936](https://doi.org/10.21105/joss.08936),
+*Journal of Open Source Software*, **10**(114), 8936. ISSN 2475-9066.
+[doi:10.21105/joss.08936](https://doi.org/10.21105/joss.08936).
 <https://joss.theoj.org/papers/10.21105/joss.08936>.
 
     @Article{,

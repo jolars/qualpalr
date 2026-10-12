@@ -5,13 +5,12 @@
 `qualpalr` generates qualitative color palettes optimized for maximally
 distinct colors. Given `n` (the number of colors to generate), along
 with a subset in the [hsl color
-space](https://en.wikipedia.org/wiki/HSL_and_HSV)[¹](#fn1) (a
-cylindrical representation of the RGB color space) `qualpalr` attempts
-to find the `n` colors in the provided color subspace that *maximize the
-smallest pairwise color difference*. This is done by computing the
-pairwise color differences between all the input colors, and then
-selecting the `n` colors that maximize the minimum pairwise color
-difference.
+space](https://en.wikipedia.org/wiki/HSL_and_HSV)[^1] (a cylindrical
+representation of the RGB color space) `qualpalr` attempts to find the
+`n` colors in the provided color subspace that *maximize the smallest
+pairwise color difference*. This is done by computing the pairwise color
+differences between all the input colors, and then selecting the `n`
+colors that maximize the minimum pairwise color difference.
 
 ## Examples
 
@@ -29,6 +28,7 @@ which takes as its input `n` (the number of colors to generate) and
 - a character vector specifying a predefined color palette.
 
 ``` r
+
 library(qualpalr)
 pal <- qualpal(5, list(h = c(-200, 120), s = c(0.3, 0.8), l = c(0.4, 0.9)))
 
@@ -41,32 +41,34 @@ distance matrix based based on the color difference metric used, by
 default CIEDE2000 (`metric = ciede2000`).
 
 ``` r
+
 pal
 ```
 
     ## ---------------------------------------- 
     ## Colors in the HSL color space 
     ## 
-    ##         Hue Saturation Lightness
-    ## #ca6c74 355       0.47      0.61
-    ## #6e6cca 241       0.47      0.61
-    ## #c6a5db 277       0.43      0.75
-    ## #c7eadc 155       0.46      0.85
-    ## #c9cb70  62       0.47      0.62
+    ##      [,1] [,2] [,3]
+    ## [1,]  360  0.5 0.60
+    ## [2,]   60  0.5 0.60
+    ## [3,]  240  0.5 0.60
+    ## [4,]  300  0.5 0.73
+    ## [5,]  157  0.5 0.85
     ## 
     ##  ---------------------------------------- 
     ## DIN99d color difference distance matrix 
     ## 
-    ##         #ca6c74 #6e6cca #c6a5db #c7eadc
-    ## #6e6cca      22                        
-    ## #c6a5db      17      14                
-    ## #c7eadc      25      25      20        
-    ## #c9cb70      22      29      24      16
+    ##    1  2  3  4
+    ## 2 22         
+    ## 3 23 31      
+    ## 4 17 26 17   
+    ## 5 26 17 26 23
 
 Methods for `pairs` and `plot` have been written for `qualpal` objects
 to help visualize the results.
 
 ``` r
+
 # Multidimensional scaling plot
 plot(pal)
 
@@ -79,6 +81,7 @@ pairs(pal, colorspace = "DIN99d")
 The colors are most easily used in R by accessing `pal$hex`
 
 ``` r
+
 library(maps)
 map("france", fill = TRUE, col = pal$hex, mar = c(0, 0, 0, 0))
 ```
@@ -97,9 +100,9 @@ space.
 
 It then continues projecting the colors into the XYZ space. After this,
 behavior depends on the metric used. By default, qualpal uses the
-CIEDE2000 color difference formula (Sharma, Wu, and Dalal 2005), which
-is the current state of the art in color difference metrics and standard
-as defined by the International Commission on Illumination (CIE). For
+CIEDE2000 color difference formula (Sharma et al. 2005), which is the
+current state of the art in color difference metrics and standard as
+defined by the International Commission on Illumination (CIE). For
 illustrative purposes, however, we will show the procedure when the
 DIN99d color space (Cui et al. 2002) is used instead, which is a
 perceptually uniform color space that uses the Euclidean distance as a
@@ -129,17 +132,14 @@ Colour Spaces Based on the DIN99 Colour-Difference Formula.” *Color
 Research & Application* 27 (4): 282–90.
 <https://doi.org/10.1002/col.10066>.
 
-Huang, Min, Guihua Cui, Manuel Melgosa, Manuel Sánchez-Marañón, Changjun
-Li, M. Ronnier Luo, and Haoxue Liu. 2015. “Power Functions Improving the
-Performance of Color-Difference Formulas.” *Optics Express* 23 (1): 597.
-<https://doi.org/10.1364/OE.23.000597>.
+Huang, Min, Guihua Cui, Manuel Melgosa, et al. 2015. “Power Functions
+Improving the Performance of Color-Difference Formulas.” *Optics
+Express* 23 (1): 597. <https://doi.org/10.1364/OE.23.000597>.
 
 Sharma, Gaurav, Wencheng Wu, and Edul N. Dalal. 2005. “The CIEDE2000
 Color-Difference Formula: Implementation Notes, Supplementary Test Data,
 and Mathematical Observations.” *Color Research & Application* 30 (1):
 21–30. <https://doi.org/10.1002/col.20070>.
 
-------------------------------------------------------------------------
-
-1.  Input can also be a predefined set of colors or a subspace of the
+[^1]: Input can also be a predefined set of colors or a subspace of the
     LCH_(ab) color space.
