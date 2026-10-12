@@ -1,4 +1,4 @@
-# qualpalr (development version)
+# qualpalr 2.1.0
 
 ## New Features
 
